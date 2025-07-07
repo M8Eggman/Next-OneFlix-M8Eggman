@@ -1,17 +1,20 @@
 "use client";
 
-import { TypeGenre } from "@/types";
 import "./Nav.sass";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+// Import des types pour les genres d'anime
+import { TypeGenre } from "@/types";
+// import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
-import { usePathname } from "next/navigation";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
 export default function Nav() {
   // Récupère le chemin actuel de la page
   const pathname = usePathname();
+  const router = useRouter();
 
   // Etat pour stocker les genres d'anime récupérés depuis l'API
   const [genres, setGenres] = useState<TypeGenre[]>([]);
@@ -19,6 +22,7 @@ export default function Nav() {
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(false);
 
   // Récupération des genres d'anime depuis l'API
   useEffect(() => {
@@ -26,8 +30,6 @@ export default function Nav() {
       .then((res) => res.json())
       .then((data) => setGenres(data.data || []));
   }, []);
-
-  console.log(genres);
 
   return (
     <nav className="navGlobal">
@@ -44,7 +46,14 @@ export default function Nav() {
           <Link className={`navLinksPopular${pathname === "/populaire" ? " active" : ""}`} href="/populaire">
             Populaire
           </Link>
-          <li className="navLinksCategories" onMouseEnter={() => setShowCategoriesModal(true)} onMouseLeave={() => setShowCategoriesModal(false)}>
+          <li
+            className="navLinksCategories"
+            onMouseEnter={() => {
+              setShowCategoriesModal(true);
+              setShowCartModal(false);
+              setShowAuthModal(false);
+            }}
+            onMouseLeave={() => setShowCategoriesModal(false)}>
             <span className={showCategoriesModal ? "active" : ""}>
               Catégories <FiChevronDown />
             </span>
@@ -67,17 +76,32 @@ export default function Nav() {
         </ul>
       </div>
       <div className="navIcons">
-        <div className="navIconsSearch">
+        <div className={`navIconsSearch${showSearchInput ? " active" : ""}`} onClick={() => setShowSearchInput(true)}>
+          {showSearchInput && (
+            <input
+              className="navSearchInput"
+              type="text"
+              placeholder="Rechercher un anime..."
+              onBlur={() => setShowSearchInput(false)}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  console.log("Recherche pour :", e.currentTarget.value);
+                }
+              }}
+            />
+          )}
           <FiSearch />
         </div>
-        <div className="navIconsBookmark">
+        <div className="navIconsBookmark" onClick={() => router.push("/watchlist")}>
           <FiBookmark />
         </div>
         <div
-          className="navIconsCart"
+          className={`navIconsCart${showCartModal ? " active" : ""}`}
           onClick={() => {
             setShowCartModal(!showCartModal);
             setShowAuthModal(false);
+            setShowCategoriesModal(false);
           }}>
           <FiShoppingCart />
           {/* temporaire !!! */}
@@ -90,10 +114,11 @@ export default function Nav() {
           )}
         </div>
         <div
-          className="navIconsUser"
+          className={`navIconsUser${showAuthModal ? " active" : ""}`}
           onClick={() => {
             setShowAuthModal(!showAuthModal);
             setShowCartModal(false);
+            setShowCategoriesModal(false);
           }}>
           <FiUser />
           {/* temporaire !!! */}
