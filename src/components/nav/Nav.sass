@@ -1,3 +1,20 @@
+$navHeight: 70px
+
+@keyframes fadeIn
+    from
+        opacity: 0
+        transform: translateY(-20px)
+    to
+        opacity: 1
+        transform: translateY(0px)
+@keyframes  slideLeft
+    from
+        opacity: 0
+        transform: translateX(20px)
+    to
+        opacity: 1
+        transform: translateX(0px)
+
 .navGlobal
     display: flex
     justify-content: space-between
@@ -5,42 +22,43 @@
     gap: 1rem
     background-color: $color-dark
     color: $color-light
-    height: 80px
-    padding: 0 2rem
+    height: $navHeight
     .navLinksAndLogo
         display: flex
         align-items: center
-        gap: 2rem
         height: 100%
         .navLogo
             p
                 font-size: 2rem
                 font-weight: 600
+                padding: 0 1rem
                 span
                     color: $color-accent
         .navLinks
             display: flex
-            gap: 1.5rem
             height: 100%
             > a
                 height: 100%
                 display: flex
                 align-items: center
                 font-size: 1.15rem
-                padding: 0 0.5rem
+                padding: 0 1rem
                 transition: background-color 200ms ease, color 200ms ease
             > a:hover
                 background-color: $color-dark-deep
                 color: $color-accent
+            > a.active
+                color: $color-accent
             .navCategoriesModal
                 position: absolute
-                top: 80px
+                top: $navHeight
                 display: flex
                 align-items: flex-start
                 gap: 2rem
                 background-color: $color-dark-deep
                 padding: 1rem
                 z-index: 10
+                animation: fadeIn 200ms ease
                 h3
                     font-size: 1.25rem
                     font-weight: 600
@@ -48,6 +66,8 @@
                     display: grid
                     grid-template-columns: repeat(4, 1fr)
                     li
+                        opacity: 0
+                        animation: slideLeft 200ms ease forwards
                         display: flex
                         align-items: flex-start
                         a
@@ -59,32 +79,24 @@
                         a:hover
                             background-color: $color-dark
                             color: $color-accent
-                    .navAllCategoriesBtn
-                        font-size: 1rem
-                        width: 100%
-                        padding: 0.5rem 0.75rem
-                        white-space: nowrap
-                        cursor: pointer
-                        transition: color 200ms ease
-                    .navAllCategoriesBtn:hover
-                        color: $color-accent
-            a.active
-                color: $color-accent
+                    .navCategoriesSeeMore
+                        a:hover
+                            background-color: initial
             .navLinksNew
             .navLinksPopular
             .navLinksCategories
-                a
+                span
                     cursor: pointer
                     height: 100%
                     display: flex
                     align-items: center
                     font-size: 1.15rem
-                    padding: 0 0.5rem
+                    padding: 0 1rem
                     transition: background-color 200ms ease, color 200ms ease
-                a:hover
+                span:hover
                     background-color: $color-dark-deep
                     color: $color-accent
-                a.active
+                span.active
                     background-color: $color-dark-deep
                     color: $color-accent
                 svg
@@ -93,18 +105,56 @@
                     transform: translateY(2px)
     .navIcons
         display: flex
-        align-items: center
-        gap: 1rem
         cursor: pointer
-        svg
-            width: 1.75rem
-            height: 1.75rem
-            transition: color 200ms ease
-        svg:hover
-            color: $color-accent
-        svg.active
-            color: $color-accent
+        height: 100%
+        > div
+            display: flex
+            align-items: center
+            padding: 0 0.75rem
+            height: 100%
+            svg
+                width: 1.75rem
+                height: 1.75rem
+                transition: color 200ms ease
+        > div:hover
+            background-color: $color-dark-deep
+            svg
+                color: $color-accent
+        > div.active
+            background-color: $color-dark-deep
+            svg
+                color: $color-accent
         .navIconsCart
-        .navIconsSearch
-        .navIconsBookmark
+            .navCartModal
+                position: absolute
+                top: $navHeight
+                right: 0
+                background-color: $color-dark-deep
+                padding: 1rem
+                z-index: 10
+                animation: fadeIn 200ms ease
+                h3
+                    font-size: 1.25rem
+                    font-weight: 600
+                p
+                    margin-bottom: 0.5rem
+                a
+                    display: block
+                    margin-bottom: 0.5rem
         .navIconsUser
+            .navAuthModal
+                position: absolute
+                top: $navHeight
+                right: 0
+                background-color: $color-dark-deep
+                padding: 1rem
+                z-index: 10
+                animation: fadeIn 200ms ease
+                h3
+                    font-size: 1.25rem
+                    font-weight: 600
+                p
+                    margin-bottom: 0.5rem
+                a
+                    display: block
+                    margin-bottom: 0.5rem
