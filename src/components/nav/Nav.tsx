@@ -18,7 +18,7 @@ export default function Nav() {
 
   // Etat pour stocker les genres d'anime récupérés depuis l'API
   const [genres, setGenres] = useState<TypeGenre[]>([]);
-  // Etat pour gérer l'affichage des modal de catégories, authentification et panier
+  // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
