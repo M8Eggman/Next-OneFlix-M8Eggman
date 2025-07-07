@@ -22,21 +22,21 @@
             display: flex
             gap: 1.5rem
             height: 100%
-            a
+            > a
                 height: 100%
                 display: flex
                 align-items: center
                 font-size: 1.15rem
                 padding: 0 0.5rem
                 transition: background-color 200ms ease, color 200ms ease
-            a:hover
+            > a:hover
                 background-color: $color-dark-deep
                 color: $color-accent
             .navCategoriesModal
                 position: absolute
                 top: 80px
                 display: flex
-                transform: translateX(-0.5rem)
+                align-items: flex-start
                 gap: 2rem
                 background-color: $color-dark-deep
                 padding: 1rem
@@ -46,22 +46,47 @@
                     font-weight: 600
                 .navCategoriesList
                     display: grid
-                    grid-template-columns: repeat(5, 1fr)
-                    gap: 0.5rem
-                    a
-                        color: $color-light
+                    grid-template-columns: repeat(4, 1fr)
+                    li
+                        display: flex
+                        align-items: flex-start
+                        a
+                            font-size: 1rem
+                            width: 100%
+                            padding: 0.5rem 0.75rem
+                            white-space: nowrap
+                            transition: background-color 200ms ease, color 200ms ease
+                        a:hover
+                            background-color: $color-dark
+                            color: $color-accent
+                    .navAllCategoriesBtn
                         font-size: 1rem
-                        padding: 0.5rem 0
-                    a:hover
-                        background-color: $color-dark
+                        width: 100%
+                        padding: 0.5rem 0.75rem
+                        white-space: nowrap
+                        cursor: pointer
+                        transition: color 200ms ease
+                    .navAllCategoriesBtn:hover
+                        color: $color-accent
             a.active
                 color: $color-accent
             .navLinksNew
             .navLinksPopular
             .navLinksCategories
-                display: flex
-                align-items: center
-                gap: 0.3rem
+                a
+                    cursor: pointer
+                    height: 100%
+                    display: flex
+                    align-items: center
+                    font-size: 1.15rem
+                    padding: 0 0.5rem
+                    transition: background-color 200ms ease, color 200ms ease
+                a:hover
+                    background-color: $color-dark-deep
+                    color: $color-accent
+                a.active
+                    background-color: $color-dark-deep
+                    color: $color-accent
                 svg
                     width: 1.5rem
                     height: 1.5rem

@@ -1,20 +1,26 @@
 "use client";
 
+import { TypeGenre } from "@/types";
 import "./Nav.sass";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-// import des icônes pour la navigation de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 
 // Composant navigation pour le projet OneFlix
 // Il affiche le logo, les liens et les icônes de navigation
 export default function Nav() {
+  // État pour stocker les genres d'anime récupérés depuis l'API
+  const [genres, setGenres] = useState<TypeGenre[]>([]);
   // État pour gérer l'affichage du modal des catégories
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
-  // fonction pour basculer l'affichage du modal des catégories
-  const toggleCategoriesModal = () => {
-    setShowCategoriesModal(!showCategoriesModal);
-  };
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
+  // Récupération des genres d'anime depuis l'API
+  useEffect(() => {
+    fetch("https://api.jikan.moe/v4/genres/anime?filter=genres")
+      .then((res) => res.json())
+      .then((data) => setGenres(data.data || []));
+  }, []);
 
   return (
     <nav className="navGlobal">
@@ -31,31 +37,34 @@ export default function Nav() {
           <Link className="navLinksPopular" href="">
             Populaire
           </Link>
-          <Link className="navLinksCategories" href="" onMouseEnter={toggleCategoriesModal} onMouseLeave={toggleCategoriesModal}>
-            Catégories <FiChevronDown />
+          <li
+            className="navLinksCategories"
+            onMouseEnter={() => setShowCategoriesModal(true)}
+            onMouseLeave={() => {
+              setShowCategoriesModal(false);
+              setShowAllCategories(false);
+            }}>
+            <Link href="" className={showCategoriesModal ? "active" : ""}>
+              Catégories <FiChevronDown />
+            </Link>
             {showCategoriesModal && (
               <div className="navCategoriesModal">
                 <h3>Genres</h3>
                 <ul className="navCategoriesList">
-                  <li>
-                    <Link href="/categories/action">Action</Link>
-                  </li>
-                  <li>
-                    <Link href="/categories/comedy">Comédie</Link>
-                  </li>
-                  <li>
-                    <Link href="/categories/drama">Drame</Link>
-                  </li>
-                  <li>
-                    <Link href="/categories/horror">Horreur</Link>
-                  </li>
-                  <li>
-                    <Link href="/categories/scifi">Science-fiction</Link>
-                  </li>
+                  {(showAllCategories ? genres : genres.slice(0, 20)).map((genre) => (
+                    <li key={genre.mal_id}>
+                      <Link href="">{genre.name}</Link>
+                    </li>
+                  ))}
+                  {!showAllCategories && genres.length > 19 && (
+                    <a className="navAllCategoriesBtn" onClick={() => setShowAllCategories(true)}>
+                      Voir +
+                    </a>
+                  )}
                 </ul>
               </div>
             )}
-          </Link>
+          </li>
         </ul>
       </div>
       <div className="navIcons">
