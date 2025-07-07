@@ -15,7 +15,7 @@ export default function Footer() {
       </div>
       <div className="footerCopyright">
         <p>
-          Projet à but éducatif. Réalisé par <strong>Moi (pas envie de me doxx)</strong> dans le cadre de la formation Front-End de Molengeek.
+          Projet à but éducatif. Réalisé par <strong>Georges Tuséki</strong> dans le cadre de la formation Front-End de Molengeek.
         </p>
         <p>
           Les visuels et références inspirés de l’univers des animes appartiennent à leurs ayants droit respectifs. Ce projet OneFlix est réalisé à des fins strictement éducatives

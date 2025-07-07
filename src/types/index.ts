@@ -7,12 +7,13 @@ export interface TypeGenre {
 // Type User pour représenter l'état de l'utilisateur
 export interface TypeUser {
   username: string | null;
-  password: string;
+  image: string | null;
+  password?: string;
   email: string;
   isAuthenticated?: boolean;
   searchHistory: string[];
   cart: any[];
   boughtHistory: any[];
   watchlist: any[];
-  ownedItems: any[]; 
+  ownedItems: any[];
 }
