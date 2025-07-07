@@ -1,42 +1,75 @@
+"use client";
+
 import "./Nav.sass";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 // import des icônes pour la navigation de react-icons
-import { BsCart2 } from "react-icons/bs";
-import { IoMdSearch } from "react-icons/io";
-import { IoBookmarkOutline } from "react-icons/io5";
-import { FaRegUser } from "react-icons/fa6";
+import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 
 // Composant navigation pour le projet OneFlix
 // Il affiche le logo, les liens et les icônes de navigation
 export default function Nav() {
+  // État pour gérer l'affichage du modal des catégories
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+  // fonction pour basculer l'affichage du modal des catégories
+  const toggleCategoriesModal = () => {
+    setShowCategoriesModal(!showCategoriesModal);
+  };
+
   return (
     <nav className="navGlobal">
-      <div className="navLogo">
-        <span>OneFlix</span>
+      <div className="navLinksAndLogo">
+        <Link className="navLogo" href="/">
+          <p>
+            One<span>Flix</span>
+          </p>
+        </Link>
+        <ul className="navLinks">
+          <Link className="navLinksNew" href="">
+            Nouveau
+          </Link>
+          <Link className="navLinksPopular" href="">
+            Populaire
+          </Link>
+          <Link className="navLinksCategories" href="" onMouseEnter={toggleCategoriesModal} onMouseLeave={toggleCategoriesModal}>
+            Catégories <FiChevronDown />
+            {showCategoriesModal && (
+              <div className="navCategoriesModal">
+                <h3>Genres</h3>
+                <ul className="navCategoriesList">
+                  <li>
+                    <Link href="/categories/action">Action</Link>
+                  </li>
+                  <li>
+                    <Link href="/categories/comedy">Comédie</Link>
+                  </li>
+                  <li>
+                    <Link href="/categories/drama">Drame</Link>
+                  </li>
+                  <li>
+                    <Link href="/categories/horror">Horreur</Link>
+                  </li>
+                  <li>
+                    <Link href="/categories/scifi">Science-fiction</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </Link>
+        </ul>
       </div>
-      <ul className="navLinks">
-        <Link className="navLinksNew" href="">
-          Nouveau
-        </Link>
-        <Link className="navLinksPopular" href="">
-          Populaire
-        </Link>
-        <Link className="navLinksCategories" href="">
-          Catégories
-        </Link>
-      </ul>
       <div className="navIcons">
         <div className="navIconsCart">
-          <BsCart2 />
+          <FiShoppingCart />
         </div>
         <div className="navIconsSearch">
-          <IoMdSearch />
+          <FiSearch />
         </div>
         <div className="navIconsBookmark">
-          <IoBookmarkOutline />
+          <FiBookmark />
         </div>
         <div className="navIconsUser">
-          <FaRegUser />
+          <FiUser />
         </div>
       </div>
     </nav>
