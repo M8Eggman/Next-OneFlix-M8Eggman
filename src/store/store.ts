@@ -1,9 +1,12 @@
+import { animeReducer } from "@/features/animeSlice";
 import { configureStore } from "@reduxjs/toolkit";
 // import pour typé les hooks obligatoire pour du typescript
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    anime: animeReducer,
+  },
 });
 
 // Extraction des types pour le dispatch et le selecteur

@@ -23,7 +23,7 @@ export interface TypeAnime {
   mal_id: number;
   title: string;
   images: {
-    jpg: {
+    webp: {
       image_url: string;
     };
   };

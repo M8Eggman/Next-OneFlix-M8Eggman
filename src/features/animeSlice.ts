@@ -153,4 +153,4 @@ const animeSlice = createSlice({
 });
 
 export const { setPagePopular, setPageNew, setPageAll, setPageNaruto } = animeSlice.actions;
-export default animeSlice.reducer;
+export const animeReducer = animeSlice.reducer;
