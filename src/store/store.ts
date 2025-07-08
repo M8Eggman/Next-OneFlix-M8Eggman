@@ -1,5 +1,4 @@
 import { genreReducer } from "@/features/animeGenreSlice";
-import { animeReducer } from "@/features/animeSlice";
 import { userReducer } from "@/features/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 // import pour typé les hooks obligatoire pour du typescript
@@ -7,7 +6,6 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    anime: animeReducer,
     genre: genreReducer,
     user: userReducer,
   },
