@@ -4,7 +4,6 @@ export interface TypeGenre {
   name: string;
   count: number;
 }
-
 // Type User pour représenter l'état de l'utilisateur
 export interface TypeUser {
   username: string | null;
@@ -18,7 +17,6 @@ export interface TypeUser {
   watchlist: any[];
   ownedItems: any[];
 }
-
 export interface TypeAnime {
   mal_id: number;
   title: string;
@@ -28,13 +26,10 @@ export interface TypeAnime {
     };
   };
 }
-export interface TypeAnimeResponse {
-  animeList: TypeAnime[];
-  pagination: {
-    last_visible_page: number;
-    has_next_page: boolean;
-    current_page: number;
-  };
+export interface animePagination {
+  last_visible_page: number;
+  has_next_page: boolean;
+  current_page: number;
 }
 export interface TypeAnimeState {
   all: TypeAnime[];
@@ -53,8 +48,8 @@ export interface TypeAnimeState {
   pageNaruto: number;
   pagePopular: number;
   pageNew: number;
-  allPagination: TypeAnimeResponse["pagination"] | null;
-  narutoPagination: TypeAnimeResponse["pagination"] | null;
-  popularPagination: TypeAnimeResponse["pagination"] | null;
-  newPagination: TypeAnimeResponse["pagination"] | null;
+  allPagination: animePagination | null;
+  narutoPagination: animePagination | null;
+  popularPagination: animePagination | null;
+  newPagination: animePagination | null;
 }

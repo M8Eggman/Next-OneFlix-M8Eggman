@@ -8,6 +8,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { TypeGenre } from "@/types";
 // import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { fetchGenres } from "@/features/animeGenreSlice";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
@@ -16,20 +18,22 @@ export default function Nav() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Etat pour stocker les genres d'anime récupérés depuis l'API
-  const [genres, setGenres] = useState<TypeGenre[]>([]);
+  const dispatch = useAppDispatch();
+
   // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
-  // Récupération des genres d'anime depuis l'API
+  // Récupération des genres d'anime depuis redux
+  const { genres, loading, error } = useAppSelector((state) => state.genre);
+
   useEffect(() => {
-    fetch("https://api.jikan.moe/v4/genres/anime?filter=genres")
-      .then((res) => res.json())
-      .then((data) => setGenres(data.data || []));
-  }, []);
+    if (genres.length <= 0) {
+      dispatch(fetchGenres());
+    }
+  }, [dispatch, genres.length]);
 
   return (
     <nav className="navGlobal">

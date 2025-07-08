@@ -1,6 +1,11 @@
-import { TypeAnime, TypeAnimeResponse, TypeAnimeState } from "@/types";
+import { animePagination, TypeAnime, TypeAnimeState } from "@/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+
+interface TypeAnimeResponse {
+  animeList: TypeAnime[];
+  pagination: animePagination;
+}
 
 const initialState: TypeAnimeState = {
   all: [],
