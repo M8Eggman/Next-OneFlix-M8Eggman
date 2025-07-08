@@ -2,6 +2,7 @@
 export interface TypeGenre {
   mal_id: number;
   name: string;
+  count: number;
 }
 
 // Type User pour représenter l'état de l'utilisateur
