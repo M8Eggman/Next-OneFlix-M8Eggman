@@ -4,6 +4,7 @@ import "./Footer.sass";
 import { useEffect, useState } from "react";
 import { TypeGenre } from "@/types";
 import Link from "next/link";
+import { FiGithub, FiLinkedin } from "react-icons/fi";
 
 export default function Footer() {
   const [topGenres, setTopGenres] = useState<TypeGenre[]>([]);
@@ -23,25 +24,45 @@ export default function Footer() {
     <footer>
       <div className="footerContainer">
         <div className="footerLogo">
-          <p>
+          <h3>
             One<span>Flix</span>
-          </p>
+          </h3>
         </div>
         <div className="footerNavigationLinks">
-          <Link href="/nouveau">Nouveautés</Link>
-          <Link href="/nouveau">Populaires</Link>
-
-          <h4>Genres populaires</h4>
+          <h3>Navigation</h3>
           <ul>
+            <li>
+              <Link href="/nouveau">Nouveautés</Link>
+            </li>
+            <li>
+              <Link href="/populaire">Populaires</Link>
+            </li>
             {topGenres.map((genre) => (
               <li key={genre.mal_id}>
                 <Link href="">{genre.name}</Link>
               </li>
             ))}
+            <li>
+              <Link href="/categories">Voir +</Link>
+            </li>
           </ul>
         </div>
-        <div className="footerSocialNetworks"></div>
-        <div className="footerNewsLetter"></div>
+        <div className="footerSocialNetworks">
+          <a href="https://github.com/M8Eggman">
+            <FiGithub size={24} />
+          </a>
+          <a href="">
+            <FiLinkedin size={24} />
+          </a>
+        </div>
+        <div className="footerNewsLetter">
+          <h3>Newsletter</h3>
+          <p>Inscrivez-vous pour recevoir les dernières nouveautés et mises à jour.</p>
+          <form className="footerNewsLetterForm" onSubmit={(e) => e.preventDefault()}>
+            <input type="email" placeholder="Votre email" required />
+            <button type="submit">S'inscrire</button>
+          </form>
+        </div>
       </div>
       <div className="footerCopyright">
         <p>
