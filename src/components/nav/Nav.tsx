@@ -4,13 +4,10 @@ import "./Nav.sass";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-// Import des types pour les genres d'anime
-import { TypeGenre } from "@/types";
 // import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { fetchGenres } from "@/features/animeGenreSlice";
-import { log } from "node:console";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation

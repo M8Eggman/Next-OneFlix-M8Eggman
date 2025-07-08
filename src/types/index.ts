@@ -31,28 +31,6 @@ export interface TypeUser {
   watchlist: any[];
   ownedItems: any[];
 }
-export interface AnimeState {
-  all: TypeAnime[];
-  naruto: TypeAnime[];
-  popular: TypeAnime[];
-  new: TypeAnime[];
-  loadingAll: boolean;
-  loadingNaruto: boolean;
-  loadingPopular: boolean;
-  loadingNew: boolean;
-  errorAll: string | null;
-  errorNaruto: string | null;
-  errorPopular: string | null;
-  errorNew: string | null;
-  pageAll: number;
-  pageNaruto: number;
-  pagePopular: number;
-  pageNew: number;
-  allPagination: animePagination | null;
-  narutoPagination: animePagination | null;
-  popularPagination: animePagination | null;
-  newPagination: animePagination | null;
-}
 export interface GenreState {
   genres: TypeGenre[];
   loading: boolean;
