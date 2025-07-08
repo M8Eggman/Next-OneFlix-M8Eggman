@@ -18,13 +18,15 @@ export default function Footer() {
   const { genres, loading, error } = useAppSelector((state) => state.genre);
 
   useEffect(() => {
-    if (genres.length === 0) {
+    if (genres?.length === 0) {
       dispatch(fetchGenres());
     }
-  }, [dispatch, genres.length]);
+  }, [dispatch, genres]);
   useEffect(() => {
-    const sorted = [...genres].sort((a: TypeGenre, b: TypeGenre) => b.count - a.count).slice(0, 3);
-    setTopGenres(sorted);
+    if (genres) {
+      const sorted = [...genres].sort((a: TypeGenre, b: TypeGenre) => b.count - a.count).slice(0, 3);
+      setTopGenres(sorted);
+    }
   }, [genres]);
 
   return (
@@ -44,11 +46,23 @@ export default function Footer() {
             <li>
               <Link href="/populaire">Populaires</Link>
             </li>
-            {topGenres.map((genre) => (
-              <li key={genre.mal_id}>
-                <Link href="">{genre.name}</Link>
+            {loading && <li className="footerCategoryLoading">Chargement des genres...</li>}
+            {(error || !topGenres.length) && (
+              <li>
+                <button className="footerCategoryError cursor-pointer" onClick={() => dispatch(fetchGenres())}>
+                  Réessayer
+                </button>
               </li>
-            ))}
+            )}
+            {!loading && !error && topGenres.length > 0 && (
+              <>
+                {topGenres.map((genre) => (
+                  <li key={genre.mal_id}>
+                    <Link href={`/categories/${genre.mal_id}`}>{genre.name}</Link>
+                  </li>
+                ))}
+              </>
+            )}
             <li>
               <Link href="/categories">Voir +</Link>
             </li>

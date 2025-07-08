@@ -10,6 +10,7 @@ import { TypeGenre } from "@/types";
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { fetchGenres } from "@/features/animeGenreSlice";
+import { log } from "node:console";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
@@ -30,10 +31,10 @@ export default function Nav() {
   const { genres, loading, error } = useAppSelector((state) => state.genre);
 
   useEffect(() => {
-    if (genres.length <= 0) {
+    if (genres?.length <= 0 && !loading) {
       dispatch(fetchGenres());
     }
-  }, [dispatch, genres.length]);
+  }, [dispatch, genres]);
 
   return (
     <nav className="navGlobal">
@@ -65,14 +66,28 @@ export default function Nav() {
               <div className="navCategoriesModal">
                 <h3>Genres</h3>
                 <ul className="navCategoriesList">
-                  {genres.map((genre, i) => (
-                    <li key={genre.mal_id} style={{ animationDelay: `${i * 20}ms` }}>
-                      <Link href="">{genre.name}</Link>
-                    </li>
-                  ))}
-                  <li className="navCategoriesSeeMore" style={{ animationDelay: `${genres.length * 20}ms` }}>
-                    <Link href="/categories">Voir +</Link>
-                  </li>
+                  {loading && <li className="navCategoryLoading">Chargement des genres...</li>}
+                  {(error || !genres?.length) && (
+                    <>
+                      <li>
+                        <button className="navCategoryError cursor-pointer" onClick={() => dispatch(fetchGenres())}>
+                          Réessayer
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  {!loading && !error && genres?.length && (
+                    <>
+                      {genres?.map((genre, i) => (
+                        <li key={genre.mal_id} style={{ animationDelay: `${i * 20}ms` }}>
+                          <Link href={`/categories/${genre.mal_id}`}>{genre.name}</Link>
+                        </li>
+                      ))}
+                      <li className="navCategoriesSeeMore" style={{ animationDelay: `${genres?.length * 20}ms` }}>
+                        <Link href="/categories">Voir +</Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
             )}
