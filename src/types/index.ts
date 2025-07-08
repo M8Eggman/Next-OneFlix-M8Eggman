@@ -4,19 +4,6 @@ export interface TypeGenre {
   name: string;
   count: number;
 }
-// Type User pour représenter l'état de l'utilisateur
-export interface TypeUser {
-  username: string | null;
-  image: string | null;
-  password?: string;
-  email: string;
-  isAuthenticated?: boolean;
-  searchHistory: string[];
-  cart: any[];
-  boughtHistory: any[];
-  watchlist: any[];
-  ownedItems: any[];
-}
 export interface TypeAnime {
   mal_id: number;
   title: string;
@@ -31,7 +18,20 @@ export interface animePagination {
   has_next_page: boolean;
   current_page: number;
 }
-export interface TypeAnimeState {
+// Type des initialState des slices
+export interface TypeUser {
+  username: string | null;
+  image: string | null;
+  password?: string;
+  email: string;
+  isAuthenticated?: boolean;
+  searchHistory: string[];
+  cart: any[];
+  boughtHistory: any[];
+  watchlist: any[];
+  ownedItems: any[];
+}
+export interface AnimeState {
   all: TypeAnime[];
   naruto: TypeAnime[];
   popular: TypeAnime[];
@@ -52,4 +52,9 @@ export interface TypeAnimeState {
   narutoPagination: animePagination | null;
   popularPagination: animePagination | null;
   newPagination: animePagination | null;
+}
+export interface GenreState {
+  genres: TypeGenre[];
+  loading: boolean;
+  error: string | null;
 }

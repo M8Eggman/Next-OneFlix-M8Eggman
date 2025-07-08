@@ -1,13 +1,14 @@
-import { animePagination, TypeAnime, TypeAnimeState } from "@/types";
+import { animePagination, TypeAnime, AnimeState } from "@/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+// Type de la réponse des thunk
 interface TypeAnimeResponse {
   animeList: TypeAnime[];
   pagination: animePagination;
 }
 
-const initialState: TypeAnimeState = {
+const initialState: AnimeState = {
   all: [],
   naruto: [],
   popular: [],

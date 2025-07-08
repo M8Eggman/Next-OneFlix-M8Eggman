@@ -108,7 +108,7 @@ export default function Nav() {
             setShowCategoriesModal(false);
           }}>
           <FiShoppingCart />
-          {/* temporaire !!! */}
+          {/* TODO */}
           {showCartModal && (
             <div className="navCartModal">
               <h3>Mon Panier</h3>
@@ -125,7 +125,7 @@ export default function Nav() {
             setShowCategoriesModal(false);
           }}>
           <FiUser />
-          {/* temporaire !!! */}
+          {/* TODO */}
           {showAuthModal && (
             <div className="navAuthModal">
               <h3>Mon Compte</h3>

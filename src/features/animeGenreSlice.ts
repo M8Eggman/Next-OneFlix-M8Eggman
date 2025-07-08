@@ -1,14 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { TypeGenre } from "@/types";
+import { GenreState, TypeGenre } from "@/types";
 
+// Type de la réponse des thunk
 interface TypeGenreResponse {
   data: TypeGenre[];
-}
-
-interface GenreState {
-  genres: TypeGenre[];
-  loading: boolean;
-  error: string | null;
 }
 
 const initialState: GenreState = {
