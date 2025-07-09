@@ -8,12 +8,12 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
   const [animes, setAnimes] = useState<TypeAnime[] | null>(initialAnimes);
   const [loading, setLoading] = useState(false);
 
-  const handleRetry = async () => {
+  async function handleRetry() {
     setLoading(true);
     const res = await fetchAnimes({ period: "year", limit: 6, orderBy: "popularity", sort: "asc", status: "complete", promotion: true });
     setAnimes(res || null);
     setLoading(false);
-  };
+  }
 
   if (!animes) {
     return (

@@ -9,7 +9,8 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
       <div className="CardHome__image">
         <img src={anime.images.webp.large_image_url} alt={anime.title} />
         <p>{anime.price}</p>
+        {anime.promotion && <p>{Math.round(anime.promotion * 100)}%</p>}
       </div>
     </div>
-  )
+  );
 }

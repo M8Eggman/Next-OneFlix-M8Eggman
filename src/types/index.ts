@@ -140,6 +140,8 @@ export interface TypeAnime {
   price: number;
   // Ajouté manuellement pour les promotions
   promotion: number | null;
+  // Ajouté manuellement pour le prix final calculé en fonction de la promotion
+  finalPrice: number;
 }
 
 export interface animePagination {

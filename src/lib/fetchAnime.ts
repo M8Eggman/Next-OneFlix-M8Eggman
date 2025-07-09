@@ -51,11 +51,21 @@ export async function fetchAnimes({
     if (!res.ok) throw new Error(`Erreur fetchAnimes: ${res.status}`);
     const data = await res.json();
 
-    return data.data.map((anime: any) => ({
-      ...anime,
-      price: getAnimePrice(anime.mal_id),
-      promotion: promotion ? getAnimePromotion(anime.mal_id) : null,
-    }));
+    return data.data.map((anime: any) => {
+      // Récupère le prix de l'anime ou crée un prix aléatoire si l'anime n'a pas déjà un prix
+      const price = getAnimePrice(anime.mal_id);
+      // Récupère la promotion de l'anime ou crée une promotion aléatoire si l'anime n'a pas déjà une promotion
+      // Si promotion = true, la promotion est appliquée à tous les animés du fetch sinon la promotion est appliquée à 10% des animés du fetch
+      const promo = promotion ? getAnimePromotion(anime.mal_id, 1) : getAnimePromotion(anime.mal_id, 0.1);
+      // Calcule le prix final de l'anime en appliquant la promotion si promo existe
+      const finalPrice = promo ? Math.round(price * (1 - promo) * 100) / 100 : price;
+      return {
+        ...anime,
+        price: price,
+        promotion: promo,
+        finalPrice: finalPrice,
+      };
+    });
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
 
