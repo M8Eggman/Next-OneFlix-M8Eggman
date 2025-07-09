@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { fetchPopularAnimes } from "@/lib/fetchAnime";
 import { TypeAnime } from "@/types";
+import { fetchAnimes } from "@/lib/fetchAnime";
 
 export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[] | null }) {
   const [animes, setAnimes] = useState<TypeAnime[] | null>(initialAnimes);
@@ -10,7 +10,7 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
 
   const handleRetry = async () => {
     setLoading(true);
-    const res = await fetchPopularAnimes("year");
+    const res = await fetchAnimes({ period: "year", limit: 6, orderBy: "popularity", sort: "asc", status: "complete" });
     setAnimes(res || null);
     setLoading(false);
   };
