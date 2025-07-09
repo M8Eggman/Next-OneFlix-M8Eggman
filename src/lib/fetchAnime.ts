@@ -1,5 +1,5 @@
 import { getPeriodUrl } from "./utils";
-import { getAnimePrice } from "./animePriceMemory";
+import { getAnimePrice } from "./animePrice";
 
 // Fonction qui récupère les animés populaires selon la période choisie
 // Définit all comme période par défaut si aucun argument n'est fourni
@@ -11,14 +11,49 @@ export async function fetchPopularAnimes(period: "day" | "week" | "month" | "yea
     const res = await fetch(`https://api.jikan.moe/v4/anime?order_by=popularity&sort=desc&limit=20${periodUrl}`, { next: { revalidate: 3600 }, cache: "force-cache" });
     if (!res.ok) throw new Error("Erreur lors du fetch des animés");
     const data = await res.json();
-    // Ajoute un prix à chaque anime (prix mémorisé par mal_id)
-    const animesWithPrice = data.data.map((anime: any) => ({
+    // Ajoute un prix à chaque anime et si l'anime avait déjà un prix, on garde le prix mémorisé dans animePrice
+    return data.data.map((anime: any) => ({
       ...anime,
       price: parseFloat(getAnimePrice(anime.mal_id).toFixed(2)),
     }));
-    return animesWithPrice;
   } catch (error) {
     console.error("Erreur lors de la récupération des animés :", error);
+    return null;
+  }
+}
+
+// Fonction pour rechercher des animés par recherche et période
+export async function fetchAnimesByQuery(query: string, period: "day" | "week" | "month" | "year" | "all" = "all") {
+  const periodUrl = getPeriodUrl(period);
+  try {
+    // Transforme la recherche pour la rendre compatible avec l'api
+    const queryUrl = encodeURIComponent(query);
+    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${queryUrl}&order_by=popularity&sort=desc&limit=20${periodUrl}`, { next: { revalidate: 3600 }, cache: "force-cache" });
+    if (!res.ok) throw new Error("Erreur lors du fetch par query");
+    const data = await res.json();
+    return data.data.map((anime: any) => ({
+      ...anime,
+      price: parseFloat(getAnimePrice(anime.mal_id).toFixed(2)),
+    }));
+  } catch (error) {
+    console.error("Erreur lors de la recherche d'animes :", error);
+    return null;
+  }
+}
+
+// Fonction pour récupérer les nouveautés selon la période
+export async function fetchNewAnimes(period: "day" | "week" | "month" | "year" | "all" = "all") {
+  const periodUrl = getPeriodUrl(period);
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime?order_by=start_date&sort=desc&limit=20${periodUrl}`, { next: { revalidate: 3600 }, cache: "force-cache" });
+    if (!res.ok) throw new Error("Erreur lors du fetch des nouveautés");
+    const data = await res.json();
+    return data.data.map((anime: any) => ({
+      ...anime,
+      price: parseFloat(getAnimePrice(anime.mal_id).toFixed(2)),
+    }));
+  } catch (error) {
+    console.error("Erreur lors de la récupération des nouveautés :", error);
     return null;
   }
 }
