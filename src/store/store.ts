@@ -1,4 +1,4 @@
-import { genreReducer } from "@/features/animeGenreSlice";
+import { genreReducer } from "@/features/genreSlice";
 import { userReducer } from "@/features/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 // import pour typé les hooks obligatoire pour du typescript

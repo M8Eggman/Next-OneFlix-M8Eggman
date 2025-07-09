@@ -7,7 +7,8 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
   return (
     <div className="CardHome">
       <div className="CardHome__image">
-        <img src={anime.images.webp.image_url} alt={anime.title} />
+        <img src={anime.images.webp.large_image_url} alt={anime.title} />
+        <p>{anime.price}</p>
       </div>
     </div>
   )

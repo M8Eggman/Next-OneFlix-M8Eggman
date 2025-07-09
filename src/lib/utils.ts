@@ -55,3 +55,15 @@ export function getUniqueAnimes(animes: TypeAnime[] | null): TypeAnime[] {
   }
   return animesUnique;
 }
+
+// Fonction qui filtre les animés pour ne garder que ceux qui ont une image
+export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
+  if (!anime) return [];
+  const animeImage: TypeAnime[] = [];
+  for (let i = 0; i < anime.length; i++) {
+    if (anime[i].images.webp.image_url !== "https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png") {
+      animeImage.push(anime[i]);
+    }
+  }
+  return animeImage;
+}

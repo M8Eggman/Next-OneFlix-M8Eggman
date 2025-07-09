@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 // import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { fetchGenres } from "@/features/animeGenreSlice";
+import { fetchGenres } from "@/features/genreSlice";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation

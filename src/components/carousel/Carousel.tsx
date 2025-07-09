@@ -10,7 +10,7 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
 
   const handleRetry = async () => {
     setLoading(true);
-    const res = await fetchAnimes({ period: "year", limit: 6, orderBy: "popularity", sort: "asc", status: "complete" });
+    const res = await fetchAnimes({ period: "year", limit: 6, orderBy: "popularity", sort: "asc", status: "complete", promotion: true });
     setAnimes(res || null);
     setLoading(false);
   };
@@ -26,5 +26,15 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
     );
   }
 
-  return <div>Carousel avec {animes?.slice(0, 6).length} animés</div>;
+  return (
+    <div className="carousel">
+      {animes.map((anime) => (
+        <div key={anime.mal_id}>
+          <img src={anime.images.webp.large_image_url} alt="" />
+          <p>{anime.price}</p>
+          {anime.promotion && <p>{Math.round(anime.promotion * 100)}%</p>}
+        </div>
+      ))}
+    </div>
+  );
 }

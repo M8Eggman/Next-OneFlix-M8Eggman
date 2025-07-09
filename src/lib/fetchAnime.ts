@@ -1,5 +1,5 @@
+import { getAnimePrice, getAnimePromotion } from "./animePrice";
 import { getPeriodUrl } from "./utils";
-import { getAnimePrice } from "./animePrice";
 import { TypeAnime } from "@/types";
 
 // Typage de la période
@@ -11,10 +11,12 @@ export async function fetchAnimes({
   genreId,
   period = "all",
   orderBy = "popularity",
-  sort = "desc",
-  limit = 20,
+  sort = "asc",
+  limit = 16,
   safe = true,
   status = "airing",
+  page = 1,
+  promotion = false,
 }: {
   query?: string;
   genreId?: number;
@@ -24,6 +26,8 @@ export async function fetchAnimes({
   limit?: number;
   safe?: boolean;
   status?: string;
+  page?: number;
+  promotion?: boolean;
 }): Promise<TypeAnime[] | null> {
   // Récupère la période de l'url ou une chaîne vide si all est fourni
   const periodUrl = getPeriodUrl(period) ?? "";
@@ -35,8 +39,9 @@ export async function fetchAnimes({
   if (genreId !== undefined) url += `genres=${genreId}&`;
   if (safe) url += `sfw=${safe}&`;
   if (status) url += `status=${status}&`;
+  if (page) url += `page=${page}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  console.log(url); // Pour debug
+  // console.log(url); // Pour debug
 
   try {
     const res = await fetch(url, {
@@ -48,10 +53,12 @@ export async function fetchAnimes({
 
     return data.data.map((anime: any) => ({
       ...anime,
-      price: parseFloat(getAnimePrice(anime.mal_id).toFixed(2)),
+      price: getAnimePrice(anime.mal_id),
+      promotion: promotion ? getAnimePromotion(anime.mal_id) : null,
     }));
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
+
     return null;
   }
 }

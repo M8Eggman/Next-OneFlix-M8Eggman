@@ -6,7 +6,7 @@ import { TypeGenre } from "@/types";
 import Link from "next/link";
 import { FiGithub, FiLinkedin } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { fetchGenres } from "@/features/animeGenreSlice";
+import { fetchGenres } from "@/features/genreSlice";
 
 export default function Footer() {
   const dispatch = useAppDispatch();
