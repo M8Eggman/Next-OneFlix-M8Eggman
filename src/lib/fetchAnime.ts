@@ -1,7 +1,7 @@
 import { store } from "@/store/store";
 import { getPeriodUrl } from "./utils";
 import { TypeAnime } from "@/types";
-import { getAnimePrice, getAnimePromotion } from "@/features/animeSlice";
+import { getAnimePrice, getAnimePromotion } from "@/features/animesPricePromo";
 
 // Typage de la période
 type Period = "day" | "week" | "month" | "year" | "all";

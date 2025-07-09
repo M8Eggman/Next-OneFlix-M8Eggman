@@ -43,4 +43,4 @@ const genreSlice = createSlice({
   },
 });
 
-export const genreReducer = genreSlice.reducer;
+export default genreSlice.reducer;

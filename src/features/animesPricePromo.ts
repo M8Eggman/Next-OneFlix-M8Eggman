@@ -2,18 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Mémoire pour les prix et promotions des animés (clé = mal_id)
 
-interface PricePromo {
+interface AnimesPricePromo {
   priceByAnimeId: { [key: string]: number };
   promoByAnimeId: { [key: string]: number | null };
 }
 
-const initialState: PricePromo = {
+const initialState: AnimesPricePromo = {
   priceByAnimeId: {},
   promoByAnimeId: {},
 };
 
-const animePricePromoSlice = createSlice({
-  name: "anime",
+const animesPricePromoSlice = createSlice({
+  name: "animesPricePromo",
   initialState,
   reducers: {
     // Retourne toujours le même prix pour un anime donné si le prix était déjà généré
@@ -37,5 +37,5 @@ const animePricePromoSlice = createSlice({
   },
 });
 
-export const { getAnimePrice, getAnimePromotion } = animePricePromoSlice.actions;
-export const animesPricePromoReducer = animePricePromoSlice.reducer;
+export const { getAnimePrice, getAnimePromotion } = animesPricePromoSlice.actions;
+export default animesPricePromoSlice.reducer;
