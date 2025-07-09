@@ -1,3 +1,4 @@
+import { animesPricePromoReducer } from "@/features/animeSlice";
 import { genreReducer } from "@/features/genreSlice";
 import { userReducer } from "@/features/userSlice";
 import { configureStore } from "@reduxjs/toolkit";
@@ -6,6 +7,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
+    animesPricePromo: animesPricePromoReducer,
     genre: genreReducer,
     user: userReducer,
   },
