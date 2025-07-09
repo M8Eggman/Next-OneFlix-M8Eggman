@@ -1,3 +1,5 @@
+import { TypeAnime } from "@/types";
+
 // Fonction qui génère une partie de l'URL selon la période choisie
 export function getPeriodUrl(period: "day" | "week" | "month" | "year" | "all" = "all") {
   // Déclare la variable now et l'initialise à la date actuelle
@@ -39,4 +41,17 @@ export function getPeriodUrl(period: "day" | "week" | "month" | "year" | "all" =
       break;
   }
   return url;
+}
+
+// Fonction qui retourne un tableau d'animés sans les doublons
+export function getUniqueAnimes(animes: TypeAnime[] | null): TypeAnime[] {
+  if (!animes) return [];
+  const animesUnique: TypeAnime[] = [];
+  for (let i = 0; i < animes.length; i++) {
+    // Vérifie si un animé avec le même mal_id est déjà dans animesUnique
+    if (!animesUnique.some((a) => a.mal_id === animes[i].mal_id)) {
+      animesUnique.push(animes[i]);
+    }
+  }
+  return animesUnique;
 }

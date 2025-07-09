@@ -25,16 +25,19 @@ export async function fetchAnimes({
   safe?: boolean;
   status?: string;
 }): Promise<TypeAnime[] | null> {
+  // Récupère la période de l'url ou une chaîne vide si all est fourni
   const periodUrl = getPeriodUrl(period) ?? "";
 
-  // Construction de l'url avec les paramètres passés en argument
+  // Base de l'url
   let url = "https://api.jikan.moe/v4/anime?";
+  // Ajoute les paramètres passés en argument
   if (query) url += `q=${encodeURIComponent(query)}&`;
   if (genreId !== undefined) url += `genres=${genreId}&`;
   if (safe) url += `sfw=${safe}&`;
   if (status) url += `status=${status}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  console.log(url);
+  console.log(url); // Pour debug
+
   try {
     const res = await fetch(url, {
       next: { revalidate: 3600 },
