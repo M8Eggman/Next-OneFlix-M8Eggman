@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 // import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useAppDispatch } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
+import { TypeGenre } from "@/types";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
-export default function Nav() {
+export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; loading: boolean; error: string | null }) {
   // Récupère le chemin actuel de la page
   const pathname = usePathname();
   const router = useRouter();
@@ -23,15 +24,6 @@ export default function Nav() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
-
-  // Récupération des genres d'anime depuis redux
-  const { genres, loading, error } = useAppSelector((state) => state.genre);
-
-  useEffect(() => {
-    if (genres?.length <= 0 && !loading) {
-      dispatch(fetchGenres());
-    }
-  }, [dispatch, genres]);
 
   return (
     <nav className="navGlobal">

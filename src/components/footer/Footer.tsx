@@ -5,23 +5,15 @@ import { useEffect, useState } from "react";
 import { TypeGenre } from "@/types";
 import Link from "next/link";
 import { FiGithub, FiLinkedin } from "react-icons/fi";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useAppDispatch } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 
-export default function Footer() {
+export default function Footer({ genres, loading, error }: { genres: TypeGenre[]; loading: boolean; error: string | null }) {
   const dispatch = useAppDispatch();
 
   // State pour stocké les 3 genres avec le plus de d'anime
   const [topGenres, setTopGenres] = useState<TypeGenre[]>([]);
 
-  // Récupération des genres d'anime depuis redux
-  const { genres, loading, error } = useAppSelector((state) => state.genre);
-
-  useEffect(() => {
-    if (genres?.length === 0) {
-      dispatch(fetchGenres());
-    }
-  }, [dispatch, genres]);
   useEffect(() => {
     if (genres) {
       const sorted = [...genres].sort((a: TypeGenre, b: TypeGenre) => b.count - a.count).slice(0, 3);

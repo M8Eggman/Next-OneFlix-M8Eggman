@@ -67,3 +67,14 @@ export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
   }
   return animeImage;
 }
+
+// Fonction qui retourne un tableau d'animés avec les images filtrées et les doublons retirés
+export function getUIAnimes(animes: TypeAnime[] | null): TypeAnime[] | null {
+  if (!animes) return null;
+  return filterAnimeImage(getUniqueAnimes(animes));
+}
+
+// Fonction qui attend un certain temps
+export function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
