@@ -38,9 +38,8 @@ export default async function Home() {
 
   return (
     <>
-      <Suspense fallback={<p>Chargement du carousel...</p>}>
-        <Carousel initialAnimes={initialAnimesCarouselUI || null} />
-      </Suspense>
+      <Carousel initialAnimes={initialAnimesCarouselUI || null} />
+      {/* Suspense pour gérer le chargement des composants chargement ajouté manuellement pour pas overload le fetch de l'api */}
       <Suspense fallback={<p>Chargement des nouveautés...</p>}>
         <SectionAnimeNouveautes />
       </Suspense>

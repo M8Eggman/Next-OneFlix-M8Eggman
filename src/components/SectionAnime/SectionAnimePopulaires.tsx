@@ -4,8 +4,8 @@ import { getUIAnimes, wait } from "@/lib/utils";
 import { fetchAnimes } from "@/lib/fetchAnime";
 
 export default async function SectionAnimePopulaires() {
-  // Attend une seconde et demie avant de fetch
-  await wait(1500);
+  // Attend 1000ms avant de fetch
+  await wait(1000);
   // Récupère les 16 animés les plus populaires (status complete)
   const animes: TypeAnime[] | null = await fetchAnimes({ status: "complete" });
   const animesUI = getUIAnimes(animes);

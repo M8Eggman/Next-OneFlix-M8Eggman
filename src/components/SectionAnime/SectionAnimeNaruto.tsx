@@ -4,7 +4,7 @@ import { getUIAnimes, wait } from "@/lib/utils";
 import { fetchAnimes } from "@/lib/fetchAnime";
 
 export default async function SectionAnimeNaruto() {
-  // Attend deux seconde avant de fetch
+  // Attend 2000ms avant de fetch
   await wait(2000);
   // Récupère les 16 premiers animés naruto (status complete)
   const animes: TypeAnime[] | null = await fetchAnimes({ query: "naruto", status: "complete" });
