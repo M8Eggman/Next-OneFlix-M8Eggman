@@ -12,7 +12,7 @@ export const store = configureStore({
     genre: genreReducer,
     user: userReducer,
   },
-  preloadedState: loadState(),
+  // preloadedState: loadState(), provoque un bug de type
 });
 
 store.subscribe(() => {

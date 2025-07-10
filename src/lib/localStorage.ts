@@ -3,9 +3,9 @@ export function loadState() {
   // Si on est dans un environnement server, on ne fait rien
   if (typeof window === "undefined") return;
   try {
-    const serializedState = localStorage.getItem("reduxState");
-    if (!serializedState) return undefined;
-    return JSON.parse(serializedState);
+    const state = localStorage.getItem("reduxState");
+    if (!state) return undefined;
+    return JSON.parse(state);
   } catch (err) {
     return undefined;
   }
@@ -14,8 +14,7 @@ export function loadState() {
 export function saveState(state: any) {
   if (typeof window === "undefined") return;
   try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem("reduxState", serializedState);
+    localStorage.setItem("reduxState", JSON.stringify(state));
   } catch (err) {
     console.error("Erreur lors de la sauvegarde dans localStorage", err);
   }
