@@ -4,6 +4,11 @@ export interface TypeGenre {
   name: string;
   count: number;
 }
+export interface animePagination {
+  last_visible_page: number;
+  has_next_page: boolean;
+  current_page: number;
+}
 export interface TypeAnime {
   mal_id: number;
   url: string;
@@ -143,6 +148,10 @@ export interface TypeAnime {
   // Ajouté manuellement pour le prix final calculé en fonction de la promotion
   finalPrice: number;
 }
+export interface TypeAnimeWithPagination {
+  pagination: animePagination;
+  data: TypeAnime[];
+}
 // typage des périodes disponibles pour la recherche
 export type Period = "day" | "week" | "month" | "year" | "all";
 // typage des paramètres de la fonction fetchAnimes
@@ -157,11 +166,6 @@ export interface fetchAnimeParams {
   status?: string;
   page?: number;
   promotion?: boolean;
-}
-export interface animePagination {
-  last_visible_page: number;
-  has_next_page: boolean;
-  current_page: number;
 }
 // Type des initialState des slices
 export interface TypeUser {

@@ -1,6 +1,6 @@
 import "./Home.sass";
 import Carousel from "@/components/carousel/Carousel";
-import { TypeAnime } from "@/types";
+import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 import { fetchAnimes } from "@/lib/fetchAnime";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { filterAnimeImage, getUIAnimes, getUniqueAnimes } from "@/lib/utils";
@@ -23,11 +23,10 @@ import { Suspense } from "react";
 // }
 export default async function Home() {
   // Récupère les 6 animés les plus populaires de l'année pour le carousel
-  const initialAnimesCarousel: TypeAnime[] | null = await fetchAnimes({ period: "year", limit: 6, promotion: true })
+  const initialAnimesCarousel: TypeAnimeWithPagination | null = await fetchAnimes({ period: "year", limit: 6, promotion: true });
 
   // Retire les doublons et filtre les animés pour ne garder que ceux qui ont une image non par défaut (UI = unique + image filtré)
-  const initialAnimesCarouselUI = getUIAnimes(initialAnimesCarousel);
-
+  const initialAnimesCarouselUI = getUIAnimes(initialAnimesCarousel?.data || null);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { store } from "@/store/store";
 import { getPeriodUrl } from "./utils";
-import { fetchAnimeParams, Period, TypeAnime } from "@/types";
+import { fetchAnimeParams, TypeAnimeWithPagination } from "@/types";
 import { getAnimePrice, getAnimePromotion } from "@/features/animesPricePromo";
 
 // Fonction pour récupérer des animés par query, genre, période, ordre, tri, limite et sfw
@@ -15,7 +15,7 @@ export async function fetchAnimes({
   status = "complete",
   page = 1,
   promotion = false,
-}: fetchAnimeParams): Promise<TypeAnime[] | null> {
+}: fetchAnimeParams): Promise<TypeAnimeWithPagination | null> {
   // Récupère la période de l'url ou une chaîne vide si all est fourni
   const periodUrl = getPeriodUrl(period) ?? "";
 
@@ -28,7 +28,7 @@ export async function fetchAnimes({
   if (status) url += `status=${status}&`;
   if (page) url += `page=${page}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  // console.log(url); // Pour debug
+  console.log(url); // Pour debug
 
   try {
     const res = await fetch(url, {
@@ -38,30 +38,32 @@ export async function fetchAnimes({
     if (!res.ok) throw new Error(`Erreur fetchAnimes: ${res.status}`);
     const data = await res.json();
 
-    return data.data.map((anime: any) => {
-      const id = anime.mal_id.toString();
+    return {
+      pagination: data.pagination,
+      data: data.data.map((anime: any) => {
+        const id = anime.mal_id.toString();
 
-      // Récupère le prix et la promotion de l'anime ou crée un prix et une promotion aléatoire si l'anime n'a pas déjà un prix ou une promotion
-      store.dispatch(getAnimePrice(id));
-      store.dispatch(getAnimePromotion({ id, probability: promotion ? 1 : 0.1 }));
+        // Récupère le prix et la promotion de l'anime ou crée un prix et une promotion aléatoire si l'anime n'a pas déjà un prix ou une promotion
+        store.dispatch(getAnimePrice(id));
+        store.dispatch(getAnimePromotion({ id, probability: promotion ? 1 : 0.1 }));
 
-      // Récupère le prix de l'anime
-      const price = store.getState().animesPricePromo.priceByAnimeId[id];
-      // Récupère la promotion de l'anime
-      const promo = store.getState().animesPricePromo.promoByAnimeId[id];
-      // Calcule le prix final de l'anime en appliquant la promotion si promo existe
-      const finalPrice = promo ? Math.round(price * (1 - promo) * 100) / 100 : price;
+        // Récupère le prix de l'anime
+        const price = store.getState().animesPricePromo.priceByAnimeId[id];
+        // Récupère la promotion de l'anime
+        const promo = store.getState().animesPricePromo.promoByAnimeId[id];
+        // Calcule le prix final de l'anime en appliquant la promotion si promo existe
+        const finalPrice = promo ? Math.round(price * (1 - promo) * 100) / 100 : price;
 
-      return {
-        ...anime,
-        price: price,
-        promotion: promo,
-        finalPrice: finalPrice,
-      };
-    });
+        return {
+          ...anime,
+          price: price,
+          promotion: promo,
+          finalPrice: finalPrice,
+        };
+      }),
+    };
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
-
     return null;
   }
 }

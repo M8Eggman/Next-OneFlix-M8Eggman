@@ -1,4 +1,4 @@
-import { TypeAnime } from "@/types";
+import { TypeAnimeWithPagination } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { getUIAnimes, wait } from "@/lib/utils";
 import { fetchAnimes } from "@/lib/fetchAnime";
@@ -7,8 +7,8 @@ export default async function SectionAnimePopulaires() {
   // Attend 1000ms avant de fetch
   await wait(1000);
   // Récupère les 16 animés les plus populaires (status complete)
-  const animes: TypeAnime[] | null = await fetchAnimes({});
-  const animesUI = getUIAnimes(animes);
+  const animes: TypeAnimeWithPagination | null = await fetchAnimes({});
+  const animesUI = getUIAnimes(animes?.data || null);
 
   return (
     <section className="sectionAnimes">
