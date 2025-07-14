@@ -43,8 +43,6 @@ const userSlice = createSlice({
           (user.username?.toLowerCase() === action.payload.username?.toLowerCase() || user.email?.toLowerCase() === action.payload.email?.toLowerCase()) &&
           user.password === action.payload.password
       );
-      console.log(action.payload);
-      console.log(userExists);
       // Si l'utilisateur existe, on connecte l'utilisateur
       if (userExists) {
         state.isAuthenticated = true;
@@ -52,11 +50,25 @@ const userSlice = createSlice({
         state.image = userExists.image;
         state.password = userExists.password;
         state.email = userExists.email;
+        state.error = { register: null, login: null };
       }
       // Si l'utilisateur n'existe pas, on affiche un message d'erreur
       else {
         state.error.login = "Nom d'utilisateur ou adresse e-mail incorrect";
       }
+    },
+    loginWithOAuth: (state, action: PayloadAction<Partial<TypeUser>>) => {
+      const userExists = state.users.find(
+        (user) => user.username?.toLowerCase() === action.payload.username?.toLowerCase() || user.email?.toLowerCase() === action.payload.email?.toLowerCase()
+      );
+      if (!userExists) {
+        state.users.push({ ...initialState, ...action.payload });
+      }
+      state.isAuthenticated = true;
+      state.username = action.payload.username || "";
+      state.image = action.payload.image || "";
+      state.password = action.payload.password || "";
+      state.email = action.payload.email || "";
     },
     register: (state, action: PayloadAction<Partial<TypeUser>>) => {
       const userExists = state.users.find(
@@ -64,13 +76,14 @@ const userSlice = createSlice({
       );
       if (userExists) {
         state.error.register = "Nom d'utilisateur ou adresse e-mail déjà utilisée";
-        state.isAuthenticated = true;
-        state.username = userExists.username;
-        state.image = userExists.image;
-        state.password = userExists.password;
-        state.email = userExists.email;
       } else {
         state.users.push({ ...initialState, ...action.payload });
+        state.isAuthenticated = true;
+        state.username = action.payload.username || "";
+        state.image = action.payload.image || "";
+        state.password = action.payload.password || "";
+        state.email = action.payload.email || "";
+        state.error = { register: null, login: null };
       }
     },
     logout: (state) => {
@@ -82,5 +95,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { register, login, logout, resetError } = userSlice.actions;
+export const { register, login, loginWithOAuth, logout, resetError } = userSlice.actions;
 export default userSlice.reducer;

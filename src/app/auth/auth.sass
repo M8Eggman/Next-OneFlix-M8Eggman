@@ -1,111 +1,132 @@
-.inscriptionContainer
+.authSection
     display: flex
     flex-direction: column
     align-items: center
     justify-content: center
     color: $color-light
-    padding: 1rem
-    .inscriptionForm
-        background-color: $color-dark
-        padding: 2rem
-        border-radius: 15px
+    .authContainer
+        margin-top: 2rem
         width: 100%
         max-width: 450px
-        .inscriptionTitle
-            font-size: 1.8rem
-            font-weight: 600
-            margin-bottom: 1.5rem
-            text-align: center
-            color: $color-white
-        .inscriptionLabel
-            display: block
-            font-size: 0.9rem
-            margin-bottom: 0.4rem
-        .inscriptionInputGroup
-            position: relative
-            margin-bottom: 1.5rem
-            .inscriptionInput
-                width: 100%
-                padding: 1.25rem 0.75rem 0.75rem 0.5rem
-                border-radius: 0.5rem
-                background-color: $color-dark-medium
-                color: $color-white
-                border: 1px solid $color-dark-deep
-                outline: none
-                font-size: 1rem
-            .inscriptionInput:focus
-                border-color: $color-accent
-            // Si l'input n'est pas vide, on cache le label
-            .inscriptionInput:not(:placeholder-shown) + .inscriptionLabel
-                opacity: 0
-            // Si l'input n'est pas vide, on affiche le label
-            .inscriptionInput:focus + .inscriptionLabel,
-            .inscriptionInput:not(:placeholder-shown) + .inscriptionLabel
-                top: 0.4rem
-                left: 0.75rem
-                font-size: 0.75rem
-                color: $color-accent
-                opacity: 1
-            .inscriptionInput::placeholder
-                opacity: 0
-                transition: opacity 0.2s ease
-            .inscriptionInput:focus::placeholder
-                opacity: 1
-            .inscriptionLabel
-                position: absolute
-                left: 0.75rem
-                top: 1rem
-                font-size: 1rem
-                color: $color-light-grey
-                pointer-events: none
-                transition: all 0.2s ease
-                opacity: 0.7
-        .inscriptionInfo
-            font-size: 0.75rem
-            color: $color-light-grey
-            margin-bottom: 1.5rem
-        .inscriptionCheckboxContainer
-            display: flex
-            align-items: center
-            margin-bottom: 1.5rem
-        .inscriptionCheckbox
-            accent-color: $color-accent
-            margin-right: 0.5rem
-        .inscriptionCheckboxLabel
-            font-size: 0.85rem
-        .inscriptionError
-            color: #8A89C0
-            border-radius: 6px
-            margin: 1rem 0
-            font-weight: 500
-            animation: shake 0.4s
-        .inscriptionButton
+        background-color: $color-dark
+        border-radius: 15px
+        display: flex
+        padding: 2rem
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        .authForm
+            padding: 2rem 0
             width: 100%
-            background-color: $color-accent
-            color: $color-dark
-            font-weight: bold
-            padding: 0.75rem
-            border-radius: 9999px
-            cursor: pointer
-            transition: filter 0.3s ease
-            border: none
-        .inscriptionButton:hover
-            filter: brightness(1.1)
-    .inscriptionLoginContainer
-        margin-top: 1.5rem
-        max-width: 400px
-        width: 100%
-        text-align: center
-        .inscriptionLogin
-            font-size: 0.8rem
-            margin-bottom: 0.8rem
-        .inscriptionLink
-            color: $color-accent
-            font-weight: 600
-            text-decoration: none
-        .inscriptionLink:hover
-            text-decoration: underline
-        .inscriptionTerms
-            font-size: 0.7rem
-            color: $color-light-grey
-            line-height: 1.4
+            max-width: 450px
+            .authTitle
+                font-size: 1.8rem
+                font-weight: 600
+                margin-bottom: 1.5rem
+                text-align: center
+                color: $color-white
+            .authLabel
+                display: block
+                font-size: 0.9rem
+                margin-bottom: 0.4rem
+            .authInputGroup
+                position: relative
+                margin-bottom: 1.5rem
+                .authInput
+                    width: 100%
+                    padding: 1.25rem 0.75rem 0.75rem 0.5rem
+                    border-radius: 0.5rem
+                    background-color: $color-dark-medium
+                    color: $color-white
+                    border: 1px solid $color-dark-deep
+                    outline: none
+                    font-size: 1rem
+                .authInput:focus
+                    border-color: $color-accent
+                // Si l'input n'est pas vide, on cache le label
+                .authInput:not(:placeholder-shown) + .authLabel
+                    opacity: 0
+                // Si l'input n'est pas vide, on affiche le label
+                .authInput:focus + .authLabel,
+                .authInput:not(:placeholder-shown) + .authLabel
+                    top: 0.4rem
+                    left: 0.75rem
+                    font-size: 0.75rem
+                    color: $color-accent
+                    opacity: 1
+                .authInput::placeholder
+                    opacity: 0
+                    transition: opacity 0.2s ease
+                .authInput:focus::placeholder
+                    opacity: 1
+                .authLabel
+                    position: absolute
+                    left: 0.75rem
+                    top: 1rem
+                    font-size: 1rem
+                    color: $color-light-grey
+                    pointer-events: none
+                    transition: all 0.2s ease
+                    opacity: 0.7
+            .authInfo
+                font-size: 0.75rem
+                color: $color-light-grey
+                margin-bottom: 1.5rem
+            .authCheckboxContainer
+                display: flex
+                align-items: center
+                margin-bottom: 1.5rem
+            .authCheckbox
+                accent-color: $color-accent
+                font-size: 0.85rem
+            .authError
+                color: #8A89C0
+                border-radius: 6px
+                margin: 1rem 0
+                font-weight: 500
+                animation: shake 0.4s
+            .authButton
+                width: 100%
+                background-color: $color-accent
+                color: $color-dark
+                font-weight: bold
+                padding: 0.75rem
+                border-radius: 9999px
+                cursor: pointer
+                transition: filter 0.3s ease
+                border: none
+            .authButton:hover
+                filter: brightness(1.1)
+        .authOAuth
+            width: 100%
+            .authOAuthTitle
+                font-size: 1.2rem
+                font-weight: 500
+                margin-bottom: 1.5rem
+            .authOAuthContainer
+                .authGithub
+                    width: 33%
+                    border-radius: 10px
+                    align-items: center
+                    justify-content: center
+                    overflow: hidden
+                    .GithubLogo
+                        background-color: $color-white
+        .authLoginContainer
+            margin-top: 1.5rem
+            max-width: 400px
+            width: 100%
+            text-align: center
+            .authLogin
+                font-size: 0.8rem
+                margin-bottom: 0.8rem
+            .authLink
+                color: $color-accent
+                font-weight: 600
+                text-decoration: none
+            .authLink:hover
+                text-decoration: underline
+            .authTerms
+                font-size: 0.7rem
+                color: $color-light-grey
+                line-height: 1.4

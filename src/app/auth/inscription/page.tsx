@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { register, resetError } from "@/features/userSlice";
 import NotFound from "@/app/not-found";
 import { useRouter } from "next/navigation";
+import GithubLogo from "@/assets/img/GitHub-Logo.png";
+import { signIn } from "next-auth/react";
 
 export default function Inscription() {
   const user = useAppSelector((state) => state.user);
@@ -36,90 +38,98 @@ export default function Inscription() {
   }
 
   return (
-    <div className="inscriptionContainer">
-      <form className="inscriptionForm" onSubmit={handleSubmit}>
-        <h1 className="inscriptionTitle">Créer un compte</h1>
-        <div className="inscriptionInputGroup">
-          <input
-            type="text"
-            id="username"
-            className="inscriptionInput"
-            required
-            autoComplete="username"
-            placeholder="Nom d'utilisateur"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <label htmlFor="username" className="inscriptionLabel">
-            Nom d'utilisateur
-          </label>
+    <section className="authSection">
+      <div className="authContainer">
+        <form className="authForm" onSubmit={handleSubmit}>
+          <h1 className="authTitle">Créer un compte</h1>
+          <div className="authInputGroup">
+            <input
+              type="text"
+              id="username"
+              className="authInput"
+              required
+              autoComplete="username"
+              placeholder="Nom d'utilisateur"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <label htmlFor="username" className="authLabel">
+              Nom d'utilisateur
+            </label>
+          </div>
+          <div className="authInputGroup">
+            <input
+              type="email"
+              id="email"
+              className="authInput"
+              required
+              autoComplete="email"
+              placeholder="Adresse e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label htmlFor="email" className="authLabel">
+              Adresse e-mail
+            </label>
+          </div>
+          <div className="authInputGroup">
+            <input
+              type="password"
+              id="password"
+              className="authInput"
+              minLength={6}
+              autoComplete="password"
+              required
+              placeholder="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label htmlFor="password" className="authLabel">
+              Mot de passe
+            </label>
+          </div>
+          <p className="authInfo">Utilisez au moins 6 caractères. N'utilisez pas d'espaces vides.</p>
+          <div className="authCheckboxContainer">
+            <input type="checkbox" id="newsletter" className="authCheckbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
+            <label htmlFor="newsletter" className="authCheckboxLabel">
+              Envoyez-moi infos, offres et actus OneFlix.
+            </label>
+          </div>
+          {user.error?.register && <div className="authError">{user.error?.register}</div>}
+          <button type="submit" className="authButton">
+            CRÉER UN COMPTE
+          </button>
+        </form>
+        <div className="authOAuth">
+          <h2 className="authOAuthTitle">Ou créez un compte avec :</h2>
+          <button className="authGithub cursor-pointer" onClick={() => signIn("github", { callbackUrl: "/" })}>
+            <img src={GithubLogo.src} alt="GitHub Logo" className="GithubLogo" />
+          </button>
         </div>
-        <div className="inscriptionInputGroup">
-          <input
-            type="email"
-            id="email"
-            className="inscriptionInput"
-            required
-            autoComplete="email"
-            placeholder="Adresse e-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label htmlFor="email" className="inscriptionLabel">
-            Adresse e-mail
-          </label>
+        <div className="authLoginContainer">
+          <p className="authLogin">
+            Vous avez déjà un compte ? &nbsp;
+            <Link href="/auth/connexion" className="authLink">
+              SE CONNECTER
+            </Link>
+          </p>
+          <p className="authTerms">
+            En créant un compte, vous acceptez nos &nbsp;
+            <a href="" className="authLink">
+              {" "}
+              {/* faux lien */}
+              Conditions d'utilisation
+            </a>
+            &nbsp;et notre &nbsp;
+            <a href="" className="authLink">
+              {" "}
+              {/* faux lien */}
+              Politique de confidentialité
+            </a>
+            , et vous confirmez avoir au moins 16 ans.
+          </p>
         </div>
-        <div className="inscriptionInputGroup">
-          <input
-            type="password"
-            id="password"
-            className="inscriptionInput"
-            minLength={6}
-            autoComplete="password"
-            required
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label htmlFor="password" className="inscriptionLabel">
-            Mot de passe
-          </label>
-        </div>
-        <p className="inscriptionInfo">Utilisez au moins 6 caractères. N'utilisez pas d'espaces vides.</p>
-        <div className="inscriptionCheckboxContainer">
-          <input type="checkbox" id="newsletter" className="inscriptionCheckbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)} />
-          <label htmlFor="newsletter" className="inscriptionCheckboxLabel">
-            Envoyez-moi infos, offres et actus OneFlix.
-          </label>
-        </div>
-        {user.error?.register && <div className="inscriptionError">{user.error?.register}</div>}
-        <button type="submit" className="inscriptionButton">
-          CRÉER UN COMPTE
-        </button>
-      </form>
-      <div className="inscriptionLoginContainer">
-        <p className="inscriptionLogin">
-          Vous avez déjà un compte ? &nbsp;
-          <Link href="/auth/connexion" className="inscriptionLink">
-            SE CONNECTER
-          </Link>
-        </p>
-        <p className="inscriptionTerms">
-          En créant un compte, vous acceptez nos &nbsp;
-          <a href="" className="inscriptionLink">
-            {" "}
-            {/* faux lien */}
-            Conditions d'utilisation
-          </a>
-          &nbsp;et notre &nbsp;
-          <a href="" className="inscriptionLink">
-            {" "}
-            {/* faux lien */}
-            Politique de confidentialité
-          </a>
-          , et vous confirmez avoir au moins 16 ans.
-        </p>
       </div>
-    </div>
+    </section>
   );
 }

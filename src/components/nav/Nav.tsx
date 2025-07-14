@@ -10,6 +10,7 @@ import { useAppDispatch } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 import { TypeGenre } from "@/types";
 import { logout } from "@/features/userSlice";
+import { signOut } from "next-auth/react";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
@@ -145,10 +146,14 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                   <Link href="/mon-compte">Mon Compte</Link>
                 </li>
               </ul>
-              <button onClick={() => {
-                dispatch(logout());
-                router.push("/");
-              }}>Déconnexion</button>
+              <button
+                onClick={() => {
+                  signOut();
+                  dispatch(logout());
+                  router.push("/");
+                }}>
+                Déconnexion
+              </button>
             </div>
           )}
         </div>
