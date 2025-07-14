@@ -15,8 +15,8 @@
         flex-direction: column
         align-items: center
         justify-content: center
+        gap: 1.5rem
         .authForm
-            padding: 2rem 0
             width: 100%
             max-width: 450px
             .authTitle
@@ -104,16 +104,25 @@
                 font-weight: 500
                 margin-bottom: 1.5rem
             .authOAuthContainer
-                .authGithub
-                    width: 33%
+                display: flex
+                align-items: center
+                gap: 1rem
+                .authGithub,
+                .authGoogle
+                    width: 25%
+                    aspect-ratio: 1.618
                     border-radius: 10px
+                    display: flex
                     align-items: center
                     justify-content: center
                     overflow: hidden
-                    .GithubLogo
-                        background-color: $color-white
+                    background-color: $color-white
+                    .GithubLogo,
+                    .GoogleLogo
+                        height: 90%
+                        object-fit: contain
+
         .authLoginContainer
-            margin-top: 1.5rem
             max-width: 400px
             width: 100%
             text-align: center

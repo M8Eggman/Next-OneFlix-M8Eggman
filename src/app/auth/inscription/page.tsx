@@ -2,13 +2,15 @@
 
 import "../auth.sass";
 import Link from "next/link";
+import NotFound from "@/app/not-found";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 import { register, resetError } from "@/features/userSlice";
-import NotFound from "@/app/not-found";
 import { useRouter } from "next/navigation";
-import GithubLogo from "@/assets/img/GitHub-Logo.png";
 import { signIn } from "next-auth/react";
+// import des logos
+import GithubLogo from "@/assets/img/GitHub-Logo.png";
+import GoogleLogo from "@/assets/img/Google__G__logo.svg";
 
 export default function Inscription() {
   const user = useAppSelector((state) => state.user);
@@ -32,7 +34,7 @@ export default function Inscription() {
     router.push("/");
   };
 
-  // Si l'utilisateur est connecté, on redirige vers la page d'accueil et on affiche un message d'erreur
+  // Si l'utilisateur est connecté, on affiche la page 404 comme si la page connexion n'existait plus
   if (user.isAuthenticated) {
     return <NotFound />;
   }
@@ -105,6 +107,9 @@ export default function Inscription() {
           <div className="authOAuthContainer">
             <button className="authGithub cursor-pointer" onClick={() => signIn("github", { callbackUrl: "/" })}>
               <img src={GithubLogo.src} alt="GitHub Logo" className="GithubLogo" />
+            </button>
+            <button className="authGoogle cursor-pointer" onClick={() => signIn("google", { callbackUrl: "/" })}>
+              <img src={GoogleLogo.src} alt="Google Logo" className="GoogleLogo" />
             </button>
           </div>
         </div>

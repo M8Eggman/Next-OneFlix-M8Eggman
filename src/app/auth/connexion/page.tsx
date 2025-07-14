@@ -2,13 +2,15 @@
 
 import "../auth.sass";
 import Link from "next/link";
+import NotFound from "@/app/not-found";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { login, loginWithOAuth, resetError } from "@/features/userSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import NotFound from "@/app/not-found";
 import { signIn, useSession } from "next-auth/react";
+// import des logos
 import GithubLogo from "@/assets/img/GitHub-Logo.png";
+import GoogleLogo from "@/assets/img/Google__G__logo.svg";
 
 export default function Connexion() {
   const user = useAppSelector((state) => state.user);
@@ -96,6 +98,9 @@ export default function Connexion() {
           <div className="authOAuthContainer">
             <button className="authGithub cursor-pointer" onClick={() => signIn("github", { callbackUrl: "/" })}>
               <img src={GithubLogo.src} alt="GitHub Logo" className="GithubLogo" />
+            </button>
+            <button className="authGoogle cursor-pointer" onClick={() => signIn("google", { callbackUrl: "/" })}>
+              <img src={GoogleLogo.src} alt="Google Logo" className="GoogleLogo" />
             </button>
           </div>
         </div>
