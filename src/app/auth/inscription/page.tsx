@@ -6,10 +6,11 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 import { register, resetError } from "@/features/userSlice";
 import NotFound from "@/app/not-found";
+import { useRouter } from "next/navigation";
 
 export default function Inscription() {
   const user = useAppSelector((state) => state.user);
-
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   // States
@@ -26,6 +27,7 @@ export default function Inscription() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(register({ username, email, password, sendNewsletter: newsletter }));
+    router.push("/");
   };
 
   // Si l'utilisateur est connecté, on redirige vers la page d'accueil et on affiche un message d'erreur

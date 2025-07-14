@@ -64,6 +64,11 @@ const userSlice = createSlice({
       );
       if (userExists) {
         state.error.register = "Nom d'utilisateur ou adresse e-mail déjà utilisée";
+        state.isAuthenticated = true;
+        state.username = userExists.username;
+        state.image = userExists.image;
+        state.password = userExists.password;
+        state.email = userExists.email;
       } else {
         state.users.push({ ...initialState, ...action.payload });
       }
