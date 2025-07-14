@@ -26,7 +26,9 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
       <div className="footerContainer">
         <div className="footerLogo">
           <h3>
-            One<span>Flix</span>
+            <Link href="/">
+              One<span>Flix</span>
+            </Link>
           </h3>
         </div>
         <div className="footerNavigationLinks">
@@ -61,6 +63,7 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
           </ul>
         </div>
         <div className="footerSocialNetworks">
+          <h3>Suivez-nous</h3>
           <a href="https://github.com/M8Eggman">
             <FiGithub size={24} />
           </a>

@@ -1,10 +1,109 @@
 footer
-    background-image: linear-gradient(to bottom, $color-dark-deep 25%, mix($color-dark-deep, $color-accent, 75%))
+    background: linear-gradient(to bottom, $color-dark-deep 25%, mix($color-dark-deep, $color-accent, 75%))
     color: $color-light
+    padding: 2.5rem 0 0 0
+    .footerContainer
+        display: flex
+        flex-wrap: wrap
+        justify-content: space-between
+        align-items: flex-start
+        max-width: 1200px
+        margin: 0 auto
+        padding: 0 2rem 2rem 2rem
+        gap: 2.5rem
+    .footerLogo
+        flex: 1 1 180px
+        h3
+            font-size: 2rem
+            font-weight: 600
+            span
+                color: $color-accent
+    .footerNavigationLinks
+        flex: 1 1 180px
+        h3
+            font-size: 1.3rem
+            margin-bottom: 0.7rem
+            font-weight: 500
+            color: $color-accent
+        ul
+            list-style: none
+            padding: 0
+            margin: 0
+            li
+                margin-bottom: 0.5rem
+                a, button
+                    text-decoration: none
+                    font-size: 1rem
+                    background: none
+                    border: none
+                    cursor: pointer
+                    transition: color 0.2s
+                a:hover, button:hover
+                    color: $color-accent
+                .footerCategoryError
+                    color: $color-error
+                .footerCategoryLoading
+                    color: $color-light-grey
+    .footerSocialNetworks
+        flex: 1 1 120px
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        gap: 0.7rem
+        h3
+            font-size: 1.3rem
+            font-weight: 500
+            color: $color-accent
+            margin-bottom: 0.5rem
+        a
+            transition: color 0.2s
+        a:hover
+            color: $color-accent
+    .footerNewsLetter
+        flex: 2 1 260px
+        background: rgba(255,255,255,0.03)
+        border-radius: 10px
+        padding: 1.2rem 1rem
+        h3
+            font-size: 1.3rem
+            font-weight: 500
+            color: $color-accent
+            margin-bottom: 0.5rem
+        p
+            font-size: 1rem
+            color: $color-light-grey
+            margin-bottom: 0.7rem
+        .footerNewsLetterForm
+            display: flex
+            gap: 0.5rem
+            input[type="email"]
+                flex: 1
+                padding: 0.5rem 0.8rem
+                border-radius: 5px
+                border: 1px solid $color-dark-medium
+                background: $color-dark-medium
+                color: $color-light
+                font-size: 1rem
+                outline: none
+                transition: border-color 0.2s
+            input[type="email"]:focus
+                border-color: $color-accent
+            button
+                background: $color-accent
+                color: $color-dark
+                border: none
+                border-radius: 5px
+                padding: 0.5rem 1.1rem
+                font-weight: 600
+                cursor: pointer
+                transition: filter 0.2s
+            button:hover
+                filter: brightness(1.1)
     .footerCopyright
-        padding: 1rem
-        font-size: 0.8rem
+        padding: 1.2rem 2rem 1.5rem 2rem
         color: $color-light-grey
         text-align: center
-    p
-        margin: 0.2rem 0
+        border-top: 1px solid rgba(255,255,255,0.08)
+        p
+            font-size: 0.85rem
+            margin: 0.2rem 0
