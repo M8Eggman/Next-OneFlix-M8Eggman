@@ -1,10 +1,7 @@
 import { store } from "@/store/store";
 import { getPeriodUrl } from "./utils";
-import { TypeAnime } from "@/types";
+import { fetchAnimeParams, Period, TypeAnime } from "@/types";
 import { getAnimePrice, getAnimePromotion } from "@/features/animesPricePromo";
-
-// Typage de la période
-type Period = "day" | "week" | "month" | "year" | "all";
 
 // Fonction pour récupérer des animés par query, genre, période, ordre, tri, limite et sfw
 export async function fetchAnimes({
@@ -15,21 +12,10 @@ export async function fetchAnimes({
   sort = "asc",
   limit = 16,
   safe = true,
-  status = "airing",
+  status = "complete",
   page = 1,
   promotion = false,
-}: {
-  query?: string;
-  genreId?: number;
-  period?: Period;
-  orderBy?: string;
-  sort?: "asc" | "desc";
-  limit?: number;
-  safe?: boolean;
-  status?: string;
-  page?: number;
-  promotion?: boolean;
-}): Promise<TypeAnime[] | null> {
+}: fetchAnimeParams): Promise<TypeAnime[] | null> {
   // Récupère la période de l'url ou une chaîne vide si all est fourni
   const periodUrl = getPeriodUrl(period) ?? "";
 

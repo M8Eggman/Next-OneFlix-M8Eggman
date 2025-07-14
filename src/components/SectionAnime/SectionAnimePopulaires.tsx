@@ -7,7 +7,7 @@ export default async function SectionAnimePopulaires() {
   // Attend 1000ms avant de fetch
   await wait(1000);
   // Récupère les 16 animés les plus populaires (status complete)
-  const animes: TypeAnime[] | null = await fetchAnimes({ status: "complete" });
+  const animes: TypeAnime[] | null = await fetchAnimes({});
   const animesUI = getUIAnimes(animes);
 
   return (

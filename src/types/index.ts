@@ -143,7 +143,21 @@ export interface TypeAnime {
   // Ajouté manuellement pour le prix final calculé en fonction de la promotion
   finalPrice: number;
 }
-
+// typage des périodes disponibles pour la recherche
+export type Period = "day" | "week" | "month" | "year" | "all";
+// typage des paramètres de la fonction fetchAnimes
+export interface fetchAnimeParams {
+  query?: string;
+  genreId?: number;
+  period?: Period;
+  orderBy?: string;
+  sort?: "asc" | "desc";
+  limit?: number;
+  safe?: boolean;
+  status?: string;
+  page?: number;
+  promotion?: boolean;
+}
 export interface animePagination {
   last_visible_page: number;
   has_next_page: boolean;

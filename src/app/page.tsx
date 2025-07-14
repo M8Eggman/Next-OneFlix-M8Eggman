@@ -17,13 +17,13 @@ import { Suspense } from "react";
 //   sort = "asc",
 //   limit = 16,
 //   safe = true,
-//   status = "airing",
+//   status = "complete",
 //   page = 1,
 //   promotion = false,
 // }
 export default async function Home() {
   // Récupère les 6 animés les plus populaires de l'année pour le carousel
-  const initialAnimesCarousel: TypeAnime[] | null = await fetchAnimes({ period: "year", limit: 6, status: "complete", promotion: true })
+  const initialAnimesCarousel: TypeAnime[] | null = await fetchAnimes({ period: "year", limit: 6, promotion: true })
 
   // Retire les doublons et filtre les animés pour ne garder que ceux qui ont une image non par défaut (UI = unique + image filtré)
   const initialAnimesCarouselUI = getUIAnimes(initialAnimesCarousel);
