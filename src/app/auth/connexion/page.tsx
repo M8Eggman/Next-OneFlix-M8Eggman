@@ -46,13 +46,9 @@ export default function Connexion() {
   };
 
   // Si l'utilisateur est connecté, on redirige vers la page d'accueil
-  // if (user.isAuthenticated) {
-  //   return <NotFound />;
-  // }
-
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  if (user.isAuthenticated) {
+    return <NotFound />;
+  }
 
   return (
     <section className="authSection">

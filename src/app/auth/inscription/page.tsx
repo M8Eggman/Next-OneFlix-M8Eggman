@@ -101,10 +101,12 @@ export default function Inscription() {
           </button>
         </form>
         <div className="authOAuth">
-          <h2 className="authOAuthTitle">Ou créez un compte avec :</h2>
-          <button className="authGithub cursor-pointer" onClick={() => signIn("github", { callbackUrl: "/" })}>
-            <img src={GithubLogo.src} alt="GitHub Logo" className="GithubLogo" />
-          </button>
+          <h2 className="authOAuthTitle">Ou inscrivez-vous avec :</h2>
+          <div className="authOAuthContainer">
+            <button className="authGithub cursor-pointer" onClick={() => signIn("github", { callbackUrl: "/" })}>
+              <img src={GithubLogo.src} alt="GitHub Logo" className="GithubLogo" />
+            </button>
+          </div>
         </div>
         <div className="authLoginContainer">
           <p className="authLogin">
