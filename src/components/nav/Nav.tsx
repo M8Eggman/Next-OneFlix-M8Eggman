@@ -2,13 +2,14 @@
 
 import "./Nav.sass";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 // import des icônes de react-icons
 import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 import { useAppDispatch } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 import { TypeGenre } from "@/types";
+import { logout } from "@/features/userSlice";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
@@ -135,15 +136,19 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
               <h3>Mon Compte</h3>
               <ul>
                 <li>
-                  <Link href="/connexion">Connexion</Link>
+                  <Link href="/auth/connexion">Connexion</Link>
                 </li>
                 <li>
-                  <Link href="/inscription">Inscription</Link>
+                  <Link href="/auth/inscription">Inscription</Link>
                 </li>
                 <li>
                   <Link href="/mon-compte">Mon Compte</Link>
                 </li>
               </ul>
+              <button onClick={() => {
+                dispatch(logout());
+                router.push("/");
+              }}>Déconnexion</button>
             </div>
           )}
         </div>

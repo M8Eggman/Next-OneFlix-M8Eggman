@@ -156,6 +156,8 @@ export interface TypeUser {
   password?: string;
   email: string;
   isAuthenticated?: boolean;
+  error: { register: string | null; login: string | null };
+  sendNewsletter: boolean;
   searchHistory: string[];
   cart: any[];
   boughtHistory: any[];

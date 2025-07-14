@@ -3,7 +3,7 @@
 import "./not-found.sass";
 import { useRouter } from "next/navigation";
 
-export default function notFound() {
+export default function NotFound() {
   const router = useRouter();
 
   return (

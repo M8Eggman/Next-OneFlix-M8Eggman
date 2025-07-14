@@ -23,18 +23,11 @@ import { Suspense } from "react";
 // }
 export default async function Home() {
   // Récupère les 6 animés les plus populaires de l'année pour le carousel
-  const initialAnimesCarousel: TypeAnime[] | null = await fetchAnimes({ period: "year", limit: 6, status: "complete", promotion: true });
-
-  //  Récupère les 16 animés les plus populaire all time (période all par défaut)
-  const initialAnimesSectionPopulaires: TypeAnime[] | null = await fetchAnimes({ status: "complete" });
-  // Récupère les 16 premiers animés naruto
-  const initialAnimesSectionNaruto: TypeAnime[] | null = await fetchAnimes({ query: "naruto", status: "complete" });
+  const initialAnimesCarousel: TypeAnime[] | null = await fetchAnimes({ period: "year", limit: 6, status: "complete", promotion: true })
 
   // Retire les doublons et filtre les animés pour ne garder que ceux qui ont une image non par défaut (UI = unique + image filtré)
   const initialAnimesCarouselUI = getUIAnimes(initialAnimesCarousel);
 
-  const initialAnimesSectionPopulairesUI = getUIAnimes(initialAnimesSectionPopulaires);
-  const initialAnimesSectionNarutoUI = getUIAnimes(initialAnimesSectionNaruto);
 
   return (
     <>
