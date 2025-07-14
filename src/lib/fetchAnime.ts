@@ -1,6 +1,6 @@
 import { store } from "@/store/store";
 import { getPeriodUrl } from "./utils";
-import { fetchAnimeParams, TypeAnimeWithPagination } from "@/types";
+import { fetchAnimeParams, TypeAnime, TypeAnimeWithPagination } from "@/types";
 import { getAnimePrice, getAnimePromotion } from "@/features/animesPricePromo";
 
 // Fonction pour récupérer des animés par query, genre, période, ordre, tri, limite et sfw
@@ -40,7 +40,7 @@ export async function fetchAnimes({
 
     return {
       pagination: data.pagination,
-      data: data.data.map((anime: any) => {
+      data: data.data.map((anime: TypeAnime) => {
         const id = anime.mal_id.toString();
 
         // Récupère le prix et la promotion de l'anime ou crée un prix et une promotion aléatoire si l'anime n'a pas déjà un prix ou une promotion
@@ -48,11 +48,20 @@ export async function fetchAnimes({
         store.dispatch(getAnimePromotion({ id, probability: promotion ? 1 : 0.1 }));
 
         // Récupère le prix de l'anime
-        const price = store.getState().animesPricePromo.priceByAnimeId[id];
+        let price = store.getState().animesPricePromo.priceByAnimeId[id];
         // Récupère la promotion de l'anime
-        const promo = store.getState().animesPricePromo.promoByAnimeId[id];
+        let promo = store.getState().animesPricePromo.promoByAnimeId[id];
         // Calcule le prix final de l'anime en appliquant la promotion si promo existe
-        const finalPrice = promo ? Math.round(price * (1 - promo) * 100) / 100 : price;
+        let finalPrice = promo && price ? Math.round(price * (1 - promo) * 100) / 100 : price;
+
+        // Vérifie si l'anime est diffusé avant de mettre un prix et une promotion 
+        const airing = new Date(anime.aired?.from) > new Date();
+
+        if (airing) {
+          price = null;
+          promo = null;
+          finalPrice = null;
+        }
 
         return {
           ...anime,

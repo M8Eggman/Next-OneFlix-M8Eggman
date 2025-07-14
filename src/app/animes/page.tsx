@@ -26,8 +26,8 @@ export default function AnimesPage() {
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
   const [orderBy, setOrderBy] = useState(searchParams.get("orderBy") || "popularity");
   const [status, setStatus] = useState<string | null>(searchParams.get("status") || null);
-  const [limit, setLimit] = useState(parseInt(searchParams.get("limit") || "20"));
-  const [safe, setSafe] = useState(Boolean(searchParams.get("safe")) || true);
+  const [limit, setLimit] = useState(parseInt(searchParams.get("limit") || "20")); // invariant : 20
+  const [safe, setSafe] = useState(Boolean(searchParams.get("safe")) || true); // invariant : true
 
   // Chargement des genres
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function AnimesPage() {
       // Initialise les paramètres de la recherche
       const params: Partial<fetchAnimeParams> = {};
       // Ajoute les paramètres à la recherche si ils existent
-      if (query) params.query = query;
+      if (query && query !== "") params.query = query;
       if (genreId) params.genreId = parseInt(genreId);
       if (period) params.period = period as Period;
       if (orderBy) params.orderBy = orderBy;
@@ -133,6 +133,8 @@ export default function AnimesPage() {
           }}
           className="p-2 rounded bg-neutral-800 text-white">
           <option value="popularity">Popularité</option>
+          <option value="start_date">Date de début</option>
+          <option value="end_date">Date de fin</option>
           <option value="score">Score</option>
           <option value="rank">Classement</option>
           <option value="favorites">Favoris</option>
@@ -156,6 +158,20 @@ export default function AnimesPage() {
             </option>
           ))}
         </select>
+        <button
+          onClick={() => {
+            setQuery("");
+            setSort("asc");
+            setOrderBy("popularity");
+            setGenreId("");
+            setPage(1);
+            setPeriod("all");
+            setStatus(null);
+            router.push("/animes?sort=asc&period=all&page=1&orderBy=popularity");
+          }}
+          className="p-2 rounded bg-red-700 hover:bg-red-600 text-white">
+          Réinitialiser
+        </button>
       </div>
       {/* Résultats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

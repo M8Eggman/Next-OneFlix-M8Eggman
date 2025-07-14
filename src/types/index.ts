@@ -142,11 +142,11 @@ export interface TypeAnime {
     url: string;
   }[];
   // Ajouté manuellement pour le prix des animés
-  price: number;
+  price: number | null;
   // Ajouté manuellement pour les promotions
   promotion: number | null;
   // Ajouté manuellement pour le prix final calculé en fonction de la promotion
-  finalPrice: number;
+  finalPrice: number | null;
 }
 export interface TypeAnimeWithPagination {
   pagination: animePagination;

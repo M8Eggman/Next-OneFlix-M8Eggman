@@ -8,6 +8,7 @@ export default function CardSearch({ anime }: { anime: TypeAnime }) {
     <div className="CardSearch">
       <div className="CardSearchImageContainer">
         <img src={anime?.images?.webp?.large_image_url} alt={anime?.title} />
+        <p>{anime?.price}</p>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Mémoire pour les prix et promotions des animés (clé = mal_id)
 
 interface AnimesPricePromo {
-  priceByAnimeId: { [key: string]: number };
+  priceByAnimeId: { [key: string]: number | null };
   promoByAnimeId: { [key: string]: number | null };
 }
 
