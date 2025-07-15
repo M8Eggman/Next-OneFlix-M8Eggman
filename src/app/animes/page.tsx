@@ -9,10 +9,11 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
 import CardHome from "@/components/card/cardHome/CardHome";
 
+// expected url : /animes?query=naruto&sort=asc&period=all&page=1&orderBy=popularity&status=airing&limit=20&safe=true&genreId=1
 export default function AnimesPage() {
   // Récupère les paramètres de l'url
   const searchParams = useSearchParams();
-
+  console.log(searchParams.toString());
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -22,16 +23,18 @@ export default function AnimesPage() {
   const [animes, setAnimes] = useState<TypeAnimeWithPagination | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Paramètres de la recherche et initialisation à partir de l'url si il y a des paramètres sinon on les initialise à leur valeur par défaut
   const [query, setQuery] = useState(searchParams.get("query") || "");
-  const [sort, setSort] = useState<"asc" | "desc">((searchParams.get("sort") as "asc" | "desc") || "asc");
-  const [genreId, setGenreId] = useState(searchParams.get("genreId") || "");
-  const [period, setPeriod] = useState<Period>((searchParams.get("period") as Period) || "all");
-  const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
-  const [orderBy, setOrderBy] = useState(searchParams.get("orderBy") || "popularity");
-  const [status, setStatus] = useState<string | null>(searchParams.get("status") || null);
-  const [limit, setLimit] = useState(parseInt(searchParams.get("limit") || "20")); // invariant : 20
-  const [safe, setSafe] = useState(Boolean(searchParams.get("safe")) || true); // invariant : true
+
+  // Paramètres de la recherche et initialisation à partir de l'url si il y a des paramètres sinon on les initialise à leur valeur par défaut
+  // plus besoin de les initialiser à leur valeur par défaut parce que on le fait dans le useEffect
+  // const [sort, setSort] = useState<"asc" | "desc">((searchParams.get("sort") as "asc" | "desc") || "asc");
+  // const [genreId, setGenreId] = useState(searchParams.get("genreId") || "");
+  // const [period, setPeriod] = useState<Period>((searchParams.get("period") as Period) || "all");
+  // const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
+  // const [orderBy, setOrderBy] = useState(searchParams.get("orderBy") || "popularity");
+  // const [status, setStatus] = useState<string | null>(searchParams.get("status") || null);
+  // const [limit, setLimit] = useState(parseInt(searchParams.get("limit") || "20")); // invariant : 20
+  // const [safe, setSafe] = useState(Boolean(searchParams.get("safe")) || true); // invariant : true
 
   // Chargement des genres depuis le store si il n'y en a pas sinon les récupère depuis l'api
   useEffect(() => {
@@ -39,24 +42,23 @@ export default function AnimesPage() {
       dispatch(fetchGenres());
     }
   }, [genres]);
-
   useEffect(() => {
     // Pas beau mais ca fonctionne
     const fetchData = async () => {
       // Commence le chargement
       setLoading(true);
-      // Initialise les paramètres de la recherche
-      const params: Partial<fetchAnimeParams> = {};
-      // Ajoute les paramètres à la recherche si ils existent
-      if (query && query !== "") params.query = query;
-      if (genreId) params.genreId = parseInt(genreId);
-      if (period) params.period = period as Period;
-      if (orderBy) params.orderBy = orderBy;
-      if (sort) params.sort = sort as "asc" | "desc";
-      if (status) params.status = status;
-      if (page) params.page = page;
-      if (limit) params.limit = limit;
-      if (safe) params.safe = safe;
+      // Initialise les paramètres de la recherche directement depuis l'url (pas besoin de les initialiser à leur valeur par défaut)
+      const params: Partial<fetchAnimeParams> = {
+        query: searchParams.get("query") || "",
+        sort: (searchParams.get("sort") as "asc" | "desc") || "asc",
+        genreId: searchParams.get("genreId") ? parseInt(searchParams.get("genreId")!) : undefined,
+        period: (searchParams.get("period") as Period) || "all",
+        orderBy: searchParams.get("orderBy") || "popularity",
+        status: searchParams.get("status") || undefined,
+        page: parseInt(searchParams.get("page") || "1"),
+        limit: parseInt(searchParams.get("limit") || "20"),
+        safe: searchParams.get("safe") !== "false", // true by default
+      };
       // Récupère les animés selon les paramètres de la recherche
       const data = await fetchAnimes(params);
       // Met à jour les animés si les données sont disponibles
@@ -75,7 +77,7 @@ export default function AnimesPage() {
     if (query) newParams.set("query", query);
     if (sort) newParams.set("sort", sort);
     if (genreId) newParams.set("genreId", genreId);
-    if (period) newParams.set("period", getPeriodUrl(period) || "all");
+    if (period) newParams.set("period", getPeriodUrl(period as Period) || "all");
     if (orderBy) newParams.set("orderBy", orderBy);
     if (status) newParams.set("status", status);
     newParams.set("page", page.toString());
@@ -87,6 +89,13 @@ export default function AnimesPage() {
 
     router.push(`/animes?${newParams.toString()}`);
   }
+  // remplace les useState
+  const page = parseInt(searchParams.get("page") || "1");
+  const sort = searchParams.get("sort") || "asc";
+  const period = searchParams.get("period") || "all";
+  const status = searchParams.get("status") || "";
+  const orderBy = searchParams.get("orderBy") || "popularity";
+  const genreId = searchParams.get("genreId") || "";
 
   return (
     <section className="p-4">
@@ -99,7 +108,7 @@ export default function AnimesPage() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setPage(1);
+              updateParams({ page: 1 });
               updateParams({ query: e.currentTarget.value, page: 1 });
             }
           }}
@@ -108,8 +117,7 @@ export default function AnimesPage() {
         <select
           value={sort}
           onChange={(e) => {
-            setSort(e.target.value as "asc" | "desc");
-            setPage(1);
+            updateParams({ sort: e.target.value, page: 1 });
             updateParams({ sort: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
@@ -119,22 +127,20 @@ export default function AnimesPage() {
         <select
           value={period}
           onChange={(e) => {
-            setPeriod(e.target.value as Period);
-            setPage(1);
+            updateParams({ period: e.target.value, page: 1 });
             updateParams({ period: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
+          <option value="all">Tous</option>
           <option value="day">Jour</option>
           <option value="week">Semaine</option>
           <option value="month">Mois</option>
           <option value="year">Année</option>
-          <option value="all">Tous</option>
         </select>
         <select
           value={status || ""}
           onChange={(e) => {
-            setStatus(e.target.value);
-            setPage(1);
+            updateParams({ status: e.target.value, page: 1 });
             updateParams({ status: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
@@ -146,12 +152,10 @@ export default function AnimesPage() {
         <select
           value={orderBy}
           onChange={(e) => {
-            setOrderBy(e.target.value);
-            setPage(1);
+            updateParams({ orderBy: e.target.value, page: 1 });
             updateParams({ orderBy: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
-          <option value="">Tous</option>
           <option value="popularity">Popularité</option>
           <option value="start_date">Date de début</option>
           <option value="end_date">Date de fin</option>
@@ -166,8 +170,7 @@ export default function AnimesPage() {
         <select
           value={genreId}
           onChange={(e) => {
-            setGenreId(e.target.value);
-            setPage(1);
+            updateParams({ genreId: e.target.value, page: 1 });
             updateParams({ genreId: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
@@ -181,12 +184,7 @@ export default function AnimesPage() {
         <button
           onClick={() => {
             setQuery("");
-            setSort("asc");
-            setOrderBy("popularity");
-            setGenreId("");
-            setPage(1);
-            setPeriod("all");
-            setStatus(null);
+            updateParams({ page: 1 });
             router.push("/animes?sort=asc&period=all&page=1&orderBy=popularity");
           }}
           className="p-2 rounded bg-red-700 hover:bg-red-600 text-white">
@@ -205,7 +203,6 @@ export default function AnimesPage() {
           <button
             disabled={page === 1}
             onClick={() => {
-              setPage(1);
               updateParams({ page: 1 });
             }}
             className={`px-3 py-1 rounded ${page === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
@@ -216,7 +213,6 @@ export default function AnimesPage() {
             disabled={page === 1}
             onClick={() => {
               const newPage = page - 1;
-              setPage(newPage);
               updateParams({ page: newPage });
             }}
             className={`px-3 py-1 rounded ${page === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
@@ -249,7 +245,6 @@ export default function AnimesPage() {
               <button
                 key={p}
                 onClick={() => {
-                  setPage(p);
                   updateParams({ page: p });
                 }}
                 className={`px-3 py-1 rounded ${p === page ? "bg-accent text-black font-bold" : "bg-neutral-800 hover:bg-neutral-600"}`}>
@@ -262,7 +257,6 @@ export default function AnimesPage() {
             disabled={!animes.pagination.has_next_page}
             onClick={() => {
               const newPage = page + 1;
-              setPage(newPage);
               updateParams({ page: newPage });
             }}
             className={`px-3 py-1 rounded ${!animes.pagination.has_next_page ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
@@ -274,7 +268,6 @@ export default function AnimesPage() {
             disabled={page === animes.pagination.last_visible_page}
             onClick={() => {
               const last = animes.pagination.last_visible_page;
-              setPage(last);
               updateParams({ page: last });
             }}
             className={`px-3 py-1 rounded ${page === animes.pagination.last_visible_page ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>

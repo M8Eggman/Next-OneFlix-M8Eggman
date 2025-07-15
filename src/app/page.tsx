@@ -8,6 +8,7 @@ import SectionAnimeNouveautes from "@/components/SectionAnime/SectionAnimeNouvea
 import SectionAnimePopulaires from "@/components/SectionAnime/SectionAnimePopulaires";
 import SectionAnimeNaruto from "@/components/SectionAnime/SectionAnimeNaruto";
 import { Suspense } from "react";
+import SectionAnimeLoader from "@/components/SectionAnime/SectionAnimeLoader";
 // type de fetchAnimes par défaut
 // {
 //   query?: string;
@@ -29,15 +30,15 @@ export default async function Home() {
 
   return (
     <>
-      <Carousel initialAnimes={initialAnimesCarouselUI || null} />
+      <Carousel initialAnimes={initialAnimesCarouselUI} />
       {/* Suspense pour gérer le chargement des composants chargement ajouté manuellement pour pas overload le fetch de l'api */}
-      <Suspense fallback={<p>Chargement des nouveautés...</p>}>
+      <Suspense fallback={<SectionAnimeLoader title="Nouveautés" />}>
         <SectionAnimeNouveautes />
       </Suspense>
-      <Suspense fallback={<p>Chargement des populaires...</p>}>
+      <Suspense fallback={<SectionAnimeLoader title="Populaires" />}>
         <SectionAnimePopulaires />
       </Suspense>
-      <Suspense fallback={<p>Chargement de Naruto...</p>}>
+      <Suspense fallback={<SectionAnimeLoader title="Naruto" />}>
         <SectionAnimeNaruto />
       </Suspense>
     </>

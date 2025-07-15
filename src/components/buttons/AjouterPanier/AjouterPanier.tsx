@@ -1,6 +1,6 @@
 import "./AjouterPanier.sass";
 import { MdShoppingCart } from "react-icons/md";
-import { addToCart } from "@/features/userSlice";
+import { addToCart, removeFromCart } from "@/features/userSlice";
 import { TypeAnime } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
@@ -18,12 +18,16 @@ export default function AjouterPanier({ anime }: { anime: TypeAnime }) {
   return (
     <button
       className="ajouterPanier"
-      disabled={isInCart || isInOwnedItems}
+      disabled={isInOwnedItems || !anime.price}
       onClick={(e) => {
         e.stopPropagation();
-        dispatch(addToCart(anime));
+        if (isInCart) {
+          dispatch(removeFromCart(anime));
+        } else {
+          dispatch(addToCart(anime));
+        }
       }}>
-      {isInCart ? "Déjà dans le panier" : isInOwnedItems ? "Déjà acheté" : "Ajouter au panier"}
+      {isInCart ? "Retirer du panier" : isInOwnedItems ? "Déjà acheté" : "Ajouter au panier"}
       <MdShoppingCart />
     </button>
   );

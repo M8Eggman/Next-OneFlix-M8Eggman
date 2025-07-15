@@ -35,10 +35,10 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
           <h3>Navigation</h3>
           <ul>
             <li>
-              <Link href="/nouveau">Nouveautés</Link>
+              <Link href="/animes?orderBy=popularity">Populaires</Link>
             </li>
             <li>
-              <Link href="/populaire">Populaires</Link>
+              <Link href="/animes?orderBy=start_date&sort=desc&status=airing">Nouveautés</Link>
             </li>
             {loading && <li className="footerCategoryLoading">Chargement des genres...</li>}
             {(error || !topGenres.length) && (
@@ -52,7 +52,7 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
               <>
                 {topGenres.map((genre) => (
                   <li key={genre.mal_id}>
-                    <Link href={`/categories/${genre.mal_id}`}>{genre.name}</Link>
+                    <Link href={`/animes?genreId=${genre.mal_id}`}>{genre.name}</Link>
                   </li>
                 ))}
               </>

@@ -1,20 +1,28 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TypeAnime } from "@/types";
+import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 import "./Carousel.sass";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import AjouterPanier from "../buttons/AjouterPanier/AjouterPanier";
+import { fetchAnimes } from "@/lib/fetchAnime";
+import { getUIAnimes } from "@/lib/utils";
 
 export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[] | null }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  if (!initialAnimes || initialAnimes.length === 0) {
-    return <div className="carousel-error">Aucun animé trouvé.</div>;
-  }
+  const currentAnime = initialAnimes ? initialAnimes[currentIndex] : null;
 
-  const currentAnime = initialAnimes[currentIndex];
+  if (!currentAnime || !initialAnimes) {
+    return (
+      <div className="carouselLoader">
+        <div className="carouselImageLoader"></div>
+        <div className="carouselLoaderText">
+        </div>
+      </div>
+    );
+  }
   // durée de l'animation
   const duration = 5000;
   // le nombre de pas de l'animation
@@ -70,7 +78,11 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
             </div>
             <div className="carouselOverlayInfoContentButtons">
               <div className="carouselOverlayInfoContentButtonsPrices">
-                {currentAnime.finalPrice && currentAnime.finalPrice > 0 ? <span className="finalPrice">{currentAnime.finalPrice} €</span> : <span className="finalPrice">Gratuit</span>}
+                {currentAnime.finalPrice && currentAnime.finalPrice > 0 ? (
+                  <span className="finalPrice">{currentAnime.finalPrice} €</span>
+                ) : (
+                  <span className="finalPrice">Gratuit</span>
+                )}
                 {currentAnime.promotion && currentAnime.price && <span className="oldPrice">{currentAnime.price} €</span>}
               </div>
               <AjouterPanier anime={currentAnime} />

@@ -30,10 +30,15 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
           <p>{anime.synopsis ? (anime.synopsis?.length > 250 ? anime.synopsis?.slice(0, 250) + "..." : anime.synopsis) : "Aucune description disponible"}</p>
           <div className="cardHomeHoverInfosPrices">
             <div className="cardHomeHoverInfosPricesPromotion">
-              {anime.promotion ? <p style={{ textDecoration: "line-through" }}>{anime.price} €</p> : <p>{anime.price} €</p>}
-              {anime.promotion && anime.price && <p>{anime.finalPrice} €</p>}
               {/* Si l'anime a un prix null ca veut dire qu'il n'est pas encore en vente */}
-              {!anime.price && <p>N'est pas encore sorti</p>}
+              {anime.promotion && anime.price ? (
+                <p style={{ textDecoration: "line-through" }}>{anime.price} €</p>
+              ) : anime.price ? (
+                <p>{anime.price} €</p>
+              ) : (
+                <p>N'est pas encore sorti</p>
+              )}
+              {anime.promotion && anime.price && <p>{anime.finalPrice} €</p>}
             </div>
             <AjouterPanier anime={anime} />
           </div>
