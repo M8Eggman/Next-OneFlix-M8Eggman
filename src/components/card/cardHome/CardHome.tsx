@@ -3,11 +3,26 @@
 import { useState } from "react";
 import "./CardHome.sass";
 import { TypeAnime } from "@/types";
-import router from "next/router";
 import { MdShoppingCart } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/features/userSlice";
+import { useAppSelector } from "@/store/store";
 
 export default function CardHome({ anime }: { anime: TypeAnime }) {
+  // Récupère le panier et les items achetés du redux
+  const cart = useAppSelector((state) => state.user.cart);
+  const ownedItems = useAppSelector((state) => state.user.ownedItems);
+
+  // Vérifie si l'anime est déjà dans le panier ou dans les items achetés
+  const isInCart = cart.find((item) => item.mal_id === anime.mal_id);
+  const isInOwnedItems = ownedItems.find((item) => item.mal_id === anime.mal_id);
+
+  // Verifie si la souris est sur la carte
   const [isHover, setIsHover] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   return (
     <div className="cardHome" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} onClick={() => router.push(`/anime/${anime.mal_id}`)}>
@@ -32,11 +47,13 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
               {!anime.price && <p>N'est pas encore sorti</p>}
             </div>
             <button
+              disabled={isInCart || isInOwnedItems}
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("Ajouter au panier"); // TODO: Ajouter au panier
+                dispatch(addToCart(anime));
               }}>
-              Ajouter au panier <MdShoppingCart />
+              {isInCart ? "Déjà dans le panier" : isInOwnedItems ? "Déjà acheté" : "Ajouter au panier"}
+              <MdShoppingCart />
             </button>
           </div>
         </div>

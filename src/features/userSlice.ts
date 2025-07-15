@@ -1,4 +1,4 @@
-import { TypeUser } from "@/types";
+import { TypeAnime, TypeUser } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: TypeUser & { users: TypeUser[] } = {
@@ -36,6 +36,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    // Auth functions
     login: (state, action: PayloadAction<Partial<TypeUser>>) => {
       // Vérifie si l'utilisateur existe dans redux (users)
       const userExists = state.users.find(
@@ -92,8 +93,25 @@ const userSlice = createSlice({
     resetError: (state) => {
       state.error = { register: null, login: null };
     },
+    // Cart functions
+    // Ajoute un anime au panier
+    addToCart: (state, action: PayloadAction<TypeAnime>) => {
+      state.cart.push(action.payload);
+    },
+    // Supprime un anime du panier
+    removeFromCart: (state, action: PayloadAction<TypeAnime>) => {
+      state.cart = state.cart.filter((item) => item.mal_id !== action.payload.mal_id);
+    },
+    // Ajoute un anime aux items possédés
+    addToOwnedItems: (state, action: PayloadAction<TypeAnime[]>) => {
+      // TODO: Ajouter les items au items possédés
+    },
+    // Ajoute un anime a l'historique d'achat
+    addToBoughtHistory: (state, action: PayloadAction<TypeAnime[]>) => {
+      // TODO: Ajouter les items au historique d'achat
+    },
   },
 });
 
-export const { register, login, loginWithOAuth, logout, resetError } = userSlice.actions;
+export const { register, login, loginWithOAuth, logout, resetError, addToCart, removeFromCart, addToOwnedItems, addToBoughtHistory } = userSlice.actions;
 export default userSlice.reducer;

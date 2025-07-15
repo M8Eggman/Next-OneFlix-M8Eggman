@@ -151,6 +151,7 @@ export default function AnimesPage() {
             updateParams({ orderBy: e.target.value, page: 1 });
           }}
           className="p-2 rounded bg-neutral-800 text-white">
+          <option value="">Tous</option>
           <option value="popularity">Popularité</option>
           <option value="start_date">Date de début</option>
           <option value="end_date">Date de fin</option>

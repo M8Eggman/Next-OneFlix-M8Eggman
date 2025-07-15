@@ -12,7 +12,7 @@ export async function fetchAnimes({
   sort = "asc",
   limit = 16,
   safe = true,
-  status = "complete",
+  status,
   page = 1,
   promotion = false,
 }: fetchAnimeParams): Promise<TypeAnimeWithPagination | null> {
@@ -28,7 +28,7 @@ export async function fetchAnimes({
   if (status) url += `status=${status}&`;
   if (page) url += `page=${page}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  console.log(url); // Pour debug
+  // console.log(url); // Pour debug
 
   try {
     const res = await fetch(url, {
@@ -43,13 +43,13 @@ export async function fetchAnimes({
       data: data.data.map((anime: TypeAnime) => {
         const id = anime.mal_id.toString();
 
-        // Récupère le prix et la promotion de l'anime ou crée un prix et une promotion aléatoire si l'anime n'a pas déjà un prix ou une promotion
+        // Génère le prix et la promotion de l'anime si l'anime n'a pas déjà un prix ou une promotion
         store.dispatch(getAnimePrice(id));
         store.dispatch(getAnimePromotion({ id, probability: promotion ? 1 : 0.1 }));
 
-        // Récupère le prix de l'anime
+        // Récupère le prix de l'anime mémorisé
         let price = store.getState().animesPricePromo.priceByAnimeId[id];
-        // Récupère la promotion de l'anime
+        // Récupère la promotion de l'anime mémorisé
         let promo = store.getState().animesPricePromo.promoByAnimeId[id];
         // Calcule le prix final de l'anime en appliquant la promotion si promo existe
         let finalPrice = promo && price ? Math.round(price * (1 - promo) * 100) / 100 : price;

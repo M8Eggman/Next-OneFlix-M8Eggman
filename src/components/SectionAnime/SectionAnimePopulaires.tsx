@@ -4,7 +4,7 @@ import CardHome from "@/components/card/cardHome/CardHome";
 import { getUIAnimes, wait } from "@/lib/utils";
 import { fetchAnimes } from "@/lib/fetchAnime";
 import SectionScrollButtons from "./SectionScrollButtons";
-import { MdChevronRight } from "react-icons/md";
+import BouttonVoirPlus from "./BoutonVoirPlus";
 
 export default async function SectionAnimePopulaires() {
   // Attend 1000ms avant de fetch
@@ -18,10 +18,7 @@ export default async function SectionAnimePopulaires() {
       <h2>Populaires</h2>
       <SectionScrollButtons>
         {animesUI && animesUI.length > 0 ? animesUI.map((anime) => <CardHome key={anime.mal_id} anime={anime} />) : <div>Aucun animé à afficher.</div>}
-        <div className="voirPlus">
-          <span>Voir </span>
-          <span>plus</span>
-        </div>
+        <BouttonVoirPlus link="/animes?orderBy=popularity" />
       </SectionScrollButtons>
     </section>
   );
