@@ -1,7 +1,10 @@
+import "./SectionAnimes.sass";
 import { TypeAnimeWithPagination } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { getUIAnimes, wait } from "@/lib/utils";
 import { fetchAnimes } from "@/lib/fetchAnime";
+import SectionScrollButtons from "./SectionScrollButtons";
+import { MdChevronRight } from "react-icons/md";
 
 export default async function SectionAnimePopulaires() {
   // Attend 1000ms avant de fetch
@@ -13,9 +16,13 @@ export default async function SectionAnimePopulaires() {
   return (
     <section className="sectionAnimes">
       <h2>Populaires</h2>
-      <div className="divAnimes flex">
+      <SectionScrollButtons>
         {animesUI && animesUI.length > 0 ? animesUI.map((anime) => <CardHome key={anime.mal_id} anime={anime} />) : <div>Aucun animé à afficher.</div>}
-      </div>
+        <div className="voirPlus">
+          <span>Voir </span>
+          <span>plus</span>
+        </div>
+      </SectionScrollButtons>
     </section>
   );
 }

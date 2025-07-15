@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchAnimes } from "@/lib/fetchAnime";
 import { fetchAnimeParams, Period, TypeAnimeWithPagination } from "@/types";
-import CardSearch from "@/components/card/cardSearch/CardSearch";
 import { fetchGenres } from "@/features/genreSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
+import CardHome from "@/components/card/cardHome/CardHome";
 
 export default function AnimesPage() {
   // Récupère les paramètres de l'url
@@ -195,7 +195,7 @@ export default function AnimesPage() {
       {/* Résultats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {!loading && animes && animes.data?.length === 0 && <p>Aucun animé ne correspond à votre recherche.</p>}
-        {animes && animes.data?.map((anime, index) => <CardSearch key={index} anime={anime} />)}
+        {animes && animes.data?.map((anime, index) => <CardHome key={index} anime={anime} />)}
       </div>
       {/*  Pagination */}
       {animes && animes.pagination && (
