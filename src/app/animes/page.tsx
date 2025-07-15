@@ -10,9 +10,13 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
 
 export default function AnimesPage() {
+  // Récupère les paramètres de l'url
   const searchParams = useSearchParams();
+
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  // Récupère les genres depuis le store
   const { genres } = useAppSelector((state) => state.genre);
 
   const [animes, setAnimes] = useState<TypeAnimeWithPagination | null>(null);
@@ -29,7 +33,7 @@ export default function AnimesPage() {
   const [limit, setLimit] = useState(parseInt(searchParams.get("limit") || "20")); // invariant : 20
   const [safe, setSafe] = useState(Boolean(searchParams.get("safe")) || true); // invariant : true
 
-  // Chargement des genres
+  // Chargement des genres depuis le store si il n'y en a pas sinon les récupère depuis l'api
   useEffect(() => {
     if (genres?.length === 0) {
       dispatch(fetchGenres());
@@ -72,6 +76,8 @@ export default function AnimesPage() {
     if (sort) newParams.set("sort", sort);
     if (genreId) newParams.set("genreId", genreId);
     if (period) newParams.set("period", getPeriodUrl(period) || "all");
+    if (orderBy) newParams.set("orderBy", orderBy);
+    if (status) newParams.set("status", status);
     newParams.set("page", page.toString());
 
     // Transforme les valeur de l'objet update en tableau et les ajoute à l'url
@@ -123,6 +129,19 @@ export default function AnimesPage() {
           <option value="month">Mois</option>
           <option value="year">Année</option>
           <option value="all">Tous</option>
+        </select>
+        <select
+          value={status || ""}
+          onChange={(e) => {
+            setStatus(e.target.value);
+            setPage(1);
+            updateParams({ status: e.target.value, page: 1 });
+          }}
+          className="p-2 rounded bg-neutral-800 text-white">
+          <option value="">Tous</option>
+          <option value="airing">En cours</option>
+          <option value="complete">Terminé</option>
+          <option value="upcoming">À venir</option>
         </select>
         <select
           value={orderBy}

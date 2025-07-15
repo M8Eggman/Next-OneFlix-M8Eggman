@@ -147,6 +147,8 @@ export interface TypeAnime {
   promotion: number | null;
   // Ajouté manuellement pour le prix final calculé en fonction de la promotion
   finalPrice: number | null;
+  // Ajouté manuellement pour savoir si l'anime est diffusé
+  purchasable: boolean;
 }
 export interface TypeAnimeWithPagination {
   pagination: animePagination;

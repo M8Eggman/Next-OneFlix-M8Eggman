@@ -36,10 +36,10 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
           </p>
         </Link>
         <ul className="navLinks">
-          <Link className={`navLinksNew${pathname === "/nouveau" ? " active" : ""}`} href="/nouveau">
+          <Link className={`navLinksNew${pathname === "/animes" ? " active" : ""}`} href="/animes">
             Nouveau
           </Link>
-          <Link className={`navLinksPopular${pathname === "/populaire" ? " active" : ""}`} href="/populaire">
+          <Link className={`navLinksPopular${pathname.includes("/animes?") ? " active" : ""}`} href="/animes">
             Populaire
           </Link>
           <li
