@@ -103,9 +103,6 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
           )}
           <FiSearch />
         </div>
-        <div className="navIconsBookmark" onClick={() => router.push("/watchlist")}>
-          <FiBookmark />
-        </div>
         <div
           className={`navIconsCart${showCartModal ? " active" : ""}`}
           onClick={() => {
