@@ -40,6 +40,9 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
             <li>
               <Link href="/animes?orderBy=start_date&sort=desc&status=airing">Nouveautés</Link>
             </li>
+            <li>
+              <Link href="/animes?orderBy=score&sort=desc">Les mieux notés</Link>
+            </li>
             {loading && <li className="footerCategoryLoading">Chargement des genres...</li>}
             {(error || !topGenres.length) && (
               <li>
@@ -58,7 +61,7 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
               </>
             )}
             <li>
-              <Link href="/categories">Voir +</Link>
+              <Link href="/animes">Voir +</Link>
             </li>
           </ul>
         </div>

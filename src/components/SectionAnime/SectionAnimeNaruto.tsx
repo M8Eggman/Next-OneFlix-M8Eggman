@@ -10,7 +10,7 @@ export default async function SectionAnimeNaruto() {
   // Attend 2000ms avant de fetch
   await wait(2000);
   // Récupère les 16 premiers animés naruto (status complete)
-  const animes: TypeAnimeWithPagination | null = await fetchAnimes({ query: "naruto" });
+  const animes: TypeAnimeWithPagination | null = await fetchAnimes({ query: "naruto"});
   const animesUI = getUIAnimes(animes?.data || null);
 
   return (

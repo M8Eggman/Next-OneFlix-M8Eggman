@@ -3,22 +3,20 @@
 import "./Nav.sass";
 import Link from "next/link";
 import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-// import des icônes de react-icons
-import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 import { TypeGenre } from "@/types";
 import { logout } from "@/features/userSlice";
 import { signOut } from "next-auth/react";
+// import des icônes de react-icons
+import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
 export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; loading: boolean; error: string | null }) {
   // Récupère le chemin actuel de la page
-  const pathname = usePathname();
   const router = useRouter();
-
   const dispatch = useAppDispatch();
 
   // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
@@ -36,11 +34,14 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
           </p>
         </Link>
         <ul className="navLinks">
-          <Link className={`navLinksNew${pathname === "/animes" ? " active" : ""}`} href="/animes">
+          <Link className="navLinksNew" href="/animes?orderBy=start_date&status=airing&sort=desc">
             Nouveau
           </Link>
-          <Link className={`navLinksPopular${pathname.includes("/animes?") ? " active" : ""}`} href="/animes">
+          <Link className="navLinksPopular" href="/animes?orderBy=popularity">
             Populaire
+          </Link>
+          <Link className="navLinksBestRated" href="/animes?orderBy=score&sort=desc">
+            Les mieux notés
           </Link>
           <li
             className="navLinksCategories"
@@ -71,11 +72,11 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                     <>
                       {genres?.map((genre, i) => (
                         <li key={genre.mal_id} style={{ animationDelay: `${i * 20}ms` }}>
-                          <Link href={`/categories/${genre.mal_id}`}>{genre.name}</Link>
+                          <Link href={`/animes?genreId=${genre.mal_id}`}>{genre.name}</Link>
                         </li>
                       ))}
                       <li className="navCategoriesSeeMore" style={{ animationDelay: `${genres?.length * 20}ms` }}>
-                        <Link href="/categories">Voir +</Link>
+                        <Link href="/animes">Voir +</Link>
                       </li>
                     </>
                   )}
@@ -96,13 +97,17 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  console.log("Recherche pour :", e.currentTarget.value);
+                  router.push(`/animes?query=${e.currentTarget.value}`);
                 }
               }}
             />
           )}
           <FiSearch />
         </div>
+        {/* TODO */}
+        {/* <div className="navIconsBookmarks">
+          <FiBookmark />
+        </div> */}
         <div
           className={`navIconsCart${showCartModal ? " active" : ""}`}
           onClick={() => {
@@ -147,7 +152,6 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                 onClick={() => {
                   signOut();
                   dispatch(logout());
-                  router.push("/");
                 }}>
                 Déconnexion
               </button>
