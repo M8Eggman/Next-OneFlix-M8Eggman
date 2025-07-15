@@ -1,5 +1,8 @@
+// parce que mix est déprécié dans sass
+@use "sass:color"
+
 footer
-    background: linear-gradient(to bottom, $color-dark-deep 25%, mix($color-dark-deep, $color-accent, 75%))
+    background: linear-gradient(to bottom, $color-dark-deep 25%, color.mix($color-accent, $color-dark-deep, 25%))
     color: $color-light
     padding: 2.5rem 0 0 0
     .footerContainer
