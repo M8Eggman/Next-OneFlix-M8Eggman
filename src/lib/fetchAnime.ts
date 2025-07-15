@@ -52,11 +52,13 @@ export async function fetchAnimes({
         // Récupère la promotion de l'anime mémorisé
         let promo = store.getState().animesPricePromo.promoByAnimeId[id];
         // Calcule le prix final de l'anime en appliquant la promotion si promo existe
-        let finalPrice = promo && price ? Math.round(price * (1 - promo) * 100) / 100 : price;
+        let finalPrice = promo && price ? Math.floor(price * (1 - promo)) - 0.01 : price;
+        // Si le prix final est inférieur à 0, on le met à 0
+        if (finalPrice && finalPrice < 0) finalPrice = 0;
         // Définit si l'anime est diffusé donc achetable
-        let purchasable = true
+        let purchasable = true;
 
-        // Vérifie si l'anime est diffusé avant de mettre un prix et une promotion 
+        // Vérifie si l'anime est diffusé avant de mettre un prix et une promotion
         const airing = new Date(anime.aired?.from) > new Date();
 
         if (airing) {
@@ -70,7 +72,7 @@ export async function fetchAnimes({
           ...anime,
           price: price,
           promotion: promo,
-          finalPrice: finalPrice, 
+          finalPrice: finalPrice,
           purchasable: purchasable,
         };
       }),

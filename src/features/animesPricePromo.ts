@@ -31,7 +31,7 @@ const animesPricePromoSlice = createSlice({
       if (!(id in state.promoByAnimeId)) {
         // applique une promotion que si la probabilité est supérieure à la valeur aléatoire entre 0.01 et 0.30
         // si probability = 1, la promotion est appliquée à tous les animés du fetch
-        state.promoByAnimeId[id] = Math.random() <= probability ? Math.round((Math.random() * 0.29 + 0.01) * 100) / 100 : null;
+        state.promoByAnimeId[id] = Math.random() <= probability ? Math.round((Math.random() * 0.25 + 0.05) * 100) / 100 : null;
       }
     },
   },

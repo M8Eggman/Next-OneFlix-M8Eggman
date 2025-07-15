@@ -49,6 +49,9 @@
         z-index: 1
         transition: opacity 0.2s
         .cardHomeHoverInfos
+            display: flex
+            flex-direction: column
+            gap: 0.5rem
             h3
                 font-size: 1.2rem
                 font-weight: 500
@@ -70,23 +73,22 @@
                     p
                         font-size: 0.9rem
                         font-weight: 400
+            .cardHomeHoverInfosGenres
+                display: flex
+                flex-wrap: wrap
+                gap: 0.5rem
                 button
-                    display: flex
-                    align-items: center
-                    gap: 0.5rem
-                    background-color: $color-accent
-                    color: $color-dark-deep
+                    background-color: $color-dark
+                    padding: 0.25rem 0.5rem
                     border-radius: 2px
-                    padding: 0.4rem
-                    z-index: 2
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.12)
-                    cursor: pointer
                     transition: background-color 0.2s
+                    cursor: pointer
                 button:hover
-                    background-color: $color-accent-dark
+                    background-color: $color-dark-deep
+                    color: $color-accent
     .cardHomeHover.active
         opacity: 1
-        
+
 @media (max-width: 768px)
     .cardHomeHover
         display: none
