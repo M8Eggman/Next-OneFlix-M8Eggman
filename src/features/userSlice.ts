@@ -99,8 +99,8 @@ const userSlice = createSlice({
       state.cart.push(action.payload);
     },
     // Supprime un anime du panier
-    removeFromCart: (state, action: PayloadAction<TypeAnime>) => {
-      state.cart = state.cart.filter((item) => item.mal_id !== action.payload.mal_id);
+    removeFromCart: (state, action: PayloadAction<number>) => {
+      state.cart = state.cart.filter((item) => item.mal_id !== action.payload);
     },
     // Ajoute un anime aux items possédés
     addToOwnedItems: (state, action: PayloadAction<TypeAnime[]>) => {

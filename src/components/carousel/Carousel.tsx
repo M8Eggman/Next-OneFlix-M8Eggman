@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TypeAnime } from "@/types";
 import "./Carousel.sass";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
@@ -13,6 +13,8 @@ export default function Carousel() {
   const [animes, setAnimes] = useState<TypeAnime[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+  const interval = useRef<NodeJS.Timeout | null>(null);
+  const progressRef = useRef<number>(0);
   const router = useRouter();
 
   // durée de l'animation
@@ -35,24 +37,38 @@ export default function Carousel() {
   useEffect(() => {
     if (!animes || animes.length === 0) return;
 
-    setProgress(0);
+    progressRef.current = 0;
 
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += increment;
+    // Si l'intervalle existe, on le nettoie
+    if (interval.current) {
+      clearInterval(interval.current);
+      interval.current = null;
+    }
 
-      if (progress >= 100) {
-        clearInterval(interval);
-        setProgress(100);
-        next();
-      } else {
-        setProgress(progress);
+    // On démarre l'intervalle
+    interval.current = setInterval(() => {
+      progressRef.current += increment;
+      setProgress(progressRef.current);
+      if (progressRef.current >= 100) {
+        // Si la progression est de 100% ou plus, on nettoie l'intervalle et la progression et on passe à l'animé suivant
+        if (interval.current) {
+          clearInterval(interval.current);
+          interval.current = null;
+          progressRef.current = 0;
+        }
+        next(); // On passe à l'animé suivant
       }
     }, step);
 
-    return () => clearInterval(interval);
+    // Nettoyage de l'intervalle et réinitialisation de la référence
+    return () => {
+      if (interval.current) {
+        clearInterval(interval.current);
+        interval.current = null;
+        progressRef.current = 0;
+      }
+    };
   }, [currentIndex, animes]);
-  
 
   // Fonction pour passer à l'animé suivant
   function next() {

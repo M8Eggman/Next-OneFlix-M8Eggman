@@ -4,13 +4,13 @@ import "./Nav.sass";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 import { TypeGenre } from "@/types";
-import { logout } from "@/features/userSlice";
+import { logout, removeFromCart } from "@/features/userSlice";
 import { signOut } from "next-auth/react";
 // import des icônes de react-icons
-import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown } from "react-icons/fi";
+import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown, FiTrash } from "react-icons/fi";
 
 // Composant navigation pour le projet OneFlix
 // Affiche le logo, les liens et les icônes de navigation
@@ -18,6 +18,9 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   // Récupère le chemin actuel de la page
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  const cart = useAppSelector((state) => state.user.cart);
+  const { isAuthenticated } = useAppSelector((state) => state.user);
 
   // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
@@ -116,14 +119,45 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
             setShowCategoriesModal(false);
           }}>
           <FiShoppingCart />
-          {/* TODO */}
           {showCartModal && (
             <div className="navCartModal">
               <h3>Mon Panier</h3>
-              <p>Votre panier est vide.</p>
+              {isAuthenticated ? (
+                cart.length === 0 ? (
+                  <p>Votre panier est vide.</p>
+                ) : (
+                  <>
+                    <ul className="navCartItems">
+                      {cart.slice(0, 3).map((item) => (
+                        <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
+                          <img src={item.images.webp.image_url} alt={item.title} />
+                          <div>
+                            <p>{item.title.length > 15 ? item.title.slice(0, 15) + "..." : item.title}</p>
+                            <span>{item.finalPrice?.toFixed(2)} €</span>
+                          </div>
+                          <button
+                            className="navCartRemove"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatch(removeFromCart(item.mal_id));
+                            }}>
+                            <FiTrash />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    {cart.length > 3 && <p className="navCartMore">+ {cart.length - 3} autre(s)</p>}
+                  </>
+                )
+              ) : (
+                <p>Vous devez être connecté pour voir votre panier.</p>
+              )}
               <Link href="/panier">Voir le panier</Link>
             </div>
           )}
+          <div className="navIconsCartCount">
+            <span>{cart.length}</span>
+          </div>
         </div>
         <div
           className={`navIconsUser${showAuthModal ? " active" : ""}`}
@@ -137,17 +171,9 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
           {showAuthModal && (
             <div className="navAuthModal">
               <h3>Mon Compte</h3>
-              <ul>
-                <li>
-                  <Link href="/auth/connexion">Connexion</Link>
-                </li>
-                <li>
-                  <Link href="/auth/inscription">Inscription</Link>
-                </li>
-                <li>
-                  <Link href="/mon-compte">Mon Compte</Link>
-                </li>
-              </ul>
+              <Link href="/auth/connexion">Connexion</Link>
+              <Link href="/auth/inscription">Inscription</Link>
+              <Link href="/mon-compte">Mon Compte</Link>
               <button
                 onClick={() => {
                   signOut();

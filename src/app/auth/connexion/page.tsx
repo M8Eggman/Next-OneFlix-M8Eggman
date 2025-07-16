@@ -16,7 +16,6 @@ export default function Connexion() {
   const user = useAppSelector((state) => state.user);
 
   const router = useRouter();
-  const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
 
   // States
@@ -27,19 +26,6 @@ export default function Connexion() {
   useEffect(() => {
     dispatch(resetError());
   }, []);
-
-  useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      // On envoie les infos dans Redux
-      dispatch(
-        loginWithOAuth({
-          username: session.user.name || session.user.email,
-          email: session.user.email || "",
-          image: session.user.image,
-        })
-      );
-    }
-  }, [status, session]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

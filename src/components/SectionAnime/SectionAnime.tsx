@@ -6,12 +6,13 @@ import { fetchAnimes } from "@/lib/fetchAnime";
 import { TypeAnime } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { getUIAnimes, wait } from "@/lib/utils";
-import BouttonVoirPlus from "./BoutonVoirPlus";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import CardHomeLoader from "../card/cardHome/CardHomeLoader";
+import { useRouter } from "next/navigation";
 
 export default function SectionAnimeClient({ title, recherche, latence }: { title: string; recherche: Record<string, string>; latence: number }) {
   const [animes, setAnimes] = useState<TypeAnime[] | null>(null);
+  const router = useRouter();
   // Récupère le scroll
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +63,10 @@ export default function SectionAnimeClient({ title, recherche, latence }: { titl
         </span>
         <div className="divAnimes" ref={scrollRef}>
           {animes && animes.map((anime) => <CardHome key={anime.mal_id} anime={anime} />)}
-          <BouttonVoirPlus link={`/animes?${new URLSearchParams(recherche).toString()}`} />
+          <div className="voirPlus" onClick={() => router.push(`/animes?${new URLSearchParams(recherche).toString()}`)}>
+            <span>Voir </span>
+            <span>plus</span>
+          </div>
         </div>
         <span className={`arrow right`} onClick={() => scroll("right")}>
           <MdChevronRight />

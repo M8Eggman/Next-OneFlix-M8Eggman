@@ -13,21 +13,23 @@ export default function AjouterPanier({ anime }: { anime: TypeAnime }) {
   const isInCart = cart.find((item) => item.mal_id === anime.mal_id);
   const isInOwnedItems = ownedItems.find((item) => item.mal_id === anime.mal_id);
 
+  const { isAuthenticated } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
 
   return (
     <button
       className="ajouterPanier"
-      disabled={isInOwnedItems || !anime.price}
+      disabled={isInOwnedItems || !anime.price || !isAuthenticated}
       onClick={(e) => {
         e.stopPropagation();
         if (isInCart) {
-          dispatch(removeFromCart(anime));
+          dispatch(removeFromCart(anime.mal_id));
         } else {
           dispatch(addToCart(anime));
         }
       }}>
-      {isInCart ? "Retirer du panier" : isInOwnedItems ? "Déjà acheté" : "Ajouter au panier"}
+      {isInCart ? "Retirer du panier" : isInOwnedItems ? "Déjà acheté" : isAuthenticated ? "Ajouter au panier" : "Connectez-vous"}
       <MdShoppingCart />
     </button>
   );

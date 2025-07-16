@@ -109,7 +109,7 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                 span.active
                     background-color: $color-dark-deep
                     color: $color-accent
-                svg
+                > svg
                     width: 1.5rem
                     height: 1.5rem
                     transform: translateY(2px)
@@ -122,17 +122,17 @@ $inputWidth: 15rem // Largeur de l'input de recherche
             align-items: center
             padding: 0 0.75rem
             height: 100%
-            svg
+            > svg
                 width: 1.75rem
                 height: 1.75rem
                 transition: color 200ms ease
         > div:hover
             background-color: $color-dark-deep
-            svg
+            > svg
                 color: $color-accent
         > div.active
             background-color: $color-dark-deep
-            svg
+            > svg
                 color: $color-accent
         .navIconsSearch
             display: flex
@@ -146,24 +146,113 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                 animation: grow 200ms ease
                 transform-origin: right
         .navIconsCart
+            position: relative
             .navCartModal
+                width: 18rem
                 position: absolute
                 top: $navHeight
                 right: 0
                 background-color: $color-dark-deep
-                padding: 1rem
-                z-index: 10
+                color: $color-light
+                padding: 1.2rem
+                z-index: 100
                 animation: fadeIn 200ms ease
+                display: flex
+                flex-direction: column
+                gap: 0.75rem
                 h3
                     font-size: 1.25rem
                     font-weight: 600
+                    color: $color-accent
                 p
-                    margin-bottom: 0.5rem
+                    font-size: 0.95rem
+                    color: $color-light-grey
+                    margin: 0
                 a
-                    display: block
-                    margin-bottom: 0.5rem
+                    display: inline-block
+                    margin-top: 0.5rem
+                    padding: 0.5rem 1rem
+                    background-color: $color-accent
+                    color: $color-dark-deep
+                    border-radius: 5px
+                    font-weight: bold
+                    font-size: 0.95rem
+                    text-align: center
+                    transition: background-color 0.3s
+                a:hover
+                    background-color: $color-accent-dark
+                    color: $color-dark
+                .navCartItems
+                    display: flex
+                    flex-direction: column
+                    gap: 0.75rem
+                    list-style: none
+                    padding: 0
+                    margin: 0
+                    li
+                        display: flex
+                        align-items: center
+                        gap: 0.6rem
+                        background-color: $color-dark
+                        padding: 0.5rem
+                        border-radius: 10px
+                        cursor: pointer
+                        position: relative
+                        transition: background-color 0.2s
+                        > div
+                            flex: 1
+                        .navCartRemove
+                            padding: 0.5rem
+                            font-size: 1.5rem
+                            color: $color-light
+                            border-radius: 5px
+                            transition: background-color 0.2s, color 0.2s
+                            cursor: pointer
+                        .navCartRemove:hover
+                            background-color: $color-dark-deep
+                    li:hover
+                        background-color: $color-dark-medium
+                    img
+                        width: 40px
+                        height: 60px
+                        object-fit: cover
+                        border-radius: 4px
+                    div
+                        display: flex
+                        flex-direction: column
+                        justify-content: space-between
+                        font-size: 0.85rem
+                        color: $color-light
+                    p
+                        margin: 0
+                        font-weight: 500
+                    span
+                        color: $color-accent
+                        font-weight: bold
+                        font-size: 0.9rem
+                    .navCartMore
+                        font-size: 0.85rem
+                        color: $color-light-grey
+                        text-align: center
+            .navIconsCartCount
+                display: flex
+                align-items: center
+                justify-content: center
+                width: 1.2rem
+                height: 1.2rem
+                position: absolute
+                top: 0.8rem
+                right: 0.3rem
+                background-color: $color-accent
+                color: $color-dark
+                border-radius: 50%
+                span
+                    font-size: 0.75rem
+                    font-weight: 600
         .navIconsUser
+            position: relative
             .navAuthModal
+                width: 15rem
                 position: absolute
                 top: $navHeight
                 right: 0
