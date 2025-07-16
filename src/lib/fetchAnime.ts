@@ -39,7 +39,7 @@ export async function fetchAnimes({
     const data = await res.json();
     return {
       pagination: data.pagination,
-      data: data.data.map((anime: TypeAnime) => AnimeWithPricePromo(promotion)(anime)),
+      data: data.data.map((anime: TypeAnime) => AnimeWithPricePromo(anime, promotion)),
     };
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
@@ -59,7 +59,7 @@ export async function fetchSingleAnime(id: string, promotion: boolean = false): 
     if (!res.ok) throw new Error(`Erreur fetchSingleAnime: ${res.status}`);
 
     const { data } = await res.json();
-    return AnimeWithPricePromo(promotion)(data);
+    return AnimeWithPricePromo(data, promotion);
   } catch (err) {
     console.error("Erreur dans fetchSingleAnime:", err);
     return null;

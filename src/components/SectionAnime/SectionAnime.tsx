@@ -1,25 +1,73 @@
+"use client";
+
 import "./SectionAnimes.sass";
-import { fetchAnimeParams, TypeAnimeWithPagination } from "@/types";
+import { useEffect, useRef, useState } from "react";
+import { fetchAnimes } from "@/lib/fetchAnime";
+import { TypeAnime } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { getUIAnimes, wait } from "@/lib/utils";
-import { fetchAnimes } from "@/lib/fetchAnime";
-import SectionScrollButtons from "./SectionScrollButtons";
 import BouttonVoirPlus from "./BoutonVoirPlus";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import CardHomeLoader from "../card/cardHome/CardHomeLoader";
 
-export default async function SectionAnime({ title, recherche, latence }: { title: string; recherche: Partial<fetchAnimeParams>; latence: number }) {
-  // Attend latence ms avant de fetch
-  await wait(latence);
-  // Récupère les animés selon les paramètres de recherche
-  const animes: TypeAnimeWithPagination | null = await fetchAnimes(recherche);
-  const animesUI = getUIAnimes(animes?.data || null);
+export default function SectionAnimeClient({ title, recherche, latence }: { title: string; recherche: Record<string, string>; latence: number }) {
+  const [animes, setAnimes] = useState<TypeAnime[] | null>(null);
+  // Récupère le scroll
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    wait(latence).then(() => {
+      fetchAnimes({ ...recherche }).then((result) => {
+        const data = result?.data || [];
+        const filtered = getUIAnimes(data);
+        setAnimes(filtered);
+      });
+    });
+  }, [latence, recherche]);
+
+  // Fonction pour scroll les animés vers la gauche ou la droite de 750px
+  function scroll(direction: "left" | "right") {
+    const element = scrollRef.current;
+    if (element) {
+      const scrollAmount = 750;
+      if (direction === "right") {
+        element.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      } else {
+        element.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      }
+    }
+  }
+
+  // Si les animés ne sont pas chargés, on affiche le loader
+  if (!animes || animes.length === 0)
+    return (
+      <section className="sectionAnimes">
+        <h2>{title}</h2>
+        <div className="divAnimesContainer">
+          <div className="divAnimes">
+            {Array.from({ length: 16 }).map((_, index) => (
+              <CardHomeLoader key={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
 
   return (
     <section className="sectionAnimes">
       <h2>{title}</h2>
-      <SectionScrollButtons>
-        {animesUI && animesUI.length > 0 ? animesUI.map((anime) => <CardHome key={anime.mal_id} anime={anime} />) : <div>Aucun animé à afficher.</div>}
-        <BouttonVoirPlus link={`/animes?${new URLSearchParams(recherche as Record<string, string>).toString()}`} />
-      </SectionScrollButtons>
+      <div className="divAnimesContainer">
+        <span className={`arrow left`} onClick={() => scroll("left")}>
+          <MdChevronLeft />
+        </span>
+        <div className="divAnimes" ref={scrollRef}>
+          {animes && animes.map((anime) => <CardHome key={anime.mal_id} anime={anime} />)}
+          <BouttonVoirPlus link={`/animes?${new URLSearchParams(recherche).toString()}`} />
+        </div>
+        <span className={`arrow right`} onClick={() => scroll("right")}>
+          <MdChevronRight />
+        </span>
+      </div>
     </section>
   );
 }

@@ -12,7 +12,8 @@ export default function AnimePage() {
   useEffect(() => {
     fetchSingleAnime(id as string, true).then((data) => setAnime(data));
   }, [id]);
-
+  
+  if (!anime) return <div>Chargement...</div>;
   return (
     <div>
       {anime?.title} {anime?.price} {anime?.promotion} {anime?.finalPrice} {anime?.purchasable.toString()}

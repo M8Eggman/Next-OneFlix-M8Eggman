@@ -82,8 +82,7 @@ export function wait(ms: number) {
 }
 
 // Fonction qui ajoute un prix et une promotion à un anime
-export function AnimeWithPricePromo(promotion: boolean) {
-  return (anime: any): TypeAnime => {
+export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false) {
     const animeId = anime.mal_id.toString();
     const isAiring = new Date(anime.aired?.from) > new Date();
     const probability = promotion ? 1 : 0.1;
@@ -100,15 +99,14 @@ export function AnimeWithPricePromo(promotion: boolean) {
       store.dispatch(saveAnimePromotion({ id: animeId, promo }));
     }
 
-    let finalPrice = isAiring && promo && price ? Math.max(0, Math.floor(price * (1 - promo) * 100 - 1) / 100) : null;
+    let finalPrice = promo && price ? Math.max(0, Math.floor(price * (1 - promo) * 100 - 1) / 100) : price;
     let purchasable = !isAiring;
 
     return {
       ...anime,
       price: price,
-      promo: promo,
+      promotion: promo,
       finalPrice: finalPrice,
-      purchasable: purchasable,
-    };
+    purchasable: purchasable,
   };
 }

@@ -31,26 +31,30 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
           <div className="cardHomeHoverInfosPrices">
             <div className="cardHomeHoverInfosPricesPromotion">
               {/* Si l'anime a un prix null ca veut dire qu'il n'est pas encore en vente */}
+              {anime.finalPrice === 0 ? <p>Gratuit</p> : anime.promotion && anime.price && <p>{anime.finalPrice?.toFixed(2)} €</p>}
               {anime.promotion && anime.price ? (
-                <p style={{ textDecoration: "line-through" }}>{anime.price} €</p>
+                <p style={{ textDecoration: "line-through" }}>{anime.price?.toFixed(2)} €</p>
               ) : anime.price ? (
-                <p>{anime.price} €</p>
+                <p>{anime.price?.toFixed(2)} €</p>
               ) : (
                 <p>N'est pas encore sorti</p>
               )}
-              {anime.finalPrice === 0 ? <p>Gratuit</p> : anime.promotion && anime.price && <p>{anime.finalPrice} €</p>}
             </div>
             <AjouterPanier anime={anime} />
           </div>
           <div className="cardHomeHoverInfosGenres">
-            {anime.genres.filter((genre) => genre.mal_id !== 9).map((genre) => (
-              <button key={genre.mal_id} onClick={(e) => {
-                e.stopPropagation();
-                router.push(`/animes?genreId=${genre.mal_id}&page=1`);
-              }}>
-                {genre.name}
-              </button>
-            ))}
+            {anime.genres
+              .filter((genre) => genre.mal_id !== 9)
+              .map((genre) => (
+                <button
+                  key={genre.mal_id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/animes?genreId=${genre.mal_id}&page=1`);
+                  }}>
+                  {genre.name}
+                </button>
+              ))}
           </div>
         </div>
       </div>

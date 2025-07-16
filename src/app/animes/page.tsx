@@ -21,7 +21,7 @@ export default function AnimesPage() {
   const { genres } = useAppSelector((state) => state.genre);
 
   const [animes, setAnimes] = useState<TypeAnimeWithPagination | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [query, setQuery] = useState(searchParams.get("query") || "");
 
@@ -159,7 +159,6 @@ export default function AnimesPage() {
           <option value="title">Titre</option>
         </select>
         <select
-        
           value={genreId}
           onChange={(e) => {
             updateParams({ genreId: e.target.value, page: 1 });
