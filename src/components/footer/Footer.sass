@@ -63,10 +63,46 @@ footer
         a:hover
             color: $color-accent
     .footerNewsLetter
-        flex: 2 1 260px
-        background: rgba(255,255,255,0.03)
-        border-radius: 10px
-        padding: 1.2rem 1rem
+        display: flex
+        flex-direction: column
+        gap: 1rem
+        h3
+            color: $color-white
+        p
+            color: $color-light
+        .footerNewsLetterForm
+            display: flex
+            flex-direction: column
+            gap: 0.5rem
+            input
+                flex: 1
+                padding: 0.5rem
+                border-radius: 5px
+                border: none
+                background-color: $color-dark-medium
+                color: $color-white
+            button
+                padding: 0.5rem 1rem
+                border: none
+                border-radius: 5px
+                background-color: $color-accent
+                color: $color-dark
+                font-weight: bold
+                cursor: pointer
+                transition: transform 0.2s ease, background-color 0.3s
+            button:hover:not(:disabled)
+                background-color: $color-accent-dark
+                transform: scale(1.05)
+            button.loading
+                animation: pulse 0.6s infinite alternate
+                pointer-events: none
+            .footerNewsLetterFormInput
+                display: flex
+                gap: 0.5rem
+            .footerNewsLetterFormSubmitted
+                color: $color-accent
+                font-weight: 500
+                margin-top: 0.5rem
         h3
             font-size: 1.3rem
             font-weight: 500

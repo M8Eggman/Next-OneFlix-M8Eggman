@@ -14,6 +14,30 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
   // State pour stocké les 3 genres avec le plus de d'anime
   const [topGenres, setTopGenres] = useState<TypeGenre[]>([]);
 
+  const [email, setEmail] = useState("");
+  // State pour le formulaire de newsletter pour simuler un délai d'envoi
+  const [submitting, setSubmitting] = useState(false);
+  // State pour afficher le message de succès de l'envoi de l'email se remet à false après 4 secondes
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Si l'email est vide, on ne fait rien
+    if (!email) return;
+
+    setSubmitting(true);
+    // On simule un délai d'envoi de 1 seconde
+    setTimeout(() => {
+      setSubmitting(false);
+      // On affiche le message de succès de l'envoi de l'email
+      setSubmitted(true);
+      // On vide le champ email
+      setEmail("");
+      // On cache le message après 4 secondes
+      setTimeout(() => setSubmitted(false), 4000);
+    }, 1000);
+  };
+
   useEffect(() => {
     if (genres) {
       const sorted = [...genres].sort((a: TypeGenre, b: TypeGenre) => b.count - a.count).slice(0, 3);
@@ -77,9 +101,14 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
         <div className="footerNewsLetter">
           <h3>Newsletter</h3>
           <p>Inscrivez-vous pour recevoir les dernières nouveautés et mises à jour.</p>
-          <form className="footerNewsLetterForm" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Votre email" required />
-            <button type="submit">S'inscrire</button>
+          <form className="footerNewsLetterForm" onSubmit={handleSubmit}>
+            <div className="footerNewsLetterFormInput">
+              <input type="email" placeholder="Votre email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <button type="submit" disabled={submitting}>
+                {submitting ? "Envoi..." : "S'inscrire"}
+              </button>
+            </div>
+            {submitted && <p className="footerNewsLetterFormSubmitted">Votre email a été enregistré avec succès.</p>}
           </form>
         </div>
       </div>
