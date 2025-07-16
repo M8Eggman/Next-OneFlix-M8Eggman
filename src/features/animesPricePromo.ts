@@ -17,25 +17,21 @@ const animesPricePromoSlice = createSlice({
   initialState,
   reducers: {
     // Retourne toujours le même prix pour un anime donné si le prix était déjà généré
-    getAnimePrice: (state, action: PayloadAction<string>) => {
-      const id = action.payload;
-      // si l'anime n'est pas dans la mémoire, on l'ajoute avec un prix aléatoire entre 0.99 et 14.99
-      if (!(id in state.priceByAnimeId)) {
-        state.priceByAnimeId[id] = Math.floor(Math.random() * 14) + 0.99;
+    saveAnimePrice: (state, action: PayloadAction<{ id: string; price: number | null }>) => {
+      const { id, price } = action.payload;
+      if (state.priceByAnimeId[id] === undefined) {
+        state.priceByAnimeId[id] = price;
       }
     },
     // Retourne toujours la même promotion pour un anime si la promotion était déjà générée
-    getAnimePromotion: (state, action: PayloadAction<{ id: string; probability: number }>) => {
-      const { id, probability } = action.payload;
-      // si l'anime n'est pas dans la mémoire, on décide une fois si promo ou pas
-      if (!(id in state.promoByAnimeId)) {
-        // applique une promotion que si la probabilité est supérieure à la valeur aléatoire entre 0.01 et 0.30
-        // si probability = 1, la promotion est appliquée à tous les animés du fetch
-        state.promoByAnimeId[id] = Math.random() <= probability ? Math.round((Math.random() * 0.25 + 0.05) * 100) / 100 : null;
+    saveAnimePromotion: (state, action: PayloadAction<{ id: string; promo: number | null }>) => {
+      const { id, promo } = action.payload;
+      if (state.promoByAnimeId[id] === undefined) {
+        state.promoByAnimeId[id] = promo;
       }
     },
   },
 });
 
-export const { getAnimePrice, getAnimePromotion } = animesPricePromoSlice.actions;
+export const { saveAnimePrice, saveAnimePromotion } = animesPricePromoSlice.actions;
 export default animesPricePromoSlice.reducer;

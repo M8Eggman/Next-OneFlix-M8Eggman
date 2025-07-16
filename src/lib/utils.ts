@@ -1,3 +1,5 @@
+import { saveAnimePrice, saveAnimePromotion } from "@/features/animesPricePromo";
+import { store } from "@/store/store";
 import { TypeAnime } from "@/types";
 
 // Fonction qui génère une partie de l'URL selon la période choisie
@@ -77,4 +79,36 @@ export function getUIAnimes(animes: TypeAnime[] | null): TypeAnime[] | null {
 // Fonction qui attend un certain temps
 export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Fonction qui ajoute un prix et une promotion à un anime
+export function AnimeWithPricePromo(promotion: boolean) {
+  return (anime: any): TypeAnime => {
+    const animeId = anime.mal_id.toString();
+    const isAiring = new Date(anime.aired?.from) > new Date();
+    const probability = promotion ? 1 : 0.1;
+
+    let price = store.getState().animesPricePromo.priceByAnimeId[animeId];
+    if (price === undefined) {
+      price = Math.floor(Math.random() * 15) + 0.99;
+      store.dispatch(saveAnimePrice({ id: animeId, price }));
+    }
+
+    let promo = store.getState().animesPricePromo.promoByAnimeId[animeId];
+    if (promo === undefined) {
+      promo = Math.random() <= probability ? Math.floor((Math.random() * 0.26 + 0.05) * 100) / 100 : null;
+      store.dispatch(saveAnimePromotion({ id: animeId, promo }));
+    }
+
+    let finalPrice = isAiring && promo && price ? Math.max(0, Math.floor(price * (1 - promo) * 100 - 1) / 100) : null;
+    let purchasable = !isAiring;
+
+    return {
+      ...anime,
+      price: price,
+      promo: promo,
+      finalPrice: finalPrice,
+      purchasable: purchasable,
+    };
+  };
 }

@@ -6,9 +6,9 @@ export default function BouttonVoirPlus({ link }: { link: string }) {
   const router = useRouter();
 
   return (
-    <div className="voirPlus">
+    <div className="voirPlus" onClick={() => router.push(link)}>
       <span>Voir </span>
-      <span onClick={() => router.push(link)}>plus</span>
+      <span>plus</span>
     </div>
   );
 }

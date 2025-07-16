@@ -18,8 +18,7 @@ export default function Carousel({ initialAnimes }: { initialAnimes: TypeAnime[]
     return (
       <div className="carouselLoader">
         <div className="carouselImageLoader"></div>
-        <div className="carouselLoaderText">
-        </div>
+        <div className="carouselLoaderText"></div>
       </div>
     );
   }

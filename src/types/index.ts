@@ -142,11 +142,11 @@ export interface TypeAnime {
     url: string;
   }[];
   // Ajouté manuellement pour le prix des animés
-  price: number | null;
+  price?: number | null;
   // Ajouté manuellement pour les promotions
-  promotion: number | null;
+  promotion?: number | null;
   // Ajouté manuellement pour le prix final calculé en fonction de la promotion
-  finalPrice: number | null;
+  finalPrice?: number | null;
   // Ajouté manuellement pour savoir si l'anime est diffusé
   purchasable: boolean;
 }
@@ -158,6 +158,7 @@ export interface TypeAnimeWithPagination {
 export type Period = "day" | "week" | "month" | "year" | "all";
 // typage des paramètres de la fonction fetchAnimes
 export interface fetchAnimeParams {
+  id?: number | null;
   query?: string;
   genreId?: number;
   period?: Period;

@@ -14,7 +14,6 @@ import CardHome from "@/components/card/cardHome/CardHome";
 export default function AnimesPage() {
   // Récupère les paramètres de l'url
   const searchParams = useSearchParams();
-  console.log(searchParams.toString());
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -43,6 +42,7 @@ export default function AnimesPage() {
       dispatch(fetchGenres());
     }
   }, [genres]);
+
   useEffect(() => {
     // Pas beau mais ca fonctionne
     const fetchData = async () => {
@@ -63,7 +63,7 @@ export default function AnimesPage() {
       // Récupère les animés selon les paramètres de la recherche
       const data = await fetchAnimes(params);
       // Met à jour les animés si les données sont disponibles
-      if (data) setAnimes(data);
+      if (data) setAnimes(data as TypeAnimeWithPagination);
       // Met à jour le statut de chargement
       setLoading(false);
     };

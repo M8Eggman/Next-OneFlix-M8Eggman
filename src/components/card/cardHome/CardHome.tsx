@@ -38,13 +38,18 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
               ) : (
                 <p>N'est pas encore sorti</p>
               )}
-              {anime.promotion && anime.price && <p>{anime.finalPrice} €</p>}
+              {anime.finalPrice === 0 ? <p>Gratuit</p> : anime.promotion && anime.price && <p>{anime.finalPrice} €</p>}
             </div>
             <AjouterPanier anime={anime} />
           </div>
           <div className="cardHomeHoverInfosGenres">
-            {anime.genres.map((genre) => (
-              <button key={genre.mal_id}>{genre.name}</button>
+            {anime.genres.filter((genre) => genre.mal_id !== 9).map((genre) => (
+              <button key={genre.mal_id} onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/animes?genreId=${genre.mal_id}&page=1`);
+              }}>
+                {genre.name}
+              </button>
             ))}
           </div>
         </div>

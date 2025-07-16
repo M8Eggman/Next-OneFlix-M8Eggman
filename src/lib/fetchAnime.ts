@@ -1,7 +1,5 @@
-import { store } from "@/store/store";
-import { getPeriodUrl } from "./utils";
+import { AnimeWithPricePromo, getPeriodUrl } from "./utils";
 import { fetchAnimeParams, TypeAnime, TypeAnimeWithPagination } from "@/types";
-import { getAnimePrice, getAnimePromotion } from "@/features/animesPricePromo";
 
 // Fonction pour récupérer des animés par query, genre, période, ordre, tri, limite et sfw
 export async function fetchAnimes({
@@ -35,50 +33,35 @@ export async function fetchAnimes({
       next: { revalidate: 3600 },
       cache: "force-cache",
     });
-    if (!res.ok) throw new Error(`Erreur fetchAnimes: ${res.status}`);
-    const data = await res.json();
 
+    if (!res.ok) throw new Error(`Erreur fetchAnimes: ${res.status}`);
+
+    const data = await res.json();
     return {
       pagination: data.pagination,
-      data: data.data.map((anime: TypeAnime) => {
-        const id = anime.mal_id.toString();
-
-        // Génère le prix et la promotion de l'anime si l'anime n'a pas déjà un prix ou une promotion
-        store.dispatch(getAnimePrice(id));
-        store.dispatch(getAnimePromotion({ id, probability: promotion ? 1 : 0.1 }));
-
-        // Récupère le prix de l'anime mémorisé
-        let price = store.getState().animesPricePromo.priceByAnimeId[id];
-        // Récupère la promotion de l'anime mémorisé
-        let promo = store.getState().animesPricePromo.promoByAnimeId[id];
-        // Calcule le prix final de l'anime en appliquant la promotion si promo existe
-        let finalPrice = promo && price ? Math.floor(price * (1 - promo)) - 0.01 : price;
-        // Si le prix final est inférieur à 0, on le met à 0
-        if (finalPrice && finalPrice < 0) finalPrice = 0;
-        // Définit si l'anime est diffusé donc achetable
-        let purchasable = true;
-
-        // Vérifie si l'anime est diffusé avant de mettre un prix et une promotion
-        const airing = new Date(anime.aired?.from) > new Date();
-
-        if (airing) {
-          price = null;
-          promo = null;
-          finalPrice = null;
-          purchasable = false;
-        }
-
-        return {
-          ...anime,
-          price: price,
-          promotion: promo,
-          finalPrice: finalPrice,
-          purchasable: purchasable,
-        };
-      }),
+      data: data.data.map((anime: TypeAnime) => AnimeWithPricePromo(promotion)(anime)),
     };
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
+    return null;
+  }
+}
+
+export async function fetchSingleAnime(id: string, promotion: boolean = false): Promise<TypeAnime | null> {
+  if (!id) return null;
+
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`, {
+      next: { revalidate: 3600 },
+      cache: "force-cache",
+    });
+
+    if (!res.ok) throw new Error(`Erreur fetchSingleAnime: ${res.status}`);
+
+    const { data } = await res.json();
+    return AnimeWithPricePromo(promotion)(data);
+  } catch (err) {
+    console.error("Erreur dans fetchSingleAnime:", err);
     return null;
   }
 }
