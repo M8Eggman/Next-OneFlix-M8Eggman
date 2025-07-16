@@ -1,5 +1,6 @@
 "use client";
 
+import "./AnimesPage.sass";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchAnimes } from "@/lib/fetchAnime";
@@ -98,9 +99,9 @@ export default function AnimesPage() {
   const genreId = searchParams.get("genreId") || "";
 
   return (
-    <section className="p-4">
+    <section className="sectionAnimesPage">
       {/* Barre de recherche */}
-      <div className="searchContainer flex flex-wrap gap-4 items-center mb-6">
+      <div className="searchContainer">
         <input
           type="text"
           placeholder="Rechercher un animé..."
@@ -108,19 +109,15 @@ export default function AnimesPage() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              updateParams({ page: 1 });
               updateParams({ query: e.currentTarget.value, page: 1 });
             }
           }}
-          className="p-2 rounded bg-neutral-800 text-white"
         />
         <select
           value={sort}
           onChange={(e) => {
             updateParams({ sort: e.target.value, page: 1 });
-            updateParams({ sort: e.target.value, page: 1 });
-          }}
-          className="p-2 rounded bg-neutral-800 text-white">
+          }}>
           <option value="asc">Ascendant</option>
           <option value="desc">Descendant</option>
         </select>
@@ -128,9 +125,7 @@ export default function AnimesPage() {
           value={period}
           onChange={(e) => {
             updateParams({ period: e.target.value, page: 1 });
-            updateParams({ period: e.target.value, page: 1 });
-          }}
-          className="p-2 rounded bg-neutral-800 text-white">
+          }}>
           <option value="all">Tous</option>
           <option value="day">Jour</option>
           <option value="week">Semaine</option>
@@ -141,9 +136,7 @@ export default function AnimesPage() {
           value={status || ""}
           onChange={(e) => {
             updateParams({ status: e.target.value, page: 1 });
-            updateParams({ status: e.target.value, page: 1 });
-          }}
-          className="p-2 rounded bg-neutral-800 text-white">
+          }}>
           <option value="">Tous</option>
           <option value="airing">En cours</option>
           <option value="complete">Terminé</option>
@@ -153,9 +146,7 @@ export default function AnimesPage() {
           value={orderBy}
           onChange={(e) => {
             updateParams({ orderBy: e.target.value, page: 1 });
-            updateParams({ orderBy: e.target.value, page: 1 });
-          }}
-          className="p-2 rounded bg-neutral-800 text-white">
+          }}>
           <option value="popularity">Popularité</option>
           <option value="start_date">Date de début</option>
           <option value="end_date">Date de fin</option>
@@ -168,12 +159,11 @@ export default function AnimesPage() {
           <option value="title">Titre</option>
         </select>
         <select
+        
           value={genreId}
           onChange={(e) => {
             updateParams({ genreId: e.target.value, page: 1 });
-            updateParams({ genreId: e.target.value, page: 1 });
-          }}
-          className="p-2 rounded bg-neutral-800 text-white">
+          }}>
           <option value="">Tous les genres</option>
           {genres?.map((g) => (
             <option key={g.mal_id + g.name} value={g.mal_id}>
@@ -186,95 +176,191 @@ export default function AnimesPage() {
             setQuery("");
             updateParams({ page: 1 });
             router.push("/animes?sort=asc&period=all&page=1&orderBy=popularity");
-          }}
-          className="p-2 rounded bg-red-700 hover:bg-red-600 text-white">
+          }}>
           Réinitialiser
         </button>
       </div>
-      {/* Résultats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {!loading && animes && animes.data?.length === 0 && <p>Aucun animé ne correspond à votre recherche.</p>}
-        {animes && animes.data?.map((anime, index) => <CardHome key={index} anime={anime} />)}
-      </div>
-      {/*  Pagination */}
-      {animes && animes.pagination && (
-        <div className="flex flex-wrap justify-center mt-6 gap-2 text-white text-sm">
-          {/* First */}
-          <button
-            disabled={page === 1}
-            onClick={() => {
-              updateParams({ page: 1 });
-            }}
-            className={`px-3 py-1 rounded ${page === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
-            First
-          </button>
-          {/* Prev */}
-          <button
-            disabled={page === 1}
-            onClick={() => {
-              const newPage = page - 1;
-              updateParams({ page: newPage });
-            }}
-            className={`px-3 py-1 rounded ${page === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
-            &lt;
-          </button>
-          {/* Pages dynamiques */}
-          {(() => {
-            const totalPages = animes.pagination.last_visible_page;
-            const visiblePages: number[] = [];
-            // Toujours montrer les 3 premières pages (si il y en a moins de 3, on montre toutes les pages)
-            for (let i = 1; i <= Math.min(3, totalPages); i++) {
-              visiblePages.push(i);
-            }
-            // Pages autour de la page actuelle (si pas déjà affichées)
-            for (let i = page - 1; i <= page + 1; i++) {
-              if (i > 3 && i < totalPages - 2 && !visiblePages.includes(i)) {
-                visiblePages.push(i);
-              }
-            }
-            // 3 dernières pages
-            for (let i = totalPages - 2; i <= totalPages; i++) {
-              if (i > 3 && !visiblePages.includes(i)) {
-                visiblePages.push(i);
-              }
-            }
-            // Tri + affichage unique
-            // Set supprimer les doublons et Array.from pour reconvertir en tableau
-            const sortedPages = Array.from(new Set(visiblePages)).sort((a, b) => a - b);
-            return sortedPages.map((p) => (
-              <button
-                key={p}
-                onClick={() => {
-                  updateParams({ page: p });
-                }}
-                className={`px-3 py-1 rounded ${p === page ? "bg-accent text-black font-bold" : "bg-neutral-800 hover:bg-neutral-600"}`}>
-                {p}
-              </button>
-            ));
-          })()}
-          {/* Next */}
-          <button
-            disabled={!animes.pagination.has_next_page}
-            onClick={() => {
-              const newPage = page + 1;
-              updateParams({ page: newPage });
-            }}
-            className={`px-3 py-1 rounded ${!animes.pagination.has_next_page ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
-            &gt;
-          </button>
+      <div className="animesContainer">
+        {/*  Pagination du haut */}
+        {animes && animes.pagination && (
+          <div className="pagination">
+            {/* First */}
+            <button
+              className="paginationButtonFirstLast"
+              disabled={page === 1}
+              onClick={() => {
+                updateParams({ page: 1 });
+              }}>
+              First
+            </button>
+            {/* Prev */}
+            <button
+              className="paginationButtonNextPrev"
+              disabled={page === 1}
+              onClick={() => {
+                updateParams({ page: page - 1 });
+              }}>
+              &lt;
+            </button>
+            {/* Pages dynamiques */}
+            {(() => {
+              const totalPages = animes.pagination.last_visible_page;
+              const maxVisiblePages = 7;
+              const half = Math.floor(maxVisiblePages / 2);
 
-          {/* Last */}
-          <button
-            disabled={page === animes.pagination.last_visible_page}
-            onClick={() => {
-              const last = animes.pagination.last_visible_page;
-              updateParams({ page: last });
-            }}
-            className={`px-3 py-1 rounded ${page === animes.pagination.last_visible_page ? "bg-gray-500 cursor-not-allowed" : "bg-neutral-700 hover:bg-neutral-600"}`}>
-            Last
-          </button>
-        </div>
-      )}
+              let startPage = Math.max(2, page - half);
+              let endPage = Math.min(totalPages - 1, page + half);
+
+              if (page <= half + 1) {
+                startPage = 2;
+                endPage = Math.min(totalPages - 1, maxVisiblePages - 1);
+              } else if (page >= totalPages - half) {
+                endPage = totalPages - 1;
+                startPage = Math.max(2, totalPages - maxVisiblePages + 2);
+              }
+
+              const visiblePages: (number | "...")[] = [];
+
+              visiblePages.push(1); // always show first
+
+              if (startPage > 2) visiblePages.push("...");
+
+              for (let i = startPage; i <= endPage; i++) {
+                visiblePages.push(i);
+              }
+
+              if (endPage < totalPages - 1) visiblePages.push("...");
+
+              if (totalPages > 1) visiblePages.push(totalPages); // always show last
+
+              return visiblePages.map((p, index) =>
+                p === "..." ? (
+                  <span key={"ellipsis-" + index} className="ellipsis">
+                    ...
+                  </span>
+                ) : (
+                  <button key={p} className={p === page ? "active" : ""} onClick={() => updateParams({ page: p })}>
+                    {p}
+                  </button>
+                )
+              );
+            })()}
+
+            {/* Next */}
+            <button
+              className="paginationButtonNextPrev"
+              disabled={!animes.pagination.has_next_page}
+              onClick={() => {
+                updateParams({ page: page + 1 });
+              }}>
+              &gt;
+            </button>
+            {/* Last */}
+            <button
+              className="paginationButtonFirstLast"
+              disabled={page === animes.pagination.last_visible_page}
+              onClick={() => {
+                const last = animes.pagination.last_visible_page;
+                updateParams({ page: last });
+              }}>
+              Last
+            </button>
+          </div>
+        )}
+        {/* Résultats */}
+        {animes && animes.data?.length > 0 ? (
+          <div className="animesResultat">{animes && animes.data?.map((anime, index) => <CardHome key={index} anime={anime} />)}</div>
+        ) : (
+          <p className="noResultat">Aucun animé ne correspond à votre recherche.</p>
+        )}
+        {/*  Pagination du bas */}
+        {animes && animes.pagination && (
+          <div className="pagination">
+            {/* First */}
+            <button
+              className="paginationButtonFirstLast"
+              disabled={page === 1}
+              onClick={() => {
+                updateParams({ page: 1 });
+              }}>
+              First
+            </button>
+            {/* Prev */}
+            <button
+              className="paginationButtonNextPrev"
+              disabled={page === 1}
+              onClick={() => {
+                updateParams({ page: page - 1 });
+              }}>
+              &lt;
+            </button>
+            {/* Pages dynamiques */}
+            {(() => {
+              // TODO 
+              const totalPages = animes.pagination.last_visible_page;
+              const maxVisiblePages = 7;
+              const half = Math.floor(maxVisiblePages / 2);
+
+              let startPage = Math.max(2, page - half);
+              let endPage = Math.min(totalPages - 1, page + half);
+
+              if (page <= half + 1) {
+                startPage = 2;
+                endPage = Math.min(totalPages - 1, maxVisiblePages - 1);
+              } else if (page >= totalPages - half) {
+                endPage = totalPages - 1;
+                startPage = Math.max(2, totalPages - maxVisiblePages + 2);
+              }
+
+              const visiblePages: (number | "...")[] = [];
+
+              visiblePages.push(1); // always show first
+
+              if (startPage > 2) visiblePages.push("...");
+
+              for (let i = startPage; i <= endPage; i++) {
+                visiblePages.push(i);
+              }
+
+              if (endPage < totalPages - 1) visiblePages.push("...");
+
+              if (totalPages > 1) visiblePages.push(totalPages); // always show last
+
+              return visiblePages.map((p, index) =>
+                p === "..." ? (
+                  <span key={"ellipsis-" + index} className="ellipsis">
+                    ...
+                  </span>
+                ) : (
+                  <button key={p} className={p === page ? "active" : ""} onClick={() => updateParams({ page: p })}>
+                    {p}
+                  </button>
+                )
+              );
+            })()}
+
+            {/* Next */}
+            <button
+              className="paginationButtonNextPrev"
+              disabled={!animes.pagination.has_next_page}
+              onClick={() => {
+                updateParams({ page: page + 1 });
+              }}>
+              &gt;
+            </button>
+            {/* Last */}
+            <button
+              className="paginationButtonFirstLast"
+              disabled={page === animes.pagination.last_visible_page}
+              onClick={() => {
+                const last = animes.pagination.last_visible_page;
+                updateParams({ page: last });
+              }}>
+              Last
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
