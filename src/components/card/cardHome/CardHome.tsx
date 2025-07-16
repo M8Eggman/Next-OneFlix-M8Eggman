@@ -27,6 +27,7 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
       <div className={`cardHomeHover${isHover ? " active" : ""}`}>
         <div className="cardHomeHoverInfos">
           <h3>{anime.title.length > 50 ? anime.title.slice(0, 50) + "..." : anime.title}</h3>
+          {anime.rating && <p className="cardHomeHoverInfosRating">Note : {anime.rating}</p>}
           <p>{anime.synopsis ? (anime.synopsis?.length > 250 ? anime.synopsis?.slice(0, 250) + "..." : anime.synopsis) : "Aucune description disponible"}</p>
           <div className="cardHomeHoverInfosPrices">
             <div className="cardHomeHoverInfosPricesPromotion">

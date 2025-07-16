@@ -33,6 +33,8 @@ export default function Carousel() {
 
   // Animation de la progression
   useEffect(() => {
+    if (!animes || animes.length === 0) return;
+
     setProgress(0);
 
     let progress = 0;
@@ -49,7 +51,8 @@ export default function Carousel() {
     }, step);
 
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, animes]);
+  
 
   // Fonction pour passer à l'animé suivant
   function next() {
@@ -89,6 +92,7 @@ export default function Carousel() {
             <h2 onClick={() => router.push(`/anime/${animes[currentIndex].mal_id}`)} style={animes[currentIndex].title.length > 16 ? { fontSize: "2.5rem" } : { fontSize: "4rem" }}>
               {animes[currentIndex].title}
             </h2>
+            <p>{animes[currentIndex].rating && <span className="carouselOverlayInfoContentRating">{animes[currentIndex].rating}</span>}</p>
             <p>{animes[currentIndex].synopsis?.length > 250 ? animes[currentIndex].synopsis?.slice(0, 250) + "..." : animes[currentIndex].synopsis}</p>
             <div className="carouselOverlayInfoContentGenres">
               {animes[currentIndex].genres.map((genre) => (
