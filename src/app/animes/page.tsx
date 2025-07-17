@@ -224,11 +224,13 @@ export default function AnimesPage() {
               let startPage = page - half > 1 ? page - half : 2;
               let endPage = page + half < totalPages ? page + half : totalPages - 1;
 
-              // Si la page actuelle est trop proche du début, on affiche les pages 6 premières ou 6 dernières
+              // Si la page actuelle est trop proche du début, on affiche les pages 6 premières ou 6 dernières (si il y en a moins de 6 on affiche toutes les pages)
               if (page <= half + 1) {
-                endPage = maxVisiblePages - 1;
+                startPage = 2;
+                endPage = totalPages - 1 > maxVisiblePages - 1 ? maxVisiblePages - 1 : totalPages - 1;
               } else if (page >= totalPages - half) {
-                startPage = totalPages - maxVisiblePages + 2;
+                endPage = totalPages - 1;
+                startPage = totalPages - maxVisiblePages + 2 > 2 ? totalPages - maxVisiblePages + 2 : 2;
               }
 
               visiblePages.push(1); // Toujours montrer la première page
