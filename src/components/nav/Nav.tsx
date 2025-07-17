@@ -11,10 +11,8 @@ import { TypeGenre } from "@/types";
 import { logout, removeFromCart } from "@/features/userSlice";
 import { signOut } from "next-auth/react";
 // import des icônes de react-icons
-import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown, FiTrash } from "react-icons/fi";
+import { FiShoppingCart, FiSearch, FiBookmark, FiUser, FiChevronDown, FiTrash, FiMenu } from "react-icons/fi";
 
-// Composant navigation pour le projet OneFlix
-// Affiche le logo, les liens et les icônes de navigation
 export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; loading: boolean; error: string | null }) {
   // Récupère le chemin actuel de la page
   const router = useRouter();
@@ -29,6 +27,8 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [showMobileLinks, setShowMobileLinks] = useState(false);
+  const [showCategoriesModalMobile, setShowCategoriesModalMobile] = useState(false);
 
   // Récupère les items gratuits
   const freeItems = cart.filter((item) => item.isFreeWithPromotion);
@@ -41,6 +41,53 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   return (
     <nav className="navGlobal">
       <div className="navLinksAndLogo">
+        <div className="navMobileLinks" onClick={() => setShowMobileLinks(!showMobileLinks)}>
+          <FiMenu />
+          <ul className={`navMobileLinksContent${showMobileLinks ? " active" : ""}`}>
+            <Link href="/animes?orderBy=start_date&status=airing&sort=desc">Nouveau</Link>
+            <Link href="/animes?orderBy=popularity">Populaire</Link>
+            <Link href="/animes?orderBy=score&sort=desc">Les mieux notés</Link>
+            <a
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowCategoriesModalMobile(!showCategoriesModalMobile);
+              }}>
+              <span>Catégories</span>
+              <FiChevronDown />
+            </a>
+            {showCategoriesModalMobile && (
+              <div className="navMobileLinksCategoriesModal">
+                <ul className="navMobileLinksCategoriesList">
+                  {loading && <li className="navCategoryLoading">Chargement des genres...</li>}
+                  {(error || !genres?.length) && (
+                    <>
+                      <li>
+                        <button className="navCategoryError cursor-pointer" onClick={() => dispatch(fetchGenres())}>
+                          Réessayer
+                        </button>
+                      </li>
+                    </>
+                  )}
+                  {!loading && !error && genres?.length && (
+                    <>
+                      {genres?.map((genre, i) => (
+                        <li key={genre.mal_id} style={{ animationDelay: `${i * 20}ms` }}>
+                          <Link href={`/animes?genreId=${genre.mal_id}`}>{genre.name}</Link>
+                        </li>
+                      ))}
+                      <li className="navMobileLinksCategoriesSeeMore" style={{ animationDelay: `${genres?.length * 20}ms` }}>
+                        <Link href="/animes">Voir +</Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </div>
+            )}
+            <Link href="/animes" className="navMobileLinksSeeMore">
+              Voir Tout
+            </Link>
+          </ul>
+        </div>
         <Link className="navLogo" href="/">
           <p>
             One<span>Flix</span>
