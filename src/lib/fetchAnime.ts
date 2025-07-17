@@ -28,7 +28,7 @@ export async function fetchAnimes({
   if (page) url += `page=${page}&`;
   if (type) url += `type=${type}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  console.log(url); // Pour debug
+  // console.log(url); // Pour debug
 
   try {
     const res = await fetch(url, {
