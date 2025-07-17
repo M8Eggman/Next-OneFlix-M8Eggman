@@ -43,7 +43,7 @@ export default function AnimesPage() {
   const page = parseInt(searchParams.get("page") || "1");
   const sort = searchParams.get("sort") || "asc";
   const period = searchParams.get("period") || "all";
-  const status = searchParams.get("status") || "";
+  const status = searchParams.get("status") || "complete";
   const orderBy = searchParams.get("orderBy") || "popularity";
   const genreId = searchParams.get("genreId") || "";
   const type = searchParams.get("type") || "";
@@ -83,7 +83,6 @@ export default function AnimesPage() {
         setIsMobile(false);
       }
     }
-
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -103,7 +102,7 @@ export default function AnimesPage() {
         genreId: searchParams.get("genreId") ? parseInt(searchParams.get("genreId")!) : undefined,
         period: (searchParams.get("period") as Period) || "all",
         orderBy: searchParams.get("orderBy") || "popularity",
-        status: searchParams.get("status") || undefined,
+        status: searchParams.get("status") || "complete",
         page: parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "20"),
         type: searchParams.get("type") || undefined,

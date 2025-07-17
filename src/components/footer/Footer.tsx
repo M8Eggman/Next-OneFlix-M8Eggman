@@ -104,7 +104,7 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
           <a href="https://github.com/M8Eggman">
             <FiGithub size={24} />
           </a>
-          <a href="">
+          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
             <FiLinkedin size={24} />
           </a>
         </div>

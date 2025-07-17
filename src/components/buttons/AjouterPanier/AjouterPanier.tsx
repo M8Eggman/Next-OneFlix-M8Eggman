@@ -3,6 +3,7 @@ import { MdShoppingCart } from "react-icons/md";
 import { addToCart, removeFromCart } from "@/features/userSlice";
 import { TypeAnime } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useRouter } from "next/navigation";
 
 export default function AjouterPanier({ anime }: { anime: TypeAnime }) {
   // Récupère le panier et les items achetés du redux
@@ -16,18 +17,19 @@ export default function AjouterPanier({ anime }: { anime: TypeAnime }) {
   const { isAuthenticated } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   return (
     <button
       className="ajouterPanier"
-      disabled={isInOwnedItems || !anime.price || !isAuthenticated}
+      disabled={isInOwnedItems || !anime.price}
       onClick={(e) => {
         e.stopPropagation();
-        if (isInCart) {
+        if (isInCart && isAuthenticated) {
           dispatch(removeFromCart(anime.mal_id));
-        } else {
+        } else if (!isInCart && isAuthenticated) {
           dispatch(addToCart(anime));
         }
+        if (!isAuthenticated) router.push("/auth/connexion");
       }}>
       {isInCart ? "Retirer du panier" : isInOwnedItems ? "Déjà acheté" : isAuthenticated ? "Ajouter au panier" : "Connectez-vous"}
       <MdShoppingCart />

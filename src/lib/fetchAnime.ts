@@ -10,7 +10,7 @@ export async function fetchAnimes({
   sort = "asc",
   limit = 16,
   safe = true,
-  status,
+  status= "complete",
   page = 1,
   type,
   promotion = false,

@@ -94,7 +94,8 @@ export function formatDate(dateString: string) {
 }
 // Fonction pour obtenir le badge de type
 export function getTypeBadge(type: string) {
-  type = type.replace(" ", "").toLowerCase();
+  const newtype = type ? type.replace(" ", "").toLowerCase() : "other";
+
   const badges = {
     tv: { class: "tv", label: "TV" },
     movie: { class: "movie", label: "Film" },
@@ -105,8 +106,9 @@ export function getTypeBadge(type: string) {
     cm: { class: "cm", label: "CM" },
     pv: { class: "pv", label: "PV" },
     tvspecial: { class: "tv_special", label: "TV Spécial" },
+    other: { class: "other", label: "Autre" },
   };
-  return badges[type as keyof typeof badges];
+  return badges[newtype as keyof typeof badges];
 }
 
 // Fonction qui ajoute un prix et une promotion à un anime
