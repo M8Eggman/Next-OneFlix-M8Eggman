@@ -34,3 +34,13 @@ main {
     font-size: 14px;
   }
 }
+@media screen and (max-width: 576px) {
+  html {
+    font-size: 13px;
+  }
+}
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 12px;
+  }
+}

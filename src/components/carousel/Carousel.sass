@@ -108,7 +108,7 @@
                 .carouselNavigationButtoncircleInner
                     height: 100%
                     background-color: $color-accent-dark
-    .carouselBtnRight
+    .carouselOverlayBtn.Right
         display: flex
         justify-content: center
         align-items: center
@@ -137,3 +137,31 @@
         width: 100%
         background-color: $color-dark
         animation: loader 0.5s infinite alternate
+
+@media (max-width: 768px)
+    .carousel
+        .carouselOverlayBtn
+            display: none
+        .carouselImage
+        .carouselOverlay
+            width: 100%
+            > button
+            .carouselOverlayInfo
+                width: 100%
+                display: flex
+                align-items: flex-end
+                .carouselOverlayInfoContent
+                    width: 100%
+                    align-items: center
+                    h2
+                        text-align: center
+                    p:last-of-type
+                        display: none
+@media (max-width: 576px)
+    .carousel
+        height: auto
+        .carouselOverlay
+            .carouselOverlayInfo
+                .carouselOverlayInfoContent
+                    h2
+                        font-size: 1.75rem !important

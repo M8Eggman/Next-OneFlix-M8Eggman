@@ -100,7 +100,7 @@ export default function Carousel() {
         <img src={animes[currentIndex]?.images.webp.large_image_url} alt={animes[currentIndex]?.title} />
       </div>
       <div className="carouselOverlay">
-        <button onClick={prev}>
+        <button className="carouselOverlayBtn left" onClick={prev}>
           <MdChevronLeft />
         </button>
         <div className="carouselOverlayInfo">
@@ -143,7 +143,7 @@ export default function Carousel() {
           </div>
         </div>
       </div>
-      <button className="carouselBtnRight" onClick={next}>
+      <button className="carouselOverlayBtn right" onClick={next}>
         <MdChevronRight />
       </button>
     </div>
