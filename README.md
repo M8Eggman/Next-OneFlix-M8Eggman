@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OneFlix
+
+**OneFlix** is a modern web application for discovering, searching, and managing anime collections. Built with Next.js, TypeScript, Redux, and SASS, it offers a smooth user experience for anime fans to browse
+
+---
+
+## Features
+
+- **Anime Catalog**: Browse a large collection of anime with detailed information.
+- **Advanced Search & Filters**: Search by title, genre, type (TV, movie, OVA, etc.), period, status, and more.
+- **Personal Library**: Authenticated users can manage their own anime collection and purchase history.
+- **Responsive UI**: Clean, modern interface styled with SASS and enhanced by Tailwind CSS utilities.
+- **Pagination**: Easily navigate through large lists of anime.
+- **Authentication**: Secure login and registration system.
+- **Redux State Management**: Efficient global state handling for user data, genres, and more.
+- **Loading Skeletons**: Smooth loading experience with animated placeholders.
+- **React Icons**: Beautiful icons for actions and navigation.
+
+---
+
+## Tech Stack
+
+- **Next.js** (App Router)
+- **TypeScript**
+- **Redux Toolkit**
+- **SASS** (with modular structure)
+- **React Icons**
+- **Jikan API** (for anime data)
+
+---
+
+## Project Structure
+
+```
+src/
+  app/           # Next.js pages and routes (including authentication, anime pages, library, etc.)
+  components/    # Reusable React components (cards, buttons, nav, etc.)
+  features/      # Redux slices and async logic
+  lib/           # Utility functions and API calls
+  store/         # Redux store configuration
+  styles/        # SASS stylesheets and variables
+  types/         # TypeScript type definitions
+  assets/        # Static assets (images, icons)
+  api/           # (Optional) Custom API routes
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm or yarn
+
+### Installation
+
+```bash
+git clone https://github.com/your-username/oneflix.git
+cd oneflix
+npm install
+# or
+yarn install
+```
+
+### Running the Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Or click on this link <a href="http://localhost:3000" style="display:inline-block;padding:0.75rem 2rem;background:#e53e3e;color:#fff;border-radius:5px;font-weight:600;text-decoration:none;margin-top:1rem;">Launch OneFlix</a>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Customization
 
-To learn more about Next.js, take a look at the following resources:
+- **Styling**: Edit SASS files in `src/styles/` and component-level styles as needed.
+- **API**: The app uses the Jikan API for anime data. You can swap or extend this in `src/lib/fetchAnime.ts`.
+- **Authentication**: NextAuth is used for authentication. Configure providers in `src/app/api/auth/[...nextauth]/route.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+- `dev` – Start the development server
+- `build` – Build the app for production
+- `start` – Start the production server
+- `lint` – Run ESLint
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+## Credits
+
+- Anime data provided by [Jikan API](https://jikan.moe/)
+- Icons from [React Icons](https://react-icons.github.io/react-icons/)
+- **UI/UX inspired by [Crunchyroll](https://www.crunchyroll.com/)**

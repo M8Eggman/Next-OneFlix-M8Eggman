@@ -109,11 +109,9 @@ export default function BibliothequePage() {
       <div className="tabsContainer">
         <div className="tabs">
           <button className={`tab ${activeTab === "collection" ? "active" : ""}`} onClick={() => setActiveTab("collection")}>
-            <span className="tabIcon"></span>
             Ma Collection
           </button>
           <button className={`tab ${activeTab === "historique" ? "active" : ""}`} onClick={() => setActiveTab("historique")}>
-            <span className="tabIcon"></span>
             Historique d'achats
           </button>
         </div>
