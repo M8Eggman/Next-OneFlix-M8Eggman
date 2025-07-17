@@ -24,7 +24,7 @@ export default function AnimesPage() {
 
   const [animes, setAnimes] = useState<TypeAnimeWithPagination | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 576);
 
   const [query, setQuery] = useState(searchParams.get("query") || "");
 
