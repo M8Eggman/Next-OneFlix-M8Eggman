@@ -139,13 +139,15 @@ const userSlice = createSlice({
         state.cart.forEach((item) => (item.isFreeWithPromotion = false));
       }
     },
-    // Ajoute un anime aux items possédés
-    addToOwnedItems: (state, action: PayloadAction<TypeAnime[]>) => {
-      // TODO: Ajouter les items au items possédés
+    // Vide le panier et ajoute les items au historique d'achat et aux items possédés
+    clearCart: (state) => {
+      state.ownedItems.push(...state.cart);
+      state.boughtHistory.push({ date: new Date().toISOString(), totalPrice: state.cart.reduce((sum, item) => sum + item.finalPrice, 0), boughtItems: [...state.cart] });
+      state.cart = [];
     },
-    // Ajoute un anime a l'historique d'achat
-    addToBoughtHistory: (state, action: PayloadAction<TypeAnime[]>) => {
-      // TODO: Ajouter les items au historique d'achat
+    // Ajoute du crédit
+    addCredit: (state, action: PayloadAction<number>) => {
+      state.credit += action.payload;
     },
     // Modifie le nom d'utilisateur
     updateUsername: (state, action: PayloadAction<string>) => {
@@ -166,19 +168,6 @@ const userSlice = createSlice({
   },
 });
 
-export const {
-  register,
-  login,
-  loginWithOAuth,
-  logout,
-  resetError,
-  addToCart,
-  removeFromCart,
-  addToOwnedItems,
-  addToBoughtHistory,
-  updateUsername,
-  updateEmail,
-  updateImage,
-  updateNewsletter,
-} = userSlice.actions;
+export const { register, login, loginWithOAuth, logout, resetError, addToCart, removeFromCart, clearCart, addCredit, updateUsername, updateEmail, updateImage, updateNewsletter } =
+  userSlice.actions;
 export default userSlice.reducer;

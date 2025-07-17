@@ -6,11 +6,26 @@
     max-width: 1200px
     margin: 0 auto
     gap: 2rem
-    h1
-        margin-bottom: 2rem
-        font-size: 2rem
-        font-weight: 500
-        color: $color-accent
+    .pageHeader
+        display: flex
+        align-items: center
+        gap: 1rem
+        .backButton
+            background: transparent
+            border: 1px solid $color-accent
+            color: $color-accent
+            padding: 0.5rem 1rem
+            border-radius: 6px
+            cursor: pointer
+            transition: all 0.3s ease
+            font-size: 0.9rem
+            &:hover
+                background: $color-accent
+                color: $color-dark
+        h1
+            font-size: 2rem
+            font-weight: 500
+            color: $color-accent
     .userInfo
         background-color: $color-dark
         padding: 2rem
@@ -37,7 +52,7 @@
             cursor: pointer
             transition: text-decoration 0.2s
             text-underline-offset: 3px
-        button:hover
+        button:hover:not(:last-of-type)
             text-decoration: underline
     .userDetailsImage
         display: flex

@@ -33,7 +33,12 @@ export default function UserDetails() {
 
   return (
     <div className="userPage">
-      <h1>Mon Profil</h1>
+      <div className="pageHeader">
+        <button className="backButton" onClick={() => router.back()}>
+          ← Retour
+        </button>
+        <h1>Mon Profil</h1>
+      </div>
       <div className="userInfo">
         <div className="userDetailsImage">
           <img src={user.image || "/default-avatar.jpg"} alt="avatar utilisateur" />

@@ -197,7 +197,7 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                   </div>
                 )}
                 {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
-                {isAuthenticated && cart.length > 0 && <Link href="/paiement">Acheter</Link>}
+                {isAuthenticated && cart.length > 0 && <Link href="/paiement/payer-anime">Acheter</Link>}
               </div>
             </div>
           )}

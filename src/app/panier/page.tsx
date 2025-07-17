@@ -115,7 +115,7 @@ const PanierPage = () => {
         <strong>{total === 0 ? "Gratuit" : `${total.toFixed(2)} €`}</strong>
       </div>
       <div className="panierActions">
-        <Link href="/paiement" className="btnPayer">
+        <Link href="/paiement/payer-anime" className="btnPayer">
           Procéder au paiement
         </Link>
         <Link href="/" className="btnRetour">
