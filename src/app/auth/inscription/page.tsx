@@ -23,16 +23,21 @@ export default function Inscription() {
   const [password, setPassword] = useState("");
   const [newsletter, setNewsletter] = useState(false);
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    dispatch(register({ username, email, password, sendNewsletter: newsletter }));
+  }
+
   // Reset error au chargement de la page
   useEffect(() => {
     dispatch(resetError());
   }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(register({ username, email, password, sendNewsletter: newsletter }));
-    router.push("/");
-  };
+  // Si l'utilisateur est connecté, on redirige vers la page d'accueil
+  useEffect(() => {
+    if (user.isAuthenticated) {
+      router.push("/");
+    }
+  }, [user.isAuthenticated]);
 
   // Si l'utilisateur est connecté, on affiche la page 404 comme si la page connexion n'existait plus
   if (user.isAuthenticated) {
@@ -123,13 +128,11 @@ export default function Inscription() {
           <p className="authTerms">
             En créant un compte, vous acceptez nos &nbsp;
             <a href="" className="authLink">
-              {" "}
               {/* faux lien */}
               Conditions d'utilisation
             </a>
             &nbsp;et notre &nbsp;
             <a href="" className="authLink">
-              {" "}
               {/* faux lien */}
               Politique de confidentialité
             </a>

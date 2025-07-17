@@ -279,9 +279,10 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                     <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
                     <p>Crédit : {credit.toFixed(2)} €</p>
                     <button
-                      onClick={() => {
-                        signOut();
+                      onClick={async () => {
+                        await signOut({ redirect: false });
                         dispatch(logout());
+                        router.push("/");
                       }}>
                       Déconnexion
                     </button>

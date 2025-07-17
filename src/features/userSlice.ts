@@ -9,7 +9,7 @@ const initialState: TypeUser & { users: TypeUser[]; boughtHistory: { date: strin
         "https://images.steamusercontent.com/ugc/1893226588872381023/0A44605BB2EBD24007E06BD7C70A9A8EFB1A5309/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
       password: "123456",
       email: "eggman@email.com",
-      error: { register: null, login: null },
+      error: { register: "", login: "" },
       sendNewsletter: false,
       cart: [],
       boughtHistory: [],
@@ -23,7 +23,7 @@ const initialState: TypeUser & { users: TypeUser[]; boughtHistory: { date: strin
   password: "",
   email: "",
   isAuthenticated: false,
-  error: { register: null, login: null },
+  error: { register: "", login: "" },
   sendNewsletter: false,
   cart: [],
   boughtHistory: [],
@@ -52,7 +52,7 @@ const userSlice = createSlice({
         state.password = userExists.password;
         state.email = userExists.email;
         state.credit = userExists.credit;
-        state.error = { register: null, login: null };
+        state.error = { register: "", login: "" };
       }
       // Si l'utilisateur n'existe pas, on affiche un message d'erreur
       else {
@@ -86,14 +86,14 @@ const userSlice = createSlice({
         state.password = action.payload.password || "";
         state.email = action.payload.email || "";
         state.credit = 0;
-        state.error = { register: null, login: null };
+        state.error = { register: "", login: "" };
       }
     },
     logout: (state) => {
       return { ...initialState, users: state.users };
     },
     resetError: (state) => {
-      state.error = { register: null, login: null };
+      state.error = { register: "", login: "" };
     },
     // Cart functions
     // Ajoute un anime au panier

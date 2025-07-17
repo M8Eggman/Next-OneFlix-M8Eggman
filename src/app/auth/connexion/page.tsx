@@ -4,10 +4,10 @@ import "../auth.sass";
 import Link from "next/link";
 import NotFound from "@/app/not-found";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { login, loginWithOAuth, resetError } from "@/features/userSlice";
+import { login, resetError } from "@/features/userSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 // import des logos
 import GithubLogo from "@/assets/img/GitHub-Logo.png";
 import GoogleLogo from "@/assets/img/Google__G__logo.svg";
@@ -22,16 +22,20 @@ export default function Connexion() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    dispatch(login({ username: username.trim(), password: password.trim() }));
+  }
   // Reset error au chargement de la page
   useEffect(() => {
     dispatch(resetError());
   }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(login({ username: username.trim(), password: password.trim() }));
-    router.push("/");
-  };
+  // Si l'utilisateur est connecté, on redirige vers la page d'accueil
+  useEffect(() => {
+    if (user.isAuthenticated) {
+      router.push("/");
+    }
+  }, [user.isAuthenticated]);
 
   // Si l'utilisateur est connecté, on redirige vers la page d'accueil
   if (user.isAuthenticated) {
