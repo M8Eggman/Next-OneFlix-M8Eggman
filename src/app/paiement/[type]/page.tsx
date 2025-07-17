@@ -260,6 +260,18 @@ export default function PaiementPage() {
                 "Payer avec ma carte"
               )}
             </button>
+            {user.credit >= totalPanier && (
+              <button onClick={handlePaiementAvecCredit} disabled={isProcessingCredit} className="creditButton">
+                {isProcessingCredit ? (
+                  <>
+                    <span className="spinner"></span>
+                    Traitement...
+                  </>
+                ) : (
+                  "Payer avec mon crédit"
+                )}
+              </button>
+            )}
           </form>
         </div>
         <div className="paiementPageContentRecap">
@@ -322,18 +334,6 @@ export default function PaiementPage() {
                 <span>Crédit disponible:</span>
                 <span className={user.credit >= totalPanier ? "creditSufficient" : "creditInsufficient"}>{user.credit.toFixed(2)} €</span>
               </div>
-              {user.credit >= totalPanier && (
-                <button onClick={handlePaiementAvecCredit} disabled={isProcessingCredit} className="creditButton">
-                  {isProcessingCredit ? (
-                    <>
-                      <span className="spinner"></span>
-                      Traitement...
-                    </>
-                  ) : (
-                    "Payer avec mon crédit"
-                  )}
-                </button>
-              )}
               {errors.credit && <div className="errorMessage creditError">{errors.credit}</div>}
             </div>
           )}
