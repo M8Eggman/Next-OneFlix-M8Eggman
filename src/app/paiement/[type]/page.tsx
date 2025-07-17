@@ -260,7 +260,7 @@ export default function PaiementPage() {
                 "Payer avec ma carte"
               )}
             </button>
-            {user.credit >= totalPanier && (
+            {user.credit >= totalPanier && type === "payer-anime" && (
               <button onClick={handlePaiementAvecCredit} disabled={isProcessingCredit} className="creditButton">
                 {isProcessingCredit ? (
                   <>
