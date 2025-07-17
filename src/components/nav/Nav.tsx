@@ -22,7 +22,6 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
 
   const cart = useAppSelector((state) => state.user.cart);
   const user = useAppSelector((state) => state.user);
-  console.log(user);
   const { isAuthenticated, credit, image } = useAppSelector((state) => state.user);
 
   // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
@@ -229,8 +228,7 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                 {isAuthenticated && (
                   <>
                     <Link href={`/mon-compte/${user.username}`}>Mon Compte {image && <img src={image} alt="" />}</Link>
-                    <Link href="/mon-compte/bibliotheque">Bibliothèque</Link>
-                    <Link href="/mon-compte/historique-achat">Historique d'achat</Link>
+                    <Link href="/bibliotheque">Bibliothèque</Link>
                     <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
                     <p>Crédit : {credit.toFixed(2)} €</p>
                     <button

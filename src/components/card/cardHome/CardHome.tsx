@@ -6,6 +6,7 @@ import { TypeAnime } from "@/types";
 import { MdShoppingCart } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import AjouterPanier from "@/components/buttons/AjouterPanier/AjouterPanier";
+import { getTypeBadge } from "@/lib/utils";
 
 export default function CardHome({ anime }: { anime: TypeAnime }) {
   // Verifie si la souris est sur la carte
@@ -26,7 +27,10 @@ export default function CardHome({ anime }: { anime: TypeAnime }) {
       </div>
       <div className={`cardHomeHover${isHover ? " active" : ""}`}>
         <div className="cardHomeHoverInfos">
-          <h3>{anime.title.length > 50 ? anime.title.slice(0, 50) + "..." : anime.title}</h3>
+          <h3>
+            <span>{anime.title.length > 50 ? anime.title.slice(0, 50) + "..." : anime.title}</span>
+            <span className={`typeBadge ${getTypeBadge(anime.type).class}`}>{getTypeBadge(anime.type).label}</span>
+          </h3>
           {anime.rating && <p className="cardHomeHoverInfosRating">Note : {anime.rating}</p>}
           <p>{anime.synopsis ? (anime.synopsis?.length > 250 ? anime.synopsis?.slice(0, 250) + "..." : anime.synopsis) : "Aucune description disponible"}</p>
           <div className="cardHomeHoverInfosPrices">

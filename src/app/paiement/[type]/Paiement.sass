@@ -72,8 +72,6 @@
         gap: 2rem
         background: $color-dark
         border-radius: 12px
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3)
-        overflow: hidden
         .paiementPageContentCard
             flex: 1
             padding: 2rem
@@ -129,7 +127,7 @@
             .inputGroup
                 flex: 1
             .primaryButton
-                background: linear-gradient(135deg, $color-accent, $color-accent-dark)
+                background: $color-accent
                 color: $color-dark
                 border: none
                 padding: 1rem 2rem
@@ -144,8 +142,8 @@
                 gap: 0.5rem
                 margin-top: 1rem
                 &:hover:not(:disabled)
+                    background: $color-accent-dark
                     transform: translateY(-2px)
-                    box-shadow: 0 4px 15px rgba($color-accent, 0.4)
                 &:disabled
                     opacity: 0.6
                     cursor: not-allowed
@@ -268,7 +266,7 @@
                     color: $color-error
             .creditButton
                 width: 100%
-                background: linear-gradient(135deg, $color-success, $color-success-dark)
+                background: $color-success
                 color: $color-dark
                 border: none
                 padding: 1rem 2rem
@@ -283,8 +281,8 @@
                 gap: 0.5rem
                 margin-top: 1.5rem
                 &:hover:not(:disabled)
-                    transform: translateY(-2px)
-                    box-shadow: 0 4px 15px rgba($color-success, 0.4)
+                    background: $color-success-dark
+                    transform: translateY(-1px)
                 &:disabled
                     opacity: 0.6
                     cursor: not-allowed

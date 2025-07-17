@@ -81,6 +81,34 @@ export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Fonction pour formater la date en français
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("fr-FR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+// Fonction pour obtenir le badge de type
+export function getTypeBadge(type: string) {
+  type = type.replace(" ", "").toLowerCase();
+  const badges = {
+    tv: { class: "tv", label: "TV" },
+    movie: { class: "movie", label: "Film" },
+    ova: { class: "ova", label: "OVA" },
+    special: { class: "special", label: "Spécial" },
+    ona: { class: "ona", label: "ONA" },
+    music: { class: "music", label: "Musique" },
+    cm: { class: "cm", label: "CM" },
+    pv: { class: "pv", label: "PV" },
+    tvspecial: { class: "tv_special", label: "TV Spécial" },
+  };
+  return badges[type as keyof typeof badges];
+}
+
 // Fonction qui ajoute un prix et une promotion à un anime
 export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false) {
   const animeId = anime.mal_id.toString();

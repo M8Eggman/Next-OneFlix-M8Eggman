@@ -1,7 +1,7 @@
 import { TypeAnime, TypeUser } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: TypeUser & { users: TypeUser[] } = {
+const initialState: TypeUser & { users: TypeUser[]; boughtHistory: { date: string; totalPrice: number; boughtItems: TypeAnime[] }[] } = {
   users: [
     {
       username: "Eggman",

@@ -4,7 +4,7 @@ import "./AnimesPage.sass";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchAnimes } from "@/lib/fetchAnime";
-import { fetchAnimeParams, Period, TypeAnimeWithPagination } from "@/types";
+import { fetchAnimeParams, Period, TypeAnimeWithPagination, TypeGenre } from "@/types";
 import { fetchGenres } from "@/features/genreSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
@@ -60,6 +60,7 @@ export default function AnimesPage() {
         status: searchParams.get("status") || undefined,
         page: parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "20"),
+        type: searchParams.get("type") || undefined,
         safe: searchParams.get("safe") !== "false", // true by default
       };
       // Récupère les animés selon les paramètres de la recherche
@@ -83,6 +84,7 @@ export default function AnimesPage() {
     if (period) newParams.set("period", getPeriodUrl(period as Period) || "all");
     if (orderBy) newParams.set("orderBy", orderBy);
     if (status) newParams.set("status", status);
+    if (type) newParams.set("type", type);
     newParams.set("page", page.toString());
 
     // Transforme les valeur de l'objet update en tableau et les ajoute à l'url
@@ -99,6 +101,7 @@ export default function AnimesPage() {
   const status = searchParams.get("status") || "";
   const orderBy = searchParams.get("orderBy") || "popularity";
   const genreId = searchParams.get("genreId") || "";
+  const type = searchParams.get("type") || "";
 
   return (
     <section className="sectionAnimesPage">
@@ -107,6 +110,7 @@ export default function AnimesPage() {
         <h2 className="searchContainerTitle">
           <FiFilter /> <span>Filtres</span>
         </h2>
+        {/* Input pour la recherche */}
         <input
           type="text"
           placeholder="Rechercher un animé..."
@@ -118,6 +122,7 @@ export default function AnimesPage() {
             }
           }}
         />
+        {/* Select pour le tri */}
         <select
           value={sort}
           onChange={(e) => {
@@ -126,6 +131,7 @@ export default function AnimesPage() {
           <option value="asc">Ascendant</option>
           <option value="desc">Descendant</option>
         </select>
+        {/* Select pour la période */}
         <select
           value={period}
           onChange={(e) => {
@@ -137,6 +143,7 @@ export default function AnimesPage() {
           <option value="month">Mois</option>
           <option value="year">Année</option>
         </select>
+        {/* Select pour le statut */}
         <select
           value={status || ""}
           onChange={(e) => {
@@ -147,6 +154,7 @@ export default function AnimesPage() {
           <option value="complete">Terminé</option>
           <option value="upcoming">À venir</option>
         </select>
+        {/* Select pour l'ordre */}
         <select
           value={orderBy}
           onChange={(e) => {
@@ -163,18 +171,37 @@ export default function AnimesPage() {
           <option value="mal_id">ID (MyAnimeList)</option>
           <option value="title">Titre</option>
         </select>
+        {/* Select pour le type d'animé */}
+        <select
+          value={type}
+          onChange={(e) => {
+            updateParams({ type: e.target.value, page: 1 });
+          }}>
+          <option value="">Tous les types</option>
+          <option value="tv">TV</option>
+          <option value="movie">Film</option>
+          <option value="ova">OVA</option>
+          <option value="special">Spécial</option>
+          <option value="ona">ONA</option>
+          <option value="music">Musique</option>
+          <option value="cm">CM</option>
+          <option value="pv">PV</option>
+          <option value="tv_special">TV Spécial</option>
+        </select>
+        {/* Select pour le genre */}
         <select
           value={genreId}
           onChange={(e) => {
             updateParams({ genreId: e.target.value, page: 1 });
           }}>
           <option value="">Tous les genres</option>
-          {genres?.map((g) => (
+          {genres?.map((g: TypeGenre) => (
             <option key={g.mal_id + g.name} value={g.mal_id}>
               {g.name}
             </option>
           ))}
         </select>
+        {/* Bouton pour réinitialiser les filtres */}
         <button
           onClick={() => {
             setQuery("");

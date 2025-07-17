@@ -174,7 +174,6 @@ export default function PaiementPage() {
     );
   }
 
-  // Si le paiement n'est pas réussi, affiche le formulaire de paiement
   return (
     <div className="paiementPage">
       <div className="pageHeader">
@@ -249,7 +248,7 @@ export default function PaiementPage() {
                 {errors.cardCVV && <span className="errorMessage">{errors.cardCVV}</span>}
               </div>
             </div>
-            <button type="submit" disabled={isProcessingCard || errors.creditToAdd || !cardIsValid()} className="primaryButton">
+            <button type="submit" disabled={isProcessingCard || (errors.creditToAdd ? true : false) || !cardIsValid()} className="primaryButton">
               {isProcessingCard ? (
                 <>
                   <span className="spinner"></span>

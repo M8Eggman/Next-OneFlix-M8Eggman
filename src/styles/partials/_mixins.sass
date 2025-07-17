@@ -1,3 +1,5 @@
+@use "./_variables" as *
+
 @keyframes shake
     0%, 100%
         transform: translateX(0) translateY(0) rotate(0deg)
@@ -38,3 +40,38 @@
 
     100%
         transform: scale(1)
+
+.typeBadge
+    padding: 0.25rem 0.5rem
+    border-radius: 4px
+    font-size: 0.8rem
+    font-weight: 600
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    &.tv
+        background: $color-accent
+        color: $color-dark-deep
+    &.movie
+        background: #4caf50
+        color: $color-dark-deep
+    &.ova
+        background: #f44336
+        color: $color-light
+    &.special
+        background: #9e9e9e
+        color: $color-light
+    &.ona
+        background: #ff9800
+        color: $color-dark-deep
+    &.music
+        background: #e91e63
+        color: $color-light
+    &.cm
+        background: #3f51b5
+        color: $color-light
+    &.pv
+        background: #673ab7
+        color: $color-light
+    &.tv_special
+        background: #009688
+        color: $color-dark-deep

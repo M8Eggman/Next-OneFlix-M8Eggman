@@ -12,6 +12,7 @@ export async function fetchAnimes({
   safe = true,
   status,
   page = 1,
+  type,
   promotion = false,
 }: fetchAnimeParams): Promise<TypeAnimeWithPagination | null> {
   // Récupère la période de l'url ou une chaîne vide si all est fourni
@@ -25,8 +26,9 @@ export async function fetchAnimes({
   if (safe) url += `sfw=${safe}&`;
   if (status) url += `status=${status}&`;
   if (page) url += `page=${page}&`;
+  if (type) url += `type=${type}&`;
   url += `order_by=${orderBy}&sort=${sort}&limit=${limit}${periodUrl}`;
-  // console.log(url); // Pour debug
+  console.log(url); // Pour debug
 
   try {
     const res = await fetch(url, {

@@ -42,7 +42,7 @@ export default function AnimeDetails() {
   } = anime;
 
   return (
-    <div className="animeDetails">
+    <div className="animePageDetails">
       <div className="animeDetailsHeader">
         <img src={images.webp.large_image_url} alt={title} className="animeDetailsImage" />
         <div className="animeDetailsInfos">
@@ -123,11 +123,7 @@ export default function AnimeDetails() {
           <h2>Trailer</h2>
           {trailer.embed_url ? (
             <div className="animeDetailsTrailerVideo">
-              <iframe
-                src={trailer.embed_url}
-                title={`Trailer de ${title}`}
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope"
-                allowFullScreen></iframe>
+              <iframe src={trailer.embed_url} title={`Trailer de ${title}`} allow="accelerometer; clipboard-write; encrypted-media; gyroscope" allowFullScreen></iframe>
             </div>
           ) : (
             <a href={trailer.url} className="animeDetailsTrailerButton">

@@ -172,6 +172,7 @@ export interface fetchAnimeParams {
   safe?: boolean;
   status?: string;
   page?: number;
+  type?: string;
   promotion?: boolean;
 }
 // Type des initialState des slices
