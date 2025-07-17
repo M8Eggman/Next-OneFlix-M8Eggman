@@ -1,0 +1,115 @@
+.userPage
+    padding: 2rem
+    color: $color-light
+    display: flex
+    flex-direction: column
+    max-width: 1200px
+    margin: 0 auto
+    gap: 2rem
+    h1
+        margin-bottom: 2rem
+        font-size: 2rem
+        font-weight: 500
+        color: $color-accent
+    .userInfo
+        background-color: $color-dark
+        padding: 2rem
+        border-radius: 10px
+        display: flex
+        flex-direction: column
+        gap: 1.5rem
+    .userDetails
+        line-height: 1.8
+        a
+            display: inline-block
+            margin-top: 0.3rem
+            color: $color-accent
+            text-decoration: underline
+        a:hover
+            color: $color-accent-dark
+        ul
+            list-style: disc
+            margin-left: 1.2rem
+        input[type="checkbox"]
+            margin-right: 0.5rem
+        button
+            border: none
+            cursor: pointer
+            transition: text-decoration 0.2s
+            text-underline-offset: 3px
+        button:hover
+            text-decoration: underline
+    .userDetailsImage
+        display: flex
+        flex-direction: column
+        align-items: start
+        button
+            border: none
+            cursor: pointer
+            transition: text-decoration 0.2s
+            text-underline-offset: 3px
+        button:hover
+            text-decoration: underline
+        img
+            width: 80px
+            height: 80px
+            border-radius: 50%
+            object-fit: cover
+            border: 2px solid $color-accent
+            margin-bottom: 0.5rem
+    .creditForm
+        margin-top: 0.5rem
+        display: flex
+        gap: 0.5rem
+        input
+            padding: 0.3rem 0.6rem
+            border: 1px solid $color-light-grey
+            background-color: $color-dark-medium
+            color: $color-light
+            border-radius: 5px
+        button
+            background-color: $color-accent
+            color: $color-dark
+            border: none
+            padding: 0.3rem 0.8rem
+            border-radius: 5px
+            cursor: pointer
+            transition: 0.3s
+        button:hover
+            background-color: $color-accent-dark
+    .userModalOverlay
+        position: fixed
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        z-index: 1000
+        background-color: rgba($color-dark-deep, 0.6)
+        .userModalContent
+            background: $color-dark
+            padding: 2rem
+            border-radius: 10px
+            border: 1px solid $color-accent
+            width: 90%
+            max-width: 400px
+            text-align: center
+            > p
+                margin-block: 0.75rem
+                font-size: 0.9rem
+        h2
+            margin-bottom: 1rem
+            color: $color-accent
+        input
+            width: 100%
+            padding: 0.6rem
+            border-radius: 5px
+            border: 1px solid $color-light-grey
+            background: $color-dark-medium
+            color: $color-light
+        .hint
+            margin-top: 0.5rem
+            font-size: 0.85rem
+            color: $color-light-grey

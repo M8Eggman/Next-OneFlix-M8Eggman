@@ -188,6 +188,7 @@ export interface TypeUser {
   boughtHistory: any[];
   watchlist: any[];
   ownedItems: any[];
+  credit: number;
 }
 export interface GenreState {
   genres: TypeGenre[];

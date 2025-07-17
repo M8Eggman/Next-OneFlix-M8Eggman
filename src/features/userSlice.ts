@@ -16,6 +16,7 @@ const initialState: TypeUser & { users: TypeUser[] } = {
       boughtHistory: [],
       watchlist: [],
       ownedItems: [],
+      credit: 0,
     },
   ],
   username: null,
@@ -30,6 +31,7 @@ const initialState: TypeUser & { users: TypeUser[] } = {
   boughtHistory: [],
   watchlist: [],
   ownedItems: [],
+  credit: 0,
 };
 
 const userSlice = createSlice({
@@ -51,6 +53,7 @@ const userSlice = createSlice({
         state.image = userExists.image;
         state.password = userExists.password;
         state.email = userExists.email;
+        state.credit = userExists.credit;
         state.error = { register: null, login: null };
       }
       // Si l'utilisateur n'existe pas, on affiche un message d'erreur
@@ -84,6 +87,7 @@ const userSlice = createSlice({
         state.image = action.payload.image || "";
         state.password = action.payload.password || "";
         state.email = action.payload.email || "";
+        state.credit = 0;
         state.error = { register: null, login: null };
       }
     },
@@ -102,9 +106,7 @@ const userSlice = createSlice({
       // Applique la logique de l'item gratuit avec la promotion uniquement quand le panier a plus de 5 items
       if (state.cart.length >= 5) {
         // Crée un nouveau tableau trié pour éviter de modifier l'état original ne prend pas en compte les items qui sont déjà gratuits
-        const sortedByPrice = [...state.cart]
-          .filter((item) => item.finalPrice !== 0)
-          .sort((a, b) => a.finalPrice - b.finalPrice);
+        const sortedByPrice = [...state.cart].filter((item) => item.finalPrice !== 0).sort((a, b) => a.finalPrice - b.finalPrice);
 
         // Réinitialise toutes les isFree à false
         state.cart.forEach((item) => (item.isFreeWithPromotion = false));
@@ -147,8 +149,38 @@ const userSlice = createSlice({
     addToBoughtHistory: (state, action: PayloadAction<TypeAnime[]>) => {
       // TODO: Ajouter les items au historique d'achat
     },
+    // Modifie le nom d'utilisateur
+    updateUsername: (state, action: PayloadAction<string>) => {
+      state.username = action.payload;
+    },
+    // Modifie l'email
+    updateEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
+    },
+    // Modifie l'image
+    updateImage: (state, action: PayloadAction<string>) => {
+      state.image = action.payload;
+    },
+    // Modifie la newsletter
+    updateNewsletter: (state, action: PayloadAction<boolean>) => {
+      state.sendNewsletter = action.payload;
+    },
   },
 });
 
-export const { register, login, loginWithOAuth, logout, resetError, addToCart, removeFromCart, addToOwnedItems, addToBoughtHistory } = userSlice.actions;
+export const {
+  register,
+  login,
+  loginWithOAuth,
+  logout,
+  resetError,
+  addToCart,
+  removeFromCart,
+  addToOwnedItems,
+  addToBoughtHistory,
+  updateUsername,
+  updateEmail,
+  updateImage,
+  updateNewsletter,
+} = userSlice.actions;
 export default userSlice.reducer;

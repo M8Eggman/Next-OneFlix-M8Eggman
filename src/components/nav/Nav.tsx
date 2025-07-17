@@ -1,6 +1,7 @@
 "use client";
 
 import "./Nav.sass";
+import "./NavUserAuth.sass";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -20,7 +21,9 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   const dispatch = useAppDispatch();
 
   const cart = useAppSelector((state) => state.user.cart);
-  const { isAuthenticated } = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
+  console.log(user);
+  const { isAuthenticated, credit, image } = useAppSelector((state) => state.user);
 
   // Etat pour gérer l'affichage des modal de catégories, authentification et panier et l'affichage de search input
   const [showCategoriesModal, setShowCategoriesModal] = useState(false);
@@ -192,6 +195,7 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                 </div>
               )}
               {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
+              {isAuthenticated && cart.length > 0 && <Link href="/paiement">Acheter</Link>}
             </div>
           )}
           {isAuthenticated && (
@@ -212,16 +216,26 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
           {showAuthModal && (
             <div className="navAuthModal">
               <h3>Mon Compte</h3>
-              <Link href="/auth/connexion">Connexion</Link>
-              <Link href="/auth/inscription">Inscription</Link>
-              <Link href="/mon-compte">Mon Compte</Link>
-              <button
-                onClick={() => {
-                  signOut();
-                  dispatch(logout());
-                }}>
-                Déconnexion
-              </button>
+              {!isAuthenticated && (
+                <>
+                  <Link href="/auth/connexion">Connexion</Link>
+                  <Link href="/auth/inscription">Inscription</Link>
+                </>
+              )}
+              {isAuthenticated && (
+                <>
+                  <Link href={`/mon-compte/${user.username}`}>Mon Compte {image && <img src={image} alt="" />}</Link>
+                  <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
+                  <p>Crédit : {credit.toFixed(2)} €</p>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      dispatch(logout());
+                    }}>
+                    Déconnexion
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
