@@ -234,6 +234,21 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                         font-size: 0.85rem
                         color: $color-light-grey
                         text-align: center
+                .navCartTotal
+                    position: relative
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    font-size: 0.9rem
+                    color: $color-light-grey
+                    margin-top: 0.5rem
+                .navCartTotal::before
+                    content: ""
+                    position: absolute
+                    top: -7px
+                    width: 100%
+                    height: 2px
+                    background-color: $color-dark-medium
             .navIconsCartCount
                 display: flex
                 align-items: center

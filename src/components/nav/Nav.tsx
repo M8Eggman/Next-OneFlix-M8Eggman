@@ -28,6 +28,9 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   const [showCartModal, setShowCartModal] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
+  // Calcule le total du panier
+  const total = cart.reduce((sum, item) => sum + (item.finalPrice || 0), 0);
+
   return (
     <nav className="navGlobal">
       <div className="navLinksAndLogo">
@@ -152,12 +155,21 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
               ) : (
                 <p>Vous devez être connecté pour voir votre panier.</p>
               )}
-              <Link href="/panier">Voir le panier</Link>
+              {isAuthenticated && cart.length > 0 && (
+                <div className="navCartTotal">
+                  <span>Total :</span>
+                  <strong>{total === 0 ? "Gratuit" : `${total.toFixed(2)} €`}</strong>
+                </div>
+              )}
+
+              {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
             </div>
           )}
-          <div className="navIconsCartCount">
-            <span>{cart.length}</span>
-          </div>
+          {isAuthenticated && (
+            <div className="navIconsCartCount">
+              <span>{cart.length}</span>
+            </div>
+          )}
         </div>
         <div
           className={`navIconsUser${showAuthModal ? " active" : ""}`}

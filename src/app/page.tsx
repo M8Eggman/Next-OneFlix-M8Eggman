@@ -1,22 +1,18 @@
 import "./Home.sass";
 import Carousel from "@/components/carousel/Carousel";
-import { fetchAnimes } from "@/lib/fetchAnime";
-import { getUIAnimes } from "@/lib/utils";
-import { Suspense } from "react";
-import SectionAnimeLoader from "@/components/SectionAnime/SectionAnimeLoader";
 import SectionAnime from "@/components/SectionAnime/SectionAnime";
 // type de fetchAnimes par défaut
 // {
-//   query?: string;
-//   genreId?: number;
-//   period = "all",
-//   orderBy = "popularity",
-//   sort = "asc",
-//   limit = 16,
-//   safe = true,
-//   status = "complete",
-//   page = 1,
-//   promotion = false,
+  // query,
+  // genreId,
+  // period = "all",
+  // orderBy = "popularity",
+  // sort = "asc",
+  // limit = 16,
+  // safe = true,
+  // status,
+  // page = 1,
+  // promotion = false,
 // }
 
 export default async function Home() {

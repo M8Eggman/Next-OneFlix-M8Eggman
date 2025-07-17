@@ -9,6 +9,7 @@ import { fetchGenres } from "@/features/genreSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
 import CardHome from "@/components/card/cardHome/CardHome";
+import { FiFilter } from "react-icons/fi";
 
 // expected url : /animes?query=naruto&sort=asc&period=all&page=1&orderBy=popularity&status=airing&limit=20&safe=true&genreId=1
 export default function AnimesPage() {
@@ -102,6 +103,9 @@ export default function AnimesPage() {
     <section className="sectionAnimesPage">
       {/* Barre de recherche */}
       <div className="searchContainer">
+        <h2 className="searchContainerTitle">
+          <FiFilter /> <span>Filtres</span>
+        </h2>
         <input
           type="text"
           placeholder="Rechercher un animé..."
@@ -295,7 +299,7 @@ export default function AnimesPage() {
             </button>
             {/* Pages dynamiques */}
             {(() => {
-              // TODO 
+              // TODO
               const totalPages = animes.pagination.last_visible_page;
               const maxVisiblePages = 7;
               const half = Math.floor(maxVisiblePages / 2);
