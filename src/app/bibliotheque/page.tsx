@@ -157,7 +157,7 @@ export default function BibliothequePage() {
                   ? "Tu n'as encore acheté aucun anime. Explore le catalogue pour commencer ta collection!"
                   : "Aucun anime ne correspond à tes critères de recherche."}
               </p>
-              {user.ownedItems.length === 0 && <button onClick={() => router.push("/catalogue")}>Découvrir les animes</button>}
+              {user.ownedItems.length === 0 && <button onClick={() => router.push("/animes")}>Découvrir les animes</button>}
             </div>
           ) : (
             <div className="animeGrid">
@@ -220,7 +220,7 @@ export default function BibliothequePage() {
               <div className="emptyIcon"></div>
               <h3>Aucun achat</h3>
               <p>Tu n'as encore effectué aucun achat. Commence par explorer le catalogue!</p>
-              <button onClick={() => router.push("/catalogue")}>Découvrir les animes</button>
+              <button onClick={() => router.push("/animes")}>Découvrir les animes</button>
             </div>
           ) : (
             <div className="historiqueList">

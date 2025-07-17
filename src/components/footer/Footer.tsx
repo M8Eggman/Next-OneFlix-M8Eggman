@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { TypeGenre } from "@/types";
 import Link from "next/link";
 import { FiGithub, FiLinkedin } from "react-icons/fi";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { fetchGenres } from "@/features/genreSlice";
 
 export default function Footer({ genres, loading, error }: { genres: TypeGenre[]; loading: boolean; error: string | null }) {
   const dispatch = useAppDispatch();
-
+  const { isAuthenticated, username } = useAppSelector((state) => state.user);
   // State pour stocké les 3 genres avec le plus de d'anime
   const [topGenres, setTopGenres] = useState<TypeGenre[]>([]);
 
@@ -58,6 +58,16 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
         <div className="footerNavigationLinks">
           <h3>Navigation</h3>
           <ul>
+            {isAuthenticated && (
+              <>
+                <li>
+                  <Link href="/bibliotheque">Ma bibliothèque</Link>
+                </li>
+                <li>
+                  <Link href={`/mon-compte/${username}`}>Mon compte</Link>
+                </li>
+              </>
+            )}
             <li>
               <Link href="/animes?orderBy=popularity">Populaires</Link>
             </li>
