@@ -183,7 +183,6 @@ export interface TypeUser {
   isAuthenticated?: boolean;
   error: { register: string | null; login: string | null };
   sendNewsletter: boolean;
-  searchHistory: string[];
   cart: any[];
   boughtHistory: any[];
   watchlist: any[];

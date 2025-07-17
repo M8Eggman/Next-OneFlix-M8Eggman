@@ -130,72 +130,75 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
             setShowCategoriesModal(false);
           }}>
           <FiShoppingCart />
+
           {showCartModal && (
-            <div className="navCartModal">
-              <h3>Mon Panier</h3>
-              {isAuthenticated ? (
-                cart.length === 0 ? (
-                  <p>Votre panier est vide.</p>
+            <div className="navModalBackground">
+              <div className="navCartModal">
+                <h3>Mon Panier</h3>
+                {isAuthenticated ? (
+                  cart.length === 0 ? (
+                    <p>Votre panier est vide.</p>
+                  ) : (
+                    <>
+                      <ul className="navCartItems">
+                        {freeItems.map((item) => (
+                          <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
+                            <img src={item.images.webp.image_url} alt={item.title} />
+                            <div>
+                              <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
+                              <div className="navCartItemPrices">
+                                <span className="gratuit">Gratuit</span>
+                              </div>
+                            </div>
+                            <button
+                              className="navCartRemove"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                dispatch(removeFromCart(item.mal_id));
+                              }}>
+                              <FiTrash />
+                            </button>
+                          </li>
+                        ))}
+                        {paidItems.map((item) => (
+                          <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
+                            <img src={item.images.webp.image_url} alt={item.title} />
+                            <div>
+                              <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
+                              <div className="navCartItemPrices">
+                                {item.finalPrice && item.finalPrice > 0 ? (
+                                  <span className="finalPrice">{item.finalPrice.toFixed(2)} €</span>
+                                ) : (
+                                  <span className="finalPrice">Gratuit</span>
+                                )}
+                                {item.promotion && item.price && <span className="oldPrice">{item.price.toFixed(2)} €</span>}
+                              </div>
+                            </div>
+                            <button
+                              className="navCartRemove"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                dispatch(removeFromCart(item.mal_id));
+                              }}>
+                              <FiTrash />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )
                 ) : (
-                  <>
-                    <ul className="navCartItems">
-                      {freeItems.map((item) => (
-                        <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
-                          <img src={item.images.webp.image_url} alt={item.title} />
-                          <div>
-                            <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
-                            <div className="navCartItemPrices">
-                              <span className="gratuit">Gratuit</span>
-                            </div>
-                          </div>
-                          <button
-                            className="navCartRemove"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              dispatch(removeFromCart(item.mal_id));
-                            }}>
-                            <FiTrash />
-                          </button>
-                        </li>
-                      ))}
-                      {paidItems.map((item) => (
-                        <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
-                          <img src={item.images.webp.image_url} alt={item.title} />
-                          <div>
-                            <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
-                            <div className="navCartItemPrices">
-                              {item.finalPrice && item.finalPrice > 0 ? (
-                                <span className="finalPrice">{item.finalPrice.toFixed(2)} €</span>
-                              ) : (
-                                <span className="finalPrice">Gratuit</span>
-                              )}
-                              {item.promotion && item.price && <span className="oldPrice">{item.price.toFixed(2)} €</span>}
-                            </div>
-                          </div>
-                          <button
-                            className="navCartRemove"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              dispatch(removeFromCart(item.mal_id));
-                            }}>
-                            <FiTrash />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )
-              ) : (
-                <p>Vous devez être connecté pour voir votre panier.</p>
-              )}
-              {isAuthenticated && cart.length > 0 && (
-                <div className="navCartTotal">
-                  <span>Total :</span>
-                  <strong>{total === 0 ? "Gratuit" : `${total.toFixed(2)} €`}</strong>
-                </div>
-              )}
-              {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
-              {isAuthenticated && cart.length > 0 && <Link href="/paiement">Acheter</Link>}
+                  <p>Vous devez être connecté pour voir votre panier.</p>
+                )}
+                {isAuthenticated && cart.length > 0 && (
+                  <div className="navCartTotal">
+                    <span>Total :</span>
+                    <strong>{total === 0 ? "Gratuit" : `${total.toFixed(2)} €`}</strong>
+                  </div>
+                )}
+                {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
+                {isAuthenticated && cart.length > 0 && <Link href="/paiement">Acheter</Link>}
+              </div>
             </div>
           )}
           {isAuthenticated && (
@@ -212,30 +215,34 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
             setShowCategoriesModal(false);
           }}>
           <FiUser />
-          {/* TODO */}
+
           {showAuthModal && (
-            <div className="navAuthModal">
-              <h3>Mon Compte</h3>
-              {!isAuthenticated && (
-                <>
-                  <Link href="/auth/connexion">Connexion</Link>
-                  <Link href="/auth/inscription">Inscription</Link>
-                </>
-              )}
-              {isAuthenticated && (
-                <>
-                  <Link href={`/mon-compte/${user.username}`}>Mon Compte {image && <img src={image} alt="" />}</Link>
-                  <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
-                  <p>Crédit : {credit.toFixed(2)} €</p>
-                  <button
-                    onClick={() => {
-                      signOut();
-                      dispatch(logout());
-                    }}>
-                    Déconnexion
-                  </button>
-                </>
-              )}
+            <div className="navModalBackground">
+              <div className="navAuthModal">
+                <h3>Mon Compte</h3>
+                {!isAuthenticated && (
+                  <>
+                    <Link href="/auth/connexion">Connexion</Link>
+                    <Link href="/auth/inscription">Inscription</Link>
+                  </>
+                )}
+                {isAuthenticated && (
+                  <>
+                    <Link href={`/mon-compte/${user.username}`}>Mon Compte {image && <img src={image} alt="" />}</Link>
+                    <Link href="/mon-compte/bibliotheque">Bibliothèque</Link>
+                    <Link href="/mon-compte/historique-achat">Historique d'achat</Link>
+                    <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
+                    <p>Crédit : {credit.toFixed(2)} €</p>
+                    <button
+                      onClick={() => {
+                        signOut();
+                        dispatch(logout());
+                      }}>
+                      Déconnexion
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
