@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { getPeriodUrl } from "@/lib/utils";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { FiFilter } from "react-icons/fi";
+import CardHomeLoader from "@/components/card/cardHome/CardHomeLoader";
 
 // expected url : /animes?query=naruto&sort=asc&period=all&page=1&orderBy=popularity&status=airing&limit=20&safe=true&genreId=1
 export default function AnimesPage() {
@@ -207,34 +208,40 @@ export default function AnimesPage() {
             </button>
             {/* Pages dynamiques */}
             {(() => {
-              const totalPages = animes.pagination.last_visible_page;
-              const maxVisiblePages = 7;
-              const half = Math.floor(maxVisiblePages / 2);
-
-              let startPage = Math.max(2, page - half);
-              let endPage = Math.min(totalPages - 1, page + half);
-
-              if (page <= half + 1) {
-                startPage = 2;
-                endPage = Math.min(totalPages - 1, maxVisiblePages - 1);
-              } else if (page >= totalPages - half) {
-                endPage = totalPages - 1;
-                startPage = Math.max(2, totalPages - maxVisiblePages + 2);
-              }
-
+              // TODO
+              // initialisation du tableau des pages visibles ou des petits points de suspension
               const visiblePages: (number | "...")[] = [];
 
-              visiblePages.push(1); // always show first
+              // Récupère le nombre de pages total
+              const totalPages = animes.pagination.last_visible_page;
+              // Nombre de pages visibles par défaut
+              const maxVisiblePages = 7;
+              // Nombre de pages visibles par défaut / 2
+              const half = Math.floor(maxVisiblePages / 2);
 
-              if (startPage > 2) visiblePages.push("...");
+              // Page de début et de fin par rapport à la page actuelle on affiche 3 pages de chaque côté de la page actuelle
+              // Si la page actuelle est trop proche du début ou de la fin, on affiche ce qu'il faut pour avoir 3 pages de chaque côté
+              let startPage = page - half > 1 ? page - half : 2;
+              let endPage = page + half < totalPages ? page + half : totalPages - 1;
+
+              // Si la page actuelle est trop proche du début, on affiche les pages 6 premières ou 6 dernières
+              if (page <= half + 1) {
+                endPage = maxVisiblePages - 1;
+              } else if (page >= totalPages - half) {
+                startPage = totalPages - maxVisiblePages + 2;
+              }
+
+              visiblePages.push(1); // Toujours montrer la première page
+
+              if (startPage > 2) visiblePages.push("..."); // Si la page actuelle est trop loin du début, on affiche les pages 6 premières
 
               for (let i = startPage; i <= endPage; i++) {
                 visiblePages.push(i);
               }
 
-              if (endPage < totalPages - 1) visiblePages.push("...");
+              if (endPage < totalPages - 1) visiblePages.push("..."); // Si la page actuelle est trop loin de la fin, on affiche les pages 6 dernières
 
-              if (totalPages > 1) visiblePages.push(totalPages); // always show last
+              if (totalPages > 1) visiblePages.push(totalPages); // Toujours montrer la dernière page si il y en a plus d'une
 
               return visiblePages.map((p, index) =>
                 p === "..." ? (
@@ -271,6 +278,13 @@ export default function AnimesPage() {
           </div>
         )}
         {/* Résultats */}
+        {loading && (
+          <div className="animesResultat">
+            {Array.from({ length: 16 }).map((_, index) => (
+              <CardHomeLoader key={index} />
+            ))}
+          </div>
+        )}
         {animes && animes.data?.length > 0 ? (
           <div className="animesResultat">{animes && animes.data?.map((anime, index) => <CardHome key={index} anime={anime} />)}</div>
         ) : (
@@ -317,7 +331,7 @@ export default function AnimesPage() {
 
               const visiblePages: (number | "...")[] = [];
 
-              visiblePages.push(1); // always show first
+              visiblePages.push(1); // Toujours montrer la première page
 
               if (startPage > 2) visiblePages.push("...");
 
@@ -327,7 +341,7 @@ export default function AnimesPage() {
 
               if (endPage < totalPages - 1) visiblePages.push("...");
 
-              if (totalPages > 1) visiblePages.push(totalPages); // always show last
+              if (totalPages > 1) visiblePages.push(totalPages); // Toujours montrer la dernière page si il y en a plus d'une
 
               return visiblePages.map((p, index) =>
                 p === "..." ? (
@@ -341,7 +355,6 @@ export default function AnimesPage() {
                 )
               );
             })()}
-
             {/* Next */}
             <button
               className="paginationButtonNextPrev"

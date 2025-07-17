@@ -38,7 +38,7 @@ const PanierPage = () => {
               <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
                 <img src={item.images.webp.image_url} alt={item.title} width={60} height={90} />
                 <div>
-                  <p>{item.title.length > 30 ? item.title.slice(0, 30) + "..." : item.title}</p>
+                  <p>{item.title}</p>
                   <div className="navCartItemPrices">
                     <span className="gratuit">Gratuit</span>
                   </div>
@@ -67,7 +67,7 @@ const PanierPage = () => {
               <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
                 <img src={item.images.webp.image_url} alt={item.title} width={60} height={90} />
                 <div>
-                  <p>{item.title.length > 30 ? item.title.slice(0, 30) + "..." : item.title}</p>
+                  <p>{item.title}</p>
                   <div className="navCartItemPrices">
                     <span className="gratuit">Gratuit</span>
                   </div>
@@ -92,7 +92,7 @@ const PanierPage = () => {
               <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
                 <img src={item.images.webp.image_url} alt={item.title} width={60} height={90} />
                 <div>
-                  <p>{item.title.length > 30 ? item.title.slice(0, 30) + "..." : item.title}</p>
+                  <p>{item.title}</p>
                   <div className="navCartItemPrices">
                     {item.finalPrice && item.finalPrice > 0 ? <span className="finalPrice">{item.finalPrice.toFixed(2)} €</span> : <span className="finalPrice">Gratuit</span>}
                     {item.promotion && item.price && <span className="oldPrice">{item.price.toFixed(2)} €</span>}
