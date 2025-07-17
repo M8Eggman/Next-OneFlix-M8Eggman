@@ -96,11 +96,48 @@ const userSlice = createSlice({
     // Cart functions
     // Ajoute un anime au panier
     addToCart: (state, action: PayloadAction<TypeAnime>) => {
+      // Ajoute l'item au panier
       state.cart.push(action.payload);
+
+      // Applique la logique de l'item gratuit avec la promotion uniquement quand le panier a plus de 5 items
+      if (state.cart.length >= 5) {
+        // Crée un nouveau tableau trié pour éviter de modifier l'état original ne prend pas en compte les items qui sont déjà gratuits
+        const sortedByPrice = [...state.cart]
+          .filter((item) => item.finalPrice !== 0)
+          .sort((a, b) => a.finalPrice - b.finalPrice);
+
+        // Réinitialise toutes les isFree à false
+        state.cart.forEach((item) => (item.isFreeWithPromotion = false));
+
+        // Trouve l'item le moins cher
+        const itemInCart = state.cart.find((item) => item.mal_id === sortedByPrice[0].mal_id);
+
+        // Met l'item le moins cher à gratuit si il est trouvé
+        if (itemInCart) {
+          itemInCart.isFreeWithPromotion = true;
+        }
+      }
     },
     // Supprime un anime du panier
     removeFromCart: (state, action: PayloadAction<number>) => {
+      // Réinitialise toutes les isFreeWithPromotion à false avant de supprimer l'item pour éviter les bugs
+      state.cart.forEach((item) => (item.isFreeWithPromotion = false));
+      // Supprime l'item du panier
       state.cart = state.cart.filter((item) => item.mal_id !== action.payload);
+
+      // Si le panier a plus de 5 items on remet le plus petit item à gratuit
+      if (state.cart.length >= 5) {
+        const sortedByPrice = [...state.cart].sort((a, b) => a.finalPrice - b.finalPrice);
+        state.cart.forEach((item) => (item.isFreeWithPromotion = false));
+        const cheapestItem = sortedByPrice[0];
+        const itemInCart = state.cart.find((item) => item.mal_id === cheapestItem.mal_id);
+        if (itemInCart) {
+          itemInCart.isFreeWithPromotion = true;
+        }
+      } else {
+        // Si 5 ou moins d'items on remet tous les items à non gratuit
+        state.cart.forEach((item) => (item.isFreeWithPromotion = false));
+      }
     },
     // Ajoute un anime aux items possédés
     addToOwnedItems: (state, action: PayloadAction<TypeAnime[]>) => {

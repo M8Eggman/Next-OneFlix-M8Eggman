@@ -83,30 +83,33 @@ export function wait(ms: number) {
 
 // Fonction qui ajoute un prix et une promotion à un anime
 export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false) {
-    const animeId = anime.mal_id.toString();
-    const isAiring = new Date(anime.aired?.from) > new Date();
-    const probability = promotion ? 1 : 0.1;
+  const animeId = anime.mal_id.toString();
+  const isAiring = new Date(anime.aired?.from) > new Date();
+  const probability = promotion ? 1 : 0.1;
 
-    let price = store.getState().animesPricePromo.priceByAnimeId[animeId];
-    if (price === undefined) {
-      price = Math.floor(Math.random() * 15) + 0.99;
-      store.dispatch(saveAnimePrice({ id: animeId, price }));
-    }
+  let price = store.getState().animesPricePromo.priceByAnimeId[animeId];
+  if (price === undefined) {
+    price = Math.floor(Math.random() * 15) + 0.99;
+    store.dispatch(saveAnimePrice({ id: animeId, price }));
+  }
 
-    let promo = store.getState().animesPricePromo.promoByAnimeId[animeId];
-    if (promo === undefined) {
-      promo = Math.random() <= probability ? Math.floor((Math.random() * 0.26 + 0.05) * 100) / 100 : null;
-      store.dispatch(saveAnimePromotion({ id: animeId, promo }));
-    }
+  let promo = store.getState().animesPricePromo.promoByAnimeId[animeId];
+  if (promo === undefined) {
+    promo = Math.random() <= probability ? Math.floor((Math.random() * 0.26 + 0.05) * 100) / 100 : null;
+    store.dispatch(saveAnimePromotion({ id: animeId, promo }));
+  }
 
-    let finalPrice = promo && price ? Math.max(0, Math.floor(price * (1 - promo) * 100 - 1) / 100) : price;
-    let purchasable = !isAiring;
+  let finalPrice = promo && price ? Math.max(0, Math.floor(price * (1 - promo) * 100 - 1) / 100) : price;
+  let purchasable = !isAiring;
 
-    return {
-      ...anime,
-      price: price,
-      promotion: promo,
-      finalPrice: finalPrice,
+  return {
+    ...anime,
+    price: price,
+    promotion: promo,
+    finalPrice: finalPrice,
     purchasable: purchasable,
+    isFree: finalPrice === 0,
+    // Retourne toujours false car on ne gère pas la promotion pour l'instant on la gère dans le panier
+    isFreeWithPromotion: false,
   };
 }

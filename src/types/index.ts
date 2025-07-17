@@ -149,6 +149,10 @@ export interface TypeAnime {
   finalPrice?: number | null;
   // Ajouté manuellement pour savoir si l'anime est diffusé
   purchasable: boolean;
+  // Ajouté manuellement pour savoir si l'anime est gratuit
+  isFree?: boolean;
+  // Ajouté manuellement pour savoir si l'anime est gratuit avec la promotion
+  isFreeWithPromotion?: boolean;
 }
 export interface TypeAnimeWithPagination {
   pagination: animePagination;

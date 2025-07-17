@@ -28,8 +28,13 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
   const [showCartModal, setShowCartModal] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
+  // Récupère les items gratuits
+  const freeItems = cart.filter((item) => item.isFreeWithPromotion);
+  // Récupère les items payants
+  const paidItems = cart.filter((item) => !item.isFreeWithPromotion);
+
   // Calcule le total du panier
-  const total = cart.reduce((sum, item) => sum + (item.finalPrice || 0), 0);
+  const total = cart.reduce((sum, item) => sum + (!item.isFreeWithPromotion ? item.finalPrice || 0 : 0), 0);
 
   return (
     <nav className="navGlobal">
@@ -131,12 +136,38 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                 ) : (
                   <>
                     <ul className="navCartItems">
-                      {cart.slice(0, 3).map((item) => (
+                      {freeItems.map((item) => (
                         <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
                           <img src={item.images.webp.image_url} alt={item.title} />
                           <div>
-                            <p>{item.title.length > 15 ? item.title.slice(0, 15) + "..." : item.title}</p>
-                            <span>{item.finalPrice?.toFixed(2)} €</span>
+                            <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
+                            <div className="navCartItemPrices">
+                              <span className="gratuit">Gratuit</span>
+                            </div>
+                          </div>
+                          <button
+                            className="navCartRemove"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              dispatch(removeFromCart(item.mal_id));
+                            }}>
+                            <FiTrash />
+                          </button>
+                        </li>
+                      ))}
+                      {paidItems.map((item) => (
+                        <li key={item.mal_id} onClick={() => router.push(`/anime/${item.mal_id}`)}>
+                          <img src={item.images.webp.image_url} alt={item.title} />
+                          <div>
+                            <p>{item.title.length > 12 ? item.title.slice(0, 12) + "..." : item.title}</p>
+                            <div className="navCartItemPrices">
+                              {item.finalPrice && item.finalPrice > 0 ? (
+                                <span className="finalPrice">{item.finalPrice.toFixed(2)} €</span>
+                              ) : (
+                                <span className="finalPrice">Gratuit</span>
+                              )}
+                              {item.promotion && item.price && <span className="oldPrice">{item.price.toFixed(2)} €</span>}
+                            </div>
                           </div>
                           <button
                             className="navCartRemove"
@@ -149,7 +180,6 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                         </li>
                       ))}
                     </ul>
-                    {cart.length > 3 && <p className="navCartMore">+ {cart.length - 3} autre(s)</p>}
                   </>
                 )
               ) : (
@@ -161,7 +191,6 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                   <strong>{total === 0 ? "Gratuit" : `${total.toFixed(2)} €`}</strong>
                 </div>
               )}
-
               {isAuthenticated && <Link href="/panier">Voir le panier</Link>}
             </div>
           )}

@@ -186,16 +186,25 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                     display: flex
                     flex-direction: column
                     gap: 0.75rem
+                    max-height: 260px
+                    overflow-y: auto
                     list-style: none
-                    padding: 0
+                    padding: 0 0.5rem 0 0
                     margin: 0
+                    &::-webkit-scrollbar
+                        width: 0.5rem
+                    &::-webkit-scrollbar-thumb
+                        background-color: $color-dark-medium
+                        border-radius: 0.25rem
+                    &::-webkit-scrollbar-track
+                        background-color: $color-dark
                     li
                         display: flex
                         align-items: center
                         gap: 0.6rem
                         background-color: $color-dark
                         padding: 0.5rem
-                        border-radius: 10px
+                        border-radius: 5px
                         cursor: pointer
                         position: relative
                         transition: background-color 0.2s
@@ -205,7 +214,7 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                             padding: 0.5rem
                             font-size: 1.5rem
                             color: $color-light
-                            border-radius: 5px
+                            border-radius: 10px
                             transition: background-color 0.2s, color 0.2s
                             cursor: pointer
                         .navCartRemove:hover
@@ -217,7 +226,7 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                         height: 60px
                         object-fit: cover
                         border-radius: 4px
-                    div
+                    > div
                         display: flex
                         flex-direction: column
                         justify-content: space-between
@@ -226,10 +235,23 @@ $inputWidth: 15rem // Largeur de l'input de recherche
                     p
                         margin: 0
                         font-weight: 500
-                    span
-                        color: $color-accent
-                        font-weight: bold
-                        font-size: 0.9rem
+                    .navCartItemPrices
+                        display: flex 
+                        align-items: center
+                        gap: 0.5rem
+                        .finalPrice
+                            color: $color-accent
+                            font-weight: 500
+                            font-size: 0.9rem
+                        .oldPrice
+                            color: $color-gray
+                            font-size: 0.8rem
+                            font-weight: 500
+                            text-decoration: line-through
+                        .gratuit
+                            color: $color-error
+                            font-weight: 500
+                            font-size: 0.9rem
                     .navCartMore
                         font-size: 0.85rem
                         color: $color-light-grey
