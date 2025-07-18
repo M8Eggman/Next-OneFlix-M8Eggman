@@ -41,7 +41,6 @@ src/
   styles/        # SASS stylesheets and variables
   types/         # TypeScript type definitions
   assets/        # Static assets (images, icons)
-  api/           # (Optional) Custom API routes
 ```
 
 ---
@@ -73,7 +72,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-Or click on this link <a href="http://localhost:3000" style="display:inline-block;padding:0.75rem 2rem;background:#e53e3e;color:#fff;border-radius:5px;font-weight:600;text-decoration:none;margin-top:1rem;">Launch OneFlix</a>
+Or click on this link <a href="https://projet-oneflix.vercel.app/" style="display:inline-block;padding:0.75rem 2rem;background:#e53e3e;color:#fff;border-radius:5px;font-weight:600;text-decoration:none;margin-top:1rem;">Launch OneFlix</a>
 
 ---
 
@@ -90,13 +89,6 @@ Or click on this link <a href="http://localhost:3000" style="display:inline-bloc
 - `dev` – Start the development server
 - `build` – Build the app for production
 - `start` – Start the production server
-- `lint` – Run ESLint
-
----
-
-## License
-
-[MIT](LICENSE)
 
 ---
 
