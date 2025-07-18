@@ -274,7 +274,7 @@ export default function Nav({ genres, loading, error }: { genres: TypeGenre[]; l
                 )}
                 {isAuthenticated && (
                   <>
-                    <Link href={`/mon-compte/${user.username}`}>Mon Compte {image && <img src={image} alt="" />}</Link>
+                    <Link href="/mon-compte">Mon Compte {image && <img src={image} alt="" />}</Link>
                     <Link href="/bibliotheque">Bibliothèque</Link>
                     <Link href="/paiement/ajouter-credit">Ajouter du crédit</Link>
                     <p>Crédit : {credit.toFixed(2)} €</p>

@@ -4,14 +4,13 @@ import "./UserDetails.sass";
 import NotFound from "@/app/not-found";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { updateNewsletter, updateUsername, updateEmail, updateImage } from "@/features/userSlice";
 
 export default function UserDetails() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const user = useAppSelector((state) => state.user);
-  const params = useParams();
+  const { isAuthenticated, username, email, sendNewsletter, credit, image } = useAppSelector((state) => state.user);
 
   const [modalField, setModalField] = useState<"username" | "email" | "image" | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -26,8 +25,9 @@ export default function UserDetails() {
       if (modalField === "username") router.push(`/mon-compte/${inputValue}`);
     }
   };
-  // Redirige vers 404 si non connecté ou username différent
-  if (!user.isAuthenticated || user.username?.toLowerCase() !== params.username?.toString().toLowerCase()) {
+  
+  // Redirige vers 404 si non connecté
+  if (!isAuthenticated) {
     return <NotFound />;
   }
 
@@ -41,11 +41,11 @@ export default function UserDetails() {
       </div>
       <div className="userInfo">
         <div className="userDetailsImage">
-          <img src={user.image || "/default-avatar.jpg"} alt="avatar utilisateur" />
+          <img src={image || "/default-avatar.jpg"} alt="avatar utilisateur" />
           <button onClick={() => setModalField("image")}>Modifier l’image</button>
         </div>
         <div className="userDetails">
-          <strong>Nom d'utilisateur :</strong> {user.username || "Non défini"}
+          <strong>Nom d'utilisateur :</strong> {username || "Non défini"}
           <br />
           <button
             onClick={() => {
@@ -55,7 +55,7 @@ export default function UserDetails() {
           </button>
         </div>
         <div className="userDetails">
-          <strong>Email :</strong> {user.email || "Non défini"}
+          <strong>Email :</strong> {email || "Non défini"}
           <br />
           <button onClick={() => setModalField("email")}>Modifier l’email</button>
         </div>
@@ -63,16 +63,16 @@ export default function UserDetails() {
           <label>
             <input
               type="checkbox"
-              checked={user.sendNewsletter}
+              checked={sendNewsletter}
               onChange={() => {
-                dispatch(updateNewsletter(!user.sendNewsletter));
+                dispatch(updateNewsletter(!sendNewsletter));
               }}
             />
             Recevoir la newsletter
           </label>
         </div>
         <div className="userDetails">
-          <strong>Crédit :</strong> {user.credit.toFixed(2)} €
+          <strong>Crédit :</strong> {credit.toFixed(2)} €
           <div className="creditForm">
             <button onClick={() => router.push("/paiement/ajouter-credit")}>Ajouter du crédit</button>
           </div>
