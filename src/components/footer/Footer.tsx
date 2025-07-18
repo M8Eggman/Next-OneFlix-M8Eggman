@@ -64,7 +64,7 @@ export default function Footer({ genres, loading, error }: { genres: TypeGenre[]
                   <Link href="/bibliotheque">Ma bibliothèque</Link>
                 </li>
                 <li>
-                  <Link href={`/mon-compte/${username}`}>Mon compte</Link>
+                  <Link href="/mon-compte">Mon compte</Link>
                 </li>
               </>
             )}
