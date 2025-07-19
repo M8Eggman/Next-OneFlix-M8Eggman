@@ -25,7 +25,7 @@ export default function Carousel({ animes }: { animes: TypeAnimeWithPagination }
   // le nombre de pas pour 100%
   const increment = 100 / (duration / step);
 
-  // Récupère les animés avec le prix et la promotion et les images filtrées et les doublons retirés
+  // Ajoute le prix et la promotion et les images filtrées et les doublons retirés aux animés
   useEffect(() => {
     const animesWithPricePromo = getAnimeWithPricePromo(animes, true, true);
     setAnimesState(animesWithPricePromo.data);

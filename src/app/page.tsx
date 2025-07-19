@@ -12,16 +12,16 @@ import { getAnimeWithPricePromo } from "@/lib/utils";
 // sort = "asc",
 // limit = 16,
 // safe = true,
-// status,
+// status = "complete",
 // page = 1,
 // promotion = false,
 // }
 
 export default async function Home() {
-  // Récupère les animés
-  const animesCarousel = await fetchAnimes({ limit: 6, promotion: true, status: "complete" });
+  // Récupère les animés sans prix et la promotion pour profiter du cache en use server
+  const animesCarousel = await fetchAnimes({ limit: 6, period: "year" });
   const animesNew = await fetchAnimes({ orderBy: "start_date", sort: "desc", status: "airing" });
-  const animesPopular = await fetchAnimes({ orderBy: "popularity", status: "complete" });
+  const animesPopular = await fetchAnimes({});
   const animesBest = await fetchAnimes({ orderBy: "score", sort: "desc", status: "complete" });
   const animesNaruto = await fetchAnimes({ query: "naruto" });
 

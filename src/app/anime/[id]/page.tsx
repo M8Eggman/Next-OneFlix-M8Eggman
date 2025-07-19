@@ -6,6 +6,7 @@ import { fetchSingleAnime } from "@/lib/fetchAnime";
 import { TypeAnime } from "@/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AnimeWithPricePromo } from "@/lib/utils";
 
 export default function AnimeDetails() {
   const { id } = useParams();
@@ -14,7 +15,12 @@ export default function AnimeDetails() {
 
   useEffect(() => {
     if (!id) return;
-    fetchSingleAnime(id as string, true).then((data) => setAnime(data));
+    fetchSingleAnime(id as string).then((data) => {
+      if (data) {
+        const animeWithPricePromo = AnimeWithPricePromo(data, false);
+        setAnime(animeWithPricePromo);
+      }
+    });
   }, [id]);
 
   if (!anime) return <div className="animeDetailsLoading">Chargement...</div>;

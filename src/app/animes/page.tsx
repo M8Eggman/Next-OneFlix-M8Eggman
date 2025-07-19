@@ -7,7 +7,7 @@ import { fetchAnimes } from "@/lib/fetchAnime";
 import { fetchAnimeParams, Period, TypeAnimeWithPagination, TypeGenre } from "@/types";
 import { fetchGenres } from "@/features/genreSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { getPeriodUrl } from "@/lib/utils";
+import { getAnimeWithPricePromo, getPeriodUrl } from "@/lib/utils";
 import CardHome from "@/components/card/cardHome/CardHome";
 import { FiFilter } from "react-icons/fi";
 import CardHomeLoader from "@/components/card/cardHome/CardHomeLoader";
@@ -75,6 +75,8 @@ export default function AnimesPage() {
       dispatch(fetchGenres());
     }
   }, [genres]);
+
+  // Si la page est mobile, on affiche moins de bouton de pagination
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 576) {
@@ -110,8 +112,10 @@ export default function AnimesPage() {
       };
       // Récupère les animés selon les paramètres de la recherche
       const data = await fetchAnimes(params);
+      // Ajoute le prix et la promotion et les images filtrées et les doublons retirés aux animés
+      const animesWithPricePromo = getAnimeWithPricePromo(data, false, true);
       // Met à jour les animés si les données sont disponibles
-      if (data) setAnimes(data as TypeAnimeWithPagination);
+      if (animesWithPricePromo) setAnimes(animesWithPricePromo as TypeAnimeWithPagination);
       // Met à jour le statut de chargement
       setLoading(false);
     };

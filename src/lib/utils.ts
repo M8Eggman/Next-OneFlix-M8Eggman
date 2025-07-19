@@ -124,7 +124,6 @@ export function getUniqueAnimes(animes: TypeAnime[] | null): TypeAnime[] {
   }
   return animesUnique;
 }
-
 // Fonction qui filtre les animés pour ne garder que ceux qui ont une image
 export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
   if (!anime || anime.length === 0) return [];
@@ -136,7 +135,6 @@ export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
   }
   return animeImage;
 }
-
 // Fonction qui retourne un tableau d'animés avec les images filtrées et les doublons retirés
 export function getUIAnimes(animes: TypeAnime[] | null): TypeAnime[] {
   if (!animes || animes.length === 0) return [];

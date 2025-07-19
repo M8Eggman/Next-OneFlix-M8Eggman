@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 export default function SectionAnimeClient({ title, animes, latence, link }: { title: string; animes: TypeAnimeWithPagination; latence: number; link: string }) {
   const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
   const router = useRouter();
-  // Récupère le scroll
+  // Fait référence a la div des animés pour pouvoir scroll les animés au clic sur le bouton
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Ajoute le prix et la promotion et les images filtrées et les doublons retirés aux animés
   useEffect(() => {
     wait(latence).then(() => {
       const animesWithPricePromo = getAnimeWithPricePromo(animes, false, true);
@@ -58,7 +59,9 @@ export default function SectionAnimeClient({ title, animes, latence, link }: { t
           <MdChevronLeft />
         </span>
         <div className="divAnimes" ref={scrollRef}>
-          {animesState.map((anime) => <CardHome key={anime.mal_id} anime={anime} />)}
+          {animesState.map((anime) => (
+            <CardHome key={anime.mal_id} anime={anime} />
+          ))}
           <div className="voirPlus" onClick={() => router.push(link)}>
             <span>Voir </span>
             <span>plus</span>
