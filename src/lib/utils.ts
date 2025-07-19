@@ -1,6 +1,6 @@
 import { saveAnimePrice, saveAnimePromotion } from "@/features/animesPricePromo";
 import { store } from "@/store/store";
-import { TypeAnime } from "@/types";
+import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 
 // Fonction qui génère une partie de l'URL selon la période choisie
 export function getPeriodUrl(period: "day" | "week" | "month" | "year" | "all" = "all") {
@@ -45,37 +45,6 @@ export function getPeriodUrl(period: "day" | "week" | "month" | "year" | "all" =
   return url;
 }
 
-// Fonction qui retourne un tableau d'animés sans les doublons
-export function getUniqueAnimes(animes: TypeAnime[] | null): TypeAnime[] {
-  if (!animes) return [];
-  const animesUnique: TypeAnime[] = [];
-  for (let i = 0; i < animes.length; i++) {
-    // Vérifie si un animé avec le même mal_id est déjà dans animesUnique
-    if (!animesUnique.some((a) => a.mal_id === animes[i].mal_id)) {
-      animesUnique.push(animes[i]);
-    }
-  }
-  return animesUnique;
-}
-
-// Fonction qui filtre les animés pour ne garder que ceux qui ont une image
-export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
-  if (!anime) return [];
-  const animeImage: TypeAnime[] = [];
-  for (let i = 0; i < anime.length; i++) {
-    if (anime[i].images.webp.image_url !== "https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png") {
-      animeImage.push(anime[i]);
-    }
-  }
-  return animeImage;
-}
-
-// Fonction qui retourne un tableau d'animés avec les images filtrées et les doublons retirés
-export function getUIAnimes(animes: TypeAnime[] | null): TypeAnime[] | null {
-  if (!animes) return null;
-  return filterAnimeImage(getUniqueAnimes(animes));
-}
-
 // Fonction qui attend un certain temps
 export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -112,7 +81,7 @@ export function getTypeBadge(type: string) {
 }
 
 // Fonction qui ajoute un prix et une promotion à un anime
-export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false) {
+export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false): TypeAnime {
   const animeId = anime.mal_id.toString();
   const isAiring = new Date(anime.aired?.from) > new Date();
   const probability = promotion ? 1 : 0.1;
@@ -141,5 +110,43 @@ export function AnimeWithPricePromo(anime: TypeAnime, promotion: boolean = false
     isFree: finalPrice === 0,
     // Retourne toujours false car on ne gère pas la promotion pour l'instant on la gère dans le panier
     isFreeWithPromotion: false,
+  };
+}
+// Fonction qui retourne un tableau d'animés sans les doublons
+export function getUniqueAnimes(animes: TypeAnime[] | null): TypeAnime[] {
+  if (!animes || animes.length === 0) return [];
+  const animesUnique: TypeAnime[] = [];
+  for (let i = 0; i < animes.length; i++) {
+    // Vérifie si un animé avec le même mal_id est déjà dans animesUnique
+    if (!animesUnique.some((a) => a.mal_id === animes[i].mal_id)) {
+      animesUnique.push(animes[i]);
+    }
+  }
+  return animesUnique;
+}
+
+// Fonction qui filtre les animés pour ne garder que ceux qui ont une image
+export function filterAnimeImage(anime: TypeAnime[]): TypeAnime[] {
+  if (!anime || anime.length === 0) return [];
+  const animeImage: TypeAnime[] = [];
+  for (let i = 0; i < anime.length; i++) {
+    if (anime[i].images.webp.image_url !== "https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png") {
+      animeImage.push(anime[i]);
+    }
+  }
+  return animeImage;
+}
+
+// Fonction qui retourne un tableau d'animés avec les images filtrées et les doublons retirés
+export function getUIAnimes(animes: TypeAnime[] | null): TypeAnime[] {
+  if (!animes || animes.length === 0) return [];
+  return filterAnimeImage(getUniqueAnimes(animes));
+}
+// Fonction qui retourne un tableau d'animés avec le prix et la promotion et les images filtrées et les doublons retirés si filtered est true
+export function getAnimeWithPricePromo(animes: TypeAnimeWithPagination, promotion: boolean = false, filtered: boolean = true): TypeAnimeWithPagination {
+  if (!animes || animes.data.length === 0) return { pagination: { last_visible_page: 0, has_next_page: false, current_page: 0 }, data: [] };
+  return {
+    pagination: animes.pagination || { last_visible_page: 0, has_next_page: false, current_page: 0 },
+    data: filtered ? getUIAnimes(animes.data).map((anime) => AnimeWithPricePromo(anime, promotion)) : animes.data.map((anime) => AnimeWithPricePromo(anime, promotion)),
   };
 }

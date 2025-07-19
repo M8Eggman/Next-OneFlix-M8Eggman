@@ -1,4 +1,4 @@
-import { AnimeWithPricePromo, getPeriodUrl } from "./utils";
+import { getPeriodUrl } from "./utils";
 import { fetchAnimeParams, TypeAnime, TypeAnimeWithPagination } from "@/types";
 
 // Fonction pour récupérer des animés par query, genre, période, ordre, tri, limite et sfw
@@ -10,11 +10,10 @@ export async function fetchAnimes({
   sort = "asc",
   limit = 16,
   safe = true,
-  status= "complete",
+  status = "complete",
   page = 1,
   type,
-  promotion = false,
-}: fetchAnimeParams): Promise<TypeAnimeWithPagination | null> {
+}: fetchAnimeParams): Promise<TypeAnimeWithPagination> {
   // Récupère la période de l'url ou une chaîne vide si all est fourni
   const periodUrl = getPeriodUrl(period) ?? "";
 
@@ -41,17 +40,15 @@ export async function fetchAnimes({
     const data = await res.json();
     return {
       pagination: data.pagination,
-      data: data.data.map((anime: TypeAnime) => AnimeWithPricePromo(anime, promotion)),
+      data: data.data,
     };
   } catch (err) {
     console.error("Erreur dans fetchAnimes:", err);
-    return null;
+    return { pagination: { last_visible_page: 0, has_next_page: false, current_page: 0 }, data: [] };
   }
 }
 
-export async function fetchSingleAnime(id: string, promotion: boolean = false): Promise<TypeAnime | null> {
-  if (!id) return null;
-
+export async function fetchSingleAnime(id: string): Promise<TypeAnime | null> {
   try {
     const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`, {
       next: { revalidate: 3600 },
@@ -61,7 +58,7 @@ export async function fetchSingleAnime(id: string, promotion: boolean = false): 
     if (!res.ok) throw new Error(`Erreur fetchSingleAnime: ${res.status}`);
 
     const { data } = await res.json();
-    return AnimeWithPricePromo(data, promotion);
+    return data;
   } catch (err) {
     console.error("Erreur dans fetchSingleAnime:", err);
     return null;

@@ -1,21 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { TypeAnime } from "@/types";
 import "./Carousel.sass";
+import { useEffect, useRef, useState } from "react";
+import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import AjouterPanier from "../buttons/AjouterPanier/AjouterPanier";
 import { useRouter } from "next/navigation";
-import { fetchAnimes } from "@/lib/fetchAnime";
-import { getUIAnimes } from "@/lib/utils";
+import { getAnimeWithPricePromo } from "@/lib/utils";
 
-export default function Carousel() {
-  const [animes, setAnimes] = useState<TypeAnime[] | null>(null);
+export default function Carousel({ animes }: { animes: TypeAnimeWithPagination }) {
+  const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+
   const interval = useRef<NodeJS.Timeout | null>(null);
   const progressRef = useRef<number>(0);
   const router = useRouter();
+  const currentAnime = animesState[currentIndex] || null;
 
   // durée de l'animation
   const duration = 5000;
@@ -24,18 +25,16 @@ export default function Carousel() {
   // le nombre de pas pour 100%
   const increment = 100 / (duration / step);
 
-  // Récupère les animés
+  // Récupère les animés avec le prix et la promotion et les images filtrées et les doublons retirés
   useEffect(() => {
-    fetchAnimes({ period: "year", limit: 6, promotion: true, status: "complete" }).then((data) => {
-      const filtered = getUIAnimes(data?.data || null);
-      setAnimes(filtered || null);
-      setCurrentIndex(0);
-    });
-  }, []);
+    const animesWithPricePromo = getAnimeWithPricePromo(animes, true, true);
+    setAnimesState(animesWithPricePromo.data);
+    setCurrentIndex(0);
+  }, [animes]);
 
   // Animation de la progression
   useEffect(() => {
-    if (!animes || animes.length === 0) return;
+    if (animesState.length === 0) return;
 
     progressRef.current = 0;
 
@@ -68,24 +67,24 @@ export default function Carousel() {
         progressRef.current = 0;
       }
     };
-  }, [currentIndex, animes]);
+  }, [currentIndex, animesState]);
 
   // Fonction pour passer à l'animé suivant
   function next() {
-    if (animes) {
-      setCurrentIndex((prev) => (prev + 1) % animes?.length);
+    if (animesState.length > 0) {
+      setCurrentIndex((prev) => (prev + 1) % animesState.length);
     }
   }
 
   // Fonction pour passer à l'animé précédent
   function prev() {
-    if (animes) {
-      setCurrentIndex((prev) => (prev - 1 + animes?.length) % animes?.length);
+    if (animesState.length > 0) {
+      setCurrentIndex((prev) => (prev - 1 + animesState.length) % animesState.length);
     }
   }
 
   // Si les animés ne sont pas chargés, on affiche le loader
-  if (!animes || animes.length === 0 || !animes[currentIndex]) {
+  if (animesState.length === 0 || !currentAnime) {
     return (
       <div className="carouselLoader">
         <div className="carouselImageLoader"></div>
@@ -96,8 +95,8 @@ export default function Carousel() {
   return (
     <div className="carousel">
       <div className="carouselImage">
-        <img src={animes[currentIndex]?.images.webp.large_image_url} alt={animes[currentIndex]?.title} />
-        <img src={animes[currentIndex]?.images.webp.large_image_url} alt={animes[currentIndex]?.title} />
+        <img src={currentAnime.images.webp.large_image_url} alt={currentAnime.title} />
+        <img src={currentAnime.images.webp.large_image_url} alt={currentAnime.title} />
       </div>
       <div className="carouselOverlay">
         <button className="carouselOverlayBtn left" onClick={prev}>
@@ -105,13 +104,13 @@ export default function Carousel() {
         </button>
         <div className="carouselOverlayInfo">
           <div className="carouselOverlayInfoContent">
-            <h2 onClick={() => router.push(`/anime/${animes[currentIndex].mal_id}`)} style={animes[currentIndex].title.length > 16 ? { fontSize: "2.5rem" } : { fontSize: "4rem" }}>
-              {animes[currentIndex].title}
+            <h2 onClick={() => router.push(`/anime/${currentAnime.mal_id}`)} style={currentAnime.title.length > 16 ? { fontSize: "2.5rem" } : { fontSize: "4rem" }}>
+              {currentAnime.title}
             </h2>
-            <p>{animes[currentIndex].rating && <span className="carouselOverlayInfoContentRating">{animes[currentIndex].rating}</span>}</p>
-            <p>{animes[currentIndex].synopsis?.length > 250 ? animes[currentIndex].synopsis?.slice(0, 250) + "..." : animes[currentIndex].synopsis}</p>
+            <p>{currentAnime.rating && <span className="carouselOverlayInfoContentRating">{currentAnime.rating}</span>}</p>
+            <p>{currentAnime.synopsis.length > 250 ? currentAnime.synopsis.slice(0, 250) + "..." : currentAnime.synopsis}</p>
             <div className="carouselOverlayInfoContentGenres">
-              {animes[currentIndex].genres.map((genre) => (
+              {currentAnime.genres.map((genre) => (
                 <button onClick={() => router.push(`/animes?genreId=${genre.mal_id}&page=1`)} key={genre.mal_id}>
                   {genre.name}
                 </button>
@@ -119,17 +118,17 @@ export default function Carousel() {
             </div>
             <div className="carouselOverlayInfoContentButtons">
               <div className="carouselOverlayInfoContentButtonsPrices">
-                {animes[currentIndex].finalPrice && animes[currentIndex].finalPrice > 0 ? (
-                  <span className="finalPrice">{animes[currentIndex].finalPrice.toFixed(2)} €</span>
+                {currentAnime.finalPrice && currentAnime.finalPrice > 0 ? (
+                  <span className="finalPrice">{currentAnime.finalPrice.toFixed(2)} €</span>
                 ) : (
                   <span className="finalPrice">Gratuit</span>
                 )}
-                {animes[currentIndex].promotion && animes[currentIndex].price && <span className="oldPrice">{animes[currentIndex].price.toFixed(2)} €</span>}
+                {currentAnime.promotion && currentAnime.price && <span className="oldPrice">{currentAnime.price.toFixed(2)} €</span>}
               </div>
-              <AjouterPanier anime={animes[currentIndex]} />
+              <AjouterPanier anime={currentAnime} />
             </div>
             <div className="carouselNavigationButton">
-              {animes.map((anime, index) => (
+              {animesState.map((anime, index) => (
                 <div className={`carouselNavigationButtonCircle${index === currentIndex ? " active" : ""}`} onClick={() => setCurrentIndex(index)} key={anime.mal_id}>
                   <div
                     className="carouselNavigationButtoncircleInner"

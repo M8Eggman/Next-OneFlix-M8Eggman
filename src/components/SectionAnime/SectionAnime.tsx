@@ -2,29 +2,25 @@
 
 import "./SectionAnimes.sass";
 import { useEffect, useRef, useState } from "react";
-import { fetchAnimes } from "@/lib/fetchAnime";
-import { TypeAnime } from "@/types";
+import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
-import { getUIAnimes, wait } from "@/lib/utils";
+import { getAnimeWithPricePromo, wait } from "@/lib/utils";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import CardHomeLoader from "../card/cardHome/CardHomeLoader";
 import { useRouter } from "next/navigation";
 
-export default function SectionAnimeClient({ title, recherche, latence }: { title: string; recherche: Record<string, string>; latence: number }) {
-  const [animes, setAnimes] = useState<TypeAnime[] | null>(null);
+export default function SectionAnimeClient({ title, animes, latence, link }: { title: string; animes: TypeAnimeWithPagination; latence: number; link: string }) {
+  const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
   const router = useRouter();
   // Récupère le scroll
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     wait(latence).then(() => {
-      fetchAnimes({ ...recherche }).then((result) => {
-        const data = result?.data || [];
-        const filtered = getUIAnimes(data);
-        setAnimes(filtered);
-      });
+      const animesWithPricePromo = getAnimeWithPricePromo(animes, false, true);
+      setAnimesState(animesWithPricePromo.data);
     });
-  }, [latence, recherche]);
+  }, [latence, animes]);
 
   // Fonction pour scroll les animés vers la gauche ou la droite de 750px
   function scroll(direction: "left" | "right") {
@@ -40,7 +36,7 @@ export default function SectionAnimeClient({ title, recherche, latence }: { titl
   }
 
   // Si les animés ne sont pas chargés, on affiche le loader
-  if (!animes || animes.length === 0)
+  if (animesState.length === 0)
     return (
       <section className="sectionAnimes">
         <h2>{title}</h2>
@@ -62,8 +58,8 @@ export default function SectionAnimeClient({ title, recherche, latence }: { titl
           <MdChevronLeft />
         </span>
         <div className="divAnimes" ref={scrollRef}>
-          {animes && animes.map((anime) => <CardHome key={anime.mal_id} anime={anime} />)}
-          <div className="voirPlus" onClick={() => router.push(`/animes?${new URLSearchParams(recherche).toString()}`)}>
+          {animesState.map((anime) => <CardHome key={anime.mal_id} anime={anime} />)}
+          <div className="voirPlus" onClick={() => router.push(link)}>
             <span>Voir </span>
             <span>plus</span>
           </div>
