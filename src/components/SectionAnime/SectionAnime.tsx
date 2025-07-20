@@ -9,19 +9,19 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import CardHomeLoader from "../card/cardHome/CardHomeLoader";
 import { useRouter } from "next/navigation";
 
-export default function SectionAnimeClient({ title, animes, latence, link }: { title: string; animes: TypeAnimeWithPagination; latence: number; link: string }) {
-  const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
+export default function SectionAnimeClient({ title, animes, link }: { title: string; animes: TypeAnimeWithPagination; link: string }) {
   const router = useRouter();
+
+  const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
+
   // Fait référence a la div des animés pour pouvoir scroll les animés au clic sur le bouton
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Ajoute le prix et la promotion et les images filtrées et les doublons retirés aux animés
   useEffect(() => {
-    wait(latence).then(() => {
-      const animesWithPricePromo = getAnimeWithPricePromo(animes, false, true);
-      setAnimesState(animesWithPricePromo.data);
-    });
-  }, [latence, animes]);
+    const animesWithPricePromo = getAnimeWithPricePromo(animes, false, true);
+    setAnimesState(animesWithPricePromo.data);
+  }, [animes]);
 
   // Fonction pour scroll les animés vers la gauche ou la droite de 750px
   function scroll(direction: "left" | "right") {

@@ -2,9 +2,7 @@ import "./Home.sass";
 import Carousel from "@/components/carousel/Carousel";
 import SectionAnime from "@/components/SectionAnime/SectionAnime";
 import { fetchAnimes } from "@/lib/fetchAnime";
-import { getAnimeWithPricePromo } from "@/lib/utils";
-// type de fetchAnimes par défaut
-// {
+// paramètre de fetchAnimes par défaut
 // query,
 // genreId,
 // period = "all",
@@ -15,7 +13,6 @@ import { getAnimeWithPricePromo } from "@/lib/utils";
 // status = "complete",
 // page = 1,
 // promotion = false,
-// }
 
 export default async function Home() {
   // Récupère les animés sans prix et la promotion pour profiter du cache en use server
@@ -28,10 +25,10 @@ export default async function Home() {
   return (
     <>
       <Carousel animes={animesCarousel} />
-      <SectionAnime title="Nouveautés" animes={animesNew} latence={500} link="/animes?orderBy=start_date&sort=desc&status=airing" />
-      <SectionAnime title="Populaires" animes={animesPopular} latence={1000} link="/animes?orderBy=popularity&status=complete" />
-      <SectionAnime title="Les mieux notés" animes={animesBest} latence={1500} link="/animes?orderBy=score&sort=desc&status=complete" />
-      <SectionAnime title="Naruto" animes={animesNaruto} latence={2000} link="/animes?query=naruto" />
+      <SectionAnime title="Nouveautés" animes={animesNew} link="/animes?orderBy=start_date&sort=desc&status=airing" />
+      <SectionAnime title="Populaires" animes={animesPopular} link="/animes?orderBy=popularity&status=complete" />
+      <SectionAnime title="Les mieux notés" animes={animesBest} link="/animes?orderBy=score&sort=desc&status=complete" />
+      <SectionAnime title="Naruto" animes={animesNaruto} link="/animes?query=naruto" />
     </>
   );
 }
