@@ -1,15 +1,14 @@
 "use client";
 
-import "./SectionAnimes.sass";
+import "./SectionAnime.sass";
 import { useEffect, useRef, useState } from "react";
 import { TypeAnime, TypeAnimeWithPagination } from "@/types";
 import CardHome from "@/components/card/cardHome/CardHome";
-import { getAnimeWithPricePromo, wait } from "@/lib/utils";
+import { getAnimeWithPricePromo } from "@/lib/utils";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import CardHomeLoader from "../card/cardHome/CardHomeLoader";
 import { useRouter } from "next/navigation";
 
-export default function SectionAnimeClient({ title, animes, link }: { title: string; animes: TypeAnimeWithPagination; link: string }) {
+export default function SectionAnime({ title, animes, link }: { title: string; animes: TypeAnimeWithPagination; link: string }) {
   const router = useRouter();
 
   const [animesState, setAnimesState] = useState<TypeAnime[]>([]);
@@ -35,21 +34,6 @@ export default function SectionAnimeClient({ title, animes, link }: { title: str
       }
     }
   }
-
-  // Si les animés ne sont pas chargés, on affiche le loader
-  if (animesState.length === 0)
-    return (
-      <section className="sectionAnimes">
-        <h2>{title}</h2>
-        <div className="divAnimesContainer">
-          <div className="divAnimes">
-            {Array.from({ length: 16 }).map((_, index) => (
-              <CardHomeLoader key={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
 
   return (
     <section className="sectionAnimes">
